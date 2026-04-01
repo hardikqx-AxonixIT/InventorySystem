@@ -1,0 +1,423 @@
+﻿{
+    "summary":  {
+                    "total":  69,
+                    "passed":  44,
+                    "failed":  25
+                },
+    "results":  [
+                    {
+                        "name":  "Dashboard overview",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters bootstrap",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions bootstrap",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced snapshot",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions purchase-orders",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions goods-receipts",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions purchase-invoices",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions sales-orders",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions sales-invoices",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions reports snapshot",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions mobile dashboard",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions AI demand prediction",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions auto reorder",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Transactions accounting summary",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced accounting ledgers",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced balance-sheet",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Auth login admin",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Auth register user",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  "400 allowed for duplicate/validation"
+                    },
+                    {
+                        "name":  "UserManagement roles",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "UserManagement users",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "UserManagement create user",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  "400 allowed if duplicate/policy"
+                    },
+                    {
+                        "name":  "Masters create category",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters create unit",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters create warehouse",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters create bin",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters create vendor",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters create customer",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters create product",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters update product",
+                        "pass":  false,
+                        "status":  405,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters product status off",
+                        "pass":  false,
+                        "status":  404,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Masters product status on",
+                        "pass":  false,
+                        "status":  404,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn stock-in",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn create purchase order",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn update purchase order",
+                        "pass":  false,
+                        "status":  405,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn create GRN",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn create purchase invoice",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn supplier payment",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn create sales order",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn update sales order",
+                        "pass":  false,
+                        "status":  405,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced delivery challan",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced create pick list",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced pick scan",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced pick pack",
+                        "pass":  false,
+                        "status":  404,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn create sales invoice",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced sales return",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced create quotation",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced update quotation",
+                        "pass":  false,
+                        "status":  405,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced convert quotation",
+                        "pass":  false,
+                        "status":  404,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced cancel quotation (post-convert expected 400/200)",
+                        "pass":  false,
+                        "status":  404,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced GSTR-1",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced GSTR-3B",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced e-invoice",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced e-way bill",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced journal voucher",
+                        "pass":  false,
+                        "status":  0,
+                        "note":  "No ledgers returned"
+                    },
+                    {
+                        "name":  "Advanced ledger drilldown",
+                        "pass":  false,
+                        "status":  0,
+                        "note":  "No ledgers returned"
+                    },
+                    {
+                        "name":  "Advanced profit-loss",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced transfer request (same bin may 400/200)",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced create BOM",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Txn production run",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced get permissions",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced upsert permission",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced audit logs",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced WhatsApp invoice",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced Razorpay order",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Advanced Razorpay callback",
+                        "pass":  false,
+                        "status":  400,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Products GET",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Products POST (authorized)",
+                        "pass":  true,
+                        "status":  201,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Inventory adjustment request",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    },
+                    {
+                        "name":  "Inventory pending adjustments",
+                        "pass":  true,
+                        "status":  200,
+                        "note":  ""
+                    }
+                ]
+}

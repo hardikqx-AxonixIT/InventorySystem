@@ -1,0 +1,15 @@
+F:\Axonix\.net project\InventorySystem\artifacts\runcheck\InventorySystem.Domain.deps.json
+F:\Axonix\.net project\InventorySystem\artifacts\runcheck\InventorySystem.Domain.dll
+F:\Axonix\.net project\InventorySystem\artifacts\runcheck\InventorySystem.Domain.pdb
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\bin\Debug\net6.0\InventorySystem.Domain.deps.json
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\bin\Debug\net6.0\InventorySystem.Domain.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\bin\Debug\net6.0\InventorySystem.Domain.pdb
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.csproj.AssemblyReference.cache
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.AssemblyInfoInputs.cache
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.AssemblyInfo.cs
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.csproj.CoreCompileInputs.cache
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\refint\InventorySystem.Domain.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.pdb
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\ref\InventorySystem.Domain.dll

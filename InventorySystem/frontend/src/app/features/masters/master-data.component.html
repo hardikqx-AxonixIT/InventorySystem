@@ -1,0 +1,196 @@
+<section class="master-page">
+  <div class="hero-card">
+    <p class="eyebrow">Master Management</p>
+    <h2>Enterprise master data controls</h2>
+    <p>Create, update, deactivate, and reactivate master records without mixing all forms in one view.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="activeTab==='products'" (click)="setTab('products')">Products</button>
+    <button class="tab" [class.active]="activeTab==='customers'" (click)="setTab('customers')">Customers</button>
+    <button class="tab" [class.active]="activeTab==='vendors'" (click)="setTab('vendors')">Vendors</button>
+    <button class="tab" [class.active]="activeTab==='warehouses'" (click)="setTab('warehouses')">Warehouses</button>
+    <button class="tab" [class.active]="activeTab==='bins'" (click)="setTab('bins')">Bins</button>
+    <button class="tab" [class.active]="activeTab==='categories'" (click)="setTab('categories')">Categories</button>
+    <button class="tab" [class.active]="activeTab==='units'" (click)="setTab('units')">Units</button>
+  </div>
+
+  <div class="message-card" *ngIf="loading">Loading master data...</div>
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+  <div class="message-card warning" *ngIf="validationMessage">{{ validationMessage }}</div>
+  <div class="message-card success" *ngIf="successMessage">{{ successMessage }}</div>
+
+  <section class="content-card" *ngIf="!loading && activeTab==='products'">
+    <p class="eyebrow">{{ editIds.products ? 'Edit Product' : 'Create Product' }}</p>
+    <form [formGroup]="productForm" (ngSubmit)="submitProduct()" class="form-grid product-grid">
+      <input formControlName="sku" placeholder="SKU" />
+      <input formControlName="name" placeholder="Product name" />
+      <input formControlName="barcode" placeholder="Barcode" />
+      <input formControlName="hsnCode" placeholder="HSN" />
+      <input formControlName="brand" placeholder="Brand" />
+      <select formControlName="categoryId"><option [ngValue]="0">Category</option><option *ngFor="let c of data.categories" [ngValue]="c.id">{{ c.name }}</option></select>
+      <select formControlName="uomId"><option [ngValue]="0">Unit</option><option *ngFor="let u of data.units" [ngValue]="u.id">{{ u.name }}</option></select>
+      <input type="number" formControlName="gstRate" placeholder="GST %" />
+      <input type="number" formControlName="purchasePrice" placeholder="Purchase price" />
+      <input type="number" formControlName="salesPrice" placeholder="Sales price" />
+      <input type="number" formControlName="reorderLevel" placeholder="Reorder level" />
+      <label class="check"><input type="checkbox" formControlName="trackBatch" /> Track batch</label>
+      <label class="check"><input type="checkbox" formControlName="trackSerial" /> Track serial</label>
+      <label class="check"><input type="checkbox" formControlName="trackExpiry" /> Track expiry</label>
+      <button class="btn btn-primary" type="submit" [disabled]="saving || productForm.invalid">{{ editIds.products ? 'Update Product' : 'Create Product' }}</button>
+      <button class="btn btn-secondary" type="button" *ngIf="editIds.products" (click)="resetProduct()">Cancel Edit</button>
+    </form>
+    <div class="import-export-row">
+      <button class="btn btn-secondary" type="button" (click)="exportProductsCsv()">Export Excel (CSV)</button>
+      <label class="file-label">
+        <span>Import Excel (CSV)</span>
+        <input type="file" accept=".csv" (change)="onProductsCsvSelected($event)" />
+      </label>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>SKU</th><th>Name</th><th>GST</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of pagedRows('products', data.products)">
+            <td>{{ item.sku }}</td><td>{{ item.name }}</td><td>{{ item.gstRate }}</td>
+            <td><span class="status" [class.inactive]="!item.isActive">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td>
+            <td>
+              <button class="btn btn-secondary" type="button" (click)="startEditProduct(item)">Edit</button>
+              <button class="btn btn-secondary" type="button" (click)="toggleProduct(item)">{{ item.isActive ? 'Deactivate' : 'Activate' }}</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <span>{{ pageInfo('products', data.products) }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.products <= 1" (click)="prevPage('products')">Prev</button>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.products >= totalPages(data.products)" (click)="nextPage('products', data.products)">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="!loading && activeTab==='customers'">
+    <p class="eyebrow">{{ editIds.customers ? 'Edit Customer' : 'Create Customer' }}</p>
+    <form [formGroup]="customerForm" (ngSubmit)="submitCustomer()" class="form-grid">
+      <input formControlName="name" placeholder="Name" />
+      <input formControlName="gstin" placeholder="GSTIN" />
+      <input formControlName="contactPerson" placeholder="Contact person" />
+      <input formControlName="phone" placeholder="Phone" />
+      <input type="number" formControlName="paymentTermsDays" placeholder="Terms (days)" />
+      <input type="number" formControlName="creditLimit" placeholder="Credit limit" />
+      <input formControlName="billingAddress" placeholder="Billing address" />
+      <input formControlName="shippingAddress" placeholder="Shipping address" />
+      <button class="btn btn-primary" type="submit" [disabled]="saving || customerForm.invalid">{{ editIds.customers ? 'Update Customer' : 'Create Customer' }}</button>
+      <button class="btn btn-secondary" type="button" *ngIf="editIds.customers" (click)="resetCustomer()">Cancel Edit</button>
+    </form>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Name</th><th>GSTIN</th><th>Terms</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of pagedRows('customers', data.customers)">
+            <td>{{ item.name }}</td><td>{{ item.gstin || '-' }}</td><td>{{ item.paymentTermsDays }}</td>
+            <td><span class="status" [class.inactive]="!item.isActive">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td>
+            <td><button class="btn btn-secondary" type="button" (click)="startEditCustomer(item)">Edit</button><button class="btn btn-secondary" type="button" (click)="toggleCustomer(item)">{{ item.isActive ? 'Deactivate' : 'Activate' }}</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <span>{{ pageInfo('customers', data.customers) }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.customers <= 1" (click)="prevPage('customers')">Prev</button>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.customers >= totalPages(data.customers)" (click)="nextPage('customers', data.customers)">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="!loading && activeTab==='vendors'">
+    <p class="eyebrow">{{ editIds.vendors ? 'Edit Vendor' : 'Create Vendor' }}</p>
+    <form [formGroup]="vendorForm" (ngSubmit)="submitVendor()" class="form-grid">
+      <input formControlName="name" placeholder="Name" />
+      <input formControlName="gstin" placeholder="GSTIN" />
+      <input formControlName="contactPerson" placeholder="Contact person" />
+      <input formControlName="phone" placeholder="Phone" />
+      <input formControlName="address" placeholder="Address" />
+      <input type="number" formControlName="paymentTermsDays" placeholder="Terms (days)" />
+      <button class="btn btn-primary" type="submit" [disabled]="saving || vendorForm.invalid">{{ editIds.vendors ? 'Update Vendor' : 'Create Vendor' }}</button>
+      <button class="btn btn-secondary" type="button" *ngIf="editIds.vendors" (click)="resetVendor()">Cancel Edit</button>
+    </form>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>GSTIN</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let item of pagedRows('vendors', data.vendors)"><td>{{ item.name }}</td><td>{{ item.gstin || '-' }}</td><td><span class="status" [class.inactive]="!item.isActive">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td><td><button class="btn btn-secondary" type="button" (click)="startEditVendor(item)">Edit</button><button class="btn btn-secondary" type="button" (click)="toggleVendor(item)">{{ item.isActive ? 'Deactivate' : 'Activate' }}</button></td></tr></tbody></table></div>
+    <div class="pager">
+      <span>{{ pageInfo('vendors', data.vendors) }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.vendors <= 1" (click)="prevPage('vendors')">Prev</button>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.vendors >= totalPages(data.vendors)" (click)="nextPage('vendors', data.vendors)">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="!loading && activeTab==='warehouses'">
+    <p class="eyebrow">{{ editIds.warehouses ? 'Edit Warehouse' : 'Create Warehouse' }}</p>
+    <form [formGroup]="warehouseForm" (ngSubmit)="submitWarehouse()" class="form-grid">
+      <input formControlName="name" placeholder="Name" />
+      <input formControlName="code" placeholder="Code" />
+      <input formControlName="city" placeholder="City" />
+      <input formControlName="state" placeholder="State" />
+      <input formControlName="addressLine1" placeholder="Address line 1" />
+      <input formControlName="postalCode" placeholder="Postal code" />
+      <button class="btn btn-primary" type="submit" [disabled]="saving || warehouseForm.invalid">{{ editIds.warehouses ? 'Update Warehouse' : 'Create Warehouse' }}</button>
+      <button class="btn btn-secondary" type="button" *ngIf="editIds.warehouses" (click)="resetWarehouse()">Cancel Edit</button>
+    </form>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Code</th><th>State</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let item of pagedRows('warehouses', data.warehouses)"><td>{{ item.name }}</td><td>{{ item.code || '-' }}</td><td>{{ item.state || '-' }}</td><td><span class="status" [class.inactive]="!item.isActive">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td><td><button class="btn btn-secondary" type="button" (click)="startEditWarehouse(item)">Edit</button><button class="btn btn-secondary" type="button" (click)="toggleWarehouse(item)">{{ item.isActive ? 'Deactivate' : 'Activate' }}</button></td></tr></tbody></table></div>
+    <div class="pager">
+      <span>{{ pageInfo('warehouses', data.warehouses) }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.warehouses <= 1" (click)="prevPage('warehouses')">Prev</button>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.warehouses >= totalPages(data.warehouses)" (click)="nextPage('warehouses', data.warehouses)">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="!loading && activeTab==='bins'">
+    <p class="eyebrow">{{ editIds.bins ? 'Edit Bin' : 'Create Bin' }}</p>
+    <form [formGroup]="binForm" (ngSubmit)="submitBin()" class="form-grid">
+      <select formControlName="warehouseId"><option [ngValue]="0">Warehouse</option><option *ngFor="let w of data.warehouses" [ngValue]="w.id">{{ w.name }}</option></select>
+      <input formControlName="binCode" placeholder="Bin code" />
+      <input formControlName="zone" placeholder="Zone" />
+      <input formControlName="aisle" placeholder="Aisle" />
+      <input formControlName="shelf" placeholder="Shelf" />
+      <button class="btn btn-primary" type="submit" [disabled]="saving || binForm.invalid">{{ editIds.bins ? 'Update Bin' : 'Create Bin' }}</button>
+      <button class="btn btn-secondary" type="button" *ngIf="editIds.bins" (click)="resetBin()">Cancel Edit</button>
+    </form>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Bin</th><th>Warehouse</th><th>Zone</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let item of pagedRows('bins', data.bins)"><td>{{ item.binCode }}</td><td>{{ item.warehouseName }}</td><td>{{ item.zone || '-' }}</td><td><span class="status" [class.inactive]="!item.isActive">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td><td><button class="btn btn-secondary" type="button" (click)="startEditBin(item)">Edit</button><button class="btn btn-secondary" type="button" (click)="toggleBin(item)">{{ item.isActive ? 'Deactivate' : 'Activate' }}</button></td></tr></tbody></table></div>
+    <div class="pager">
+      <span>{{ pageInfo('bins', data.bins) }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.bins <= 1" (click)="prevPage('bins')">Prev</button>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.bins >= totalPages(data.bins)" (click)="nextPage('bins', data.bins)">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="!loading && activeTab==='categories'">
+    <p class="eyebrow">{{ editIds.categories ? 'Edit Category' : 'Create Category' }}</p>
+    <form [formGroup]="categoryForm" (ngSubmit)="submitCategory()" class="form-grid">
+      <input formControlName="name" placeholder="Name" />
+      <input formControlName="description" placeholder="Description" />
+      <button class="btn btn-primary" type="submit" [disabled]="saving || categoryForm.invalid">{{ editIds.categories ? 'Update Category' : 'Create Category' }}</button>
+      <button class="btn btn-secondary" type="button" *ngIf="editIds.categories" (click)="resetCategory()">Cancel Edit</button>
+    </form>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let item of pagedRows('categories', data.categories)"><td>{{ item.name }}</td><td><span class="status" [class.inactive]="!item.isActive">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td><td><button class="btn btn-secondary" type="button" (click)="startEditCategory(item)">Edit</button><button class="btn btn-secondary" type="button" (click)="toggleCategory(item)">{{ item.isActive ? 'Deactivate' : 'Activate' }}</button></td></tr></tbody></table></div>
+    <div class="pager">
+      <span>{{ pageInfo('categories', data.categories) }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.categories <= 1" (click)="prevPage('categories')">Prev</button>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.categories >= totalPages(data.categories)" (click)="nextPage('categories', data.categories)">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="!loading && activeTab==='units'">
+    <p class="eyebrow">{{ editIds.units ? 'Edit Unit' : 'Create Unit' }}</p>
+    <form [formGroup]="unitForm" (ngSubmit)="submitUnit()" class="form-grid">
+      <input formControlName="code" placeholder="Code" />
+      <input formControlName="name" placeholder="Name" />
+      <input formControlName="symbol" placeholder="Symbol" />
+      <button class="btn btn-primary" type="submit" [disabled]="saving || unitForm.invalid">{{ editIds.units ? 'Update Unit' : 'Create Unit' }}</button>
+      <button class="btn btn-secondary" type="button" *ngIf="editIds.units" (click)="resetUnit()">Cancel Edit</button>
+    </form>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Code</th><th>Name</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let item of pagedRows('units', data.units)"><td>{{ item.code }}</td><td>{{ item.name }}</td><td><span class="status" [class.inactive]="!item.isActive">{{ item.isActive ? 'Active' : 'Inactive' }}</span></td><td><button class="btn btn-secondary" type="button" (click)="startEditUnit(item)">Edit</button><button class="btn btn-secondary" type="button" (click)="toggleUnit(item)">{{ item.isActive ? 'Deactivate' : 'Activate' }}</button></td></tr></tbody></table></div>
+    <div class="pager">
+      <span>{{ pageInfo('units', data.units) }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.units <= 1" (click)="prevPage('units')">Prev</button>
+      <button class="btn btn-secondary" type="button" [disabled]="pages.units >= totalPages(data.units)" (click)="nextPage('units', data.units)">Next</button>
+    </div>
+  </section>
+</section>

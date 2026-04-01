@@ -1,0 +1,138 @@
+<section class="acc-page" *ngIf="!loading">
+  <div class="hero-card">
+    <p class="eyebrow">Accounting module</p>
+    <h2>Integrated books from inventory transactions</h2>
+    <p>Sales, purchases, GST, and supplier payments are reflected in a unified accounting view.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+
+  <div class="tab-bar">
+    <button class="btn btn-secondary" (click)="activeTab='overview'">Overview</button>
+    <button class="btn btn-secondary" (click)="activeTab='voucher'">Journal Voucher</button>
+    <button class="btn btn-secondary" (click)="activeTab='drilldown'">Ledger Drill-down</button>
+    <button class="btn btn-secondary" (click)="activeTab='statements'">P&L / Balance Sheet</button>
+  </div>
+
+  <div class="kpi-grid" *ngIf="summary && !error && activeTab==='overview'">
+    <article class="kpi-card">
+      <span>Total Sales</span>
+      <strong>{{ summary.totalSales | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Total Purchase</span>
+      <strong>{{ summary.totalPurchase | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Receivables</span>
+      <strong>{{ summary.totalReceivables | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Payables</span>
+      <strong>{{ summary.totalPayables | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Supplier Payments</span>
+      <strong>{{ summary.totalSupplierPayments | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Net GST Payable</span>
+      <strong>{{ summary.gstNetPayable | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Estimated Profit</span>
+      <strong>{{ summary.estimatedProfit | number:'1.2-2' }}</strong>
+    </article>
+  </div>
+
+  <section class="content-card" *ngIf="summary?.ledger?.length && activeTab==='overview'">
+    <p class="eyebrow">Ledger view</p>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Voucher</th>
+            <th>Number</th>
+            <th>Debit</th>
+            <th>Credit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of pagedRows(summary.ledger, ledgerPage)">
+            <td>{{ entry.date | date:'mediumDate' }}</td>
+            <td>{{ entry.voucherType }}</td>
+            <td>{{ entry.voucherNo }}</td>
+            <td>{{ entry.debit | number:'1.2-2' }}</td>
+            <td>{{ entry.credit | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <span>Total {{ summary.ledger.length }} | Page {{ ledgerPage }}</span>
+      <button class="btn btn-secondary" [disabled]="ledgerPage <= 1" (click)="prevLedgerPage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(ledgerPage * pageSize) >= summary.ledger.length" (click)="nextLedgerPage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='voucher'">
+    <p class="eyebrow">Journal voucher posting</p>
+    <div class="form-grid">
+      <input [(ngModel)]="voucherForm.narration" placeholder="Narration" />
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Ledger</th><th>Debit</th><th>Credit</th><th>Remarks</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let line of voucherForm.lines">
+            <td>
+              <select [(ngModel)]="line.ledgerId">
+                <option [ngValue]="0">Select ledger</option>
+                <option *ngFor="let ledger of ledgers" [ngValue]="ledger.id">{{ ledger.code }} - {{ ledger.name }}</option>
+              </select>
+            </td>
+            <td><input type="number" [(ngModel)]="line.debit" /></td>
+            <td><input type="number" [(ngModel)]="line.credit" /></td>
+            <td><input [(ngModel)]="line.remarks" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-secondary" type="button" (click)="addLine()">Add line</button>
+    <button class="btn btn-primary" type="button" (click)="postVoucher()">Post voucher</button>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='drilldown'">
+    <p class="eyebrow">Ledger drill-down</p>
+    <div class="form-grid">
+      <select [(ngModel)]="selectedLedgerId">
+        <option [ngValue]="0">Select ledger</option>
+        <option *ngFor="let ledger of ledgers" [ngValue]="ledger.id">{{ ledger.code }} - {{ ledger.name }}</option>
+      </select>
+      <button class="btn btn-secondary" type="button" (click)="loadLedger()">Load ledger</button>
+    </div>
+    <div class="message-card" *ngIf="ledgerView">
+      Debit: {{ ledgerView.debitTotal | number:'1.2-2' }} | Credit: {{ ledgerView.creditTotal | number:'1.2-2' }}
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='statements'">
+    <p class="eyebrow">P&L and Balance Sheet</p>
+    <div class="record-list">
+      <article class="record-card" *ngIf="profitLoss">
+        <strong>Profit & Loss</strong>
+        <span>Income: {{ profitLoss.totalIncome | number:'1.2-2' }}</span>
+        <span>Expense: {{ profitLoss.totalExpense | number:'1.2-2' }}</span>
+        <span>Net Profit: {{ profitLoss.netProfit | number:'1.2-2' }}</span>
+      </article>
+      <article class="record-card" *ngIf="balanceSheet">
+        <strong>Balance Sheet</strong>
+        <span>Assets: {{ balanceSheet.totalAssets | number:'1.2-2' }}</span>
+        <span>Liabilities: {{ balanceSheet.totalLiabilities | number:'1.2-2' }}</span>
+      </article>
+    </div>
+  </section>
+</section>
+
+<div class="message-card" *ngIf="loading">Loading accounting summary...</div>

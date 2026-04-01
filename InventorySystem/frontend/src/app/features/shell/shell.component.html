@@ -1,0 +1,74 @@
+<div class="shell-layout">
+  <aside class="sidebar-panel" [class.mobile-open]="menuOpen">
+    <div class="brand-block">
+      <p class="eyebrow">Axonix ERP</p>
+      <h1>Inventory Suite</h1>
+      <p>Inventory, billing, warehouse, and accounting operations in one place.</p>
+      <div class="lang-switch">
+        <button class="lang-btn" type="button" (click)="setLang('en')">EN</button>
+        <button class="lang-btn" type="button" (click)="setLang('hi')">HI</button>
+        <button class="lang-btn" type="button" (click)="setLang('gu')">GU</button>
+      </div>
+    </div>
+
+    <nav class="nav-group">
+      <p class="nav-label">Quick Access</p>
+      <a
+        *ngFor="let link of quickLinks"
+        [routerLink]="link.route"
+        routerLinkActive="active-link"
+        class="nav-link"
+        (click)="closeMenuOnNavigate()">
+        <span class="icon-chip">{{ link.icon }}</span>
+        <span>{{ navLabel(link.label) }}</span>
+      </a>
+    </nav>
+
+    <nav class="nav-group">
+      <p class="nav-label">All Modules</p>
+      <a
+        *ngFor="let module of moduleLinks"
+        [routerLink]="'/' + module.key"
+        routerLinkActive="active-link"
+        class="nav-link"
+        (click)="closeMenuOnNavigate()">
+        <span class="icon-chip">{{ moduleIcon(module.key) }}</span>
+        <span>{{ moduleLabel(module.key, module.title) }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <p class="demo-label">Demo Login</p>
+      <p>admin@axonix.local</p>
+      <p>Admin@123</p>
+      <button class="btn btn-secondary" (click)="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-panel">
+    <header class="mobile-header">
+      <button class="menu-btn" type="button" (click)="toggleMenu()">Menu</button>
+      <p>Axonix ERP</p>
+      <button class="btn btn-secondary" (click)="logout()">Logout</button>
+    </header>
+    <router-outlet></router-outlet>
+  </main>
+
+  <nav class="bottom-nav">
+    <a routerLink="/dashboard" routerLinkActive="active" class="bnav-item">
+      <span>🏠 Home</span>
+    </a>
+    <a routerLink="/sales" routerLinkActive="active" class="bnav-item">
+      <span>💰 Sale</span>
+    </a>
+    <a routerLink="/pos" routerLinkActive="active" class="bnav-item">
+      <span>🛒 POS</span>
+    </a>
+    <a routerLink="/inventory" routerLinkActive="active" class="bnav-item">
+      <span>📦 Stock</span>
+    </a>
+    <button (click)="toggleMenu()" class="bnav-item">
+      <span>☰ Menu</span>
+    </button>
+  </nav>
+</div>

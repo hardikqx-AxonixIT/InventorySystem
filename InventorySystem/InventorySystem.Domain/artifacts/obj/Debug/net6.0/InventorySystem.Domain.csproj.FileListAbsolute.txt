@@ -1,0 +1,5 @@
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\artifacts\obj\Debug\net6.0\InventorySystem.Domain.csproj.AssemblyReference.cache
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\artifacts\obj\Debug\net6.0\InventorySystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\artifacts\obj\Debug\net6.0\InventorySystem.Domain.AssemblyInfoInputs.cache
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\artifacts\obj\Debug\net6.0\InventorySystem.Domain.AssemblyInfo.cs
+F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\artifacts\obj\Debug\net6.0\InventorySystem.Domain.csproj.CoreCompileInputs.cache

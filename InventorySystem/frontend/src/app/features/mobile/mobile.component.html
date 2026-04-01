@@ -1,0 +1,39 @@
+<section class="mob-page" *ngIf="!loading">
+  <div class="hero-card">
+    <p class="eyebrow">Owner mobile dashboard</p>
+    <h2>Daily business pulse</h2>
+    <p>Mobile-first KPIs for sales, stock alerts, and outstanding supplier exposure.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+
+  <div class="kpi-grid" *ngIf="data && !error">
+    <article class="kpi-card">
+      <span>Today Sales</span>
+      <strong>{{ data.todaySales | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Low Stock Alerts</span>
+      <strong>{{ data.lowStockCount }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Outstanding Payables</span>
+      <strong>{{ data.outstandingPayables | number:'1.2-2' }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span>Today Supplier Payments</span>
+      <strong>{{ data.todaySupplierPayments | number:'1.2-2' }}</strong>
+    </article>
+  </div>
+
+  <section class="content-card" *ngIf="data && !error">
+    <p class="eyebrow">Quick actions</p>
+    <div class="actions">
+      <a class="btn btn-primary" routerLink="/sales">Create Sales Order</a>
+      <a class="btn btn-secondary" routerLink="/purchase">Post Supplier Payment</a>
+      <a class="btn btn-secondary" routerLink="/inventory">Check Stock</a>
+    </div>
+  </section>
+</section>
+
+<div class="message-card" *ngIf="loading">Loading mobile dashboard...</div>

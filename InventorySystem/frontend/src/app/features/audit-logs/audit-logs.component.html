@@ -1,0 +1,53 @@
+<section class="audit-page">
+  <div class="hero-card">
+    <p class="eyebrow">Audit Trail</p>
+    <h2>System Change Logs</h2>
+    <p>Track create/update/delete activity for compliance and troubleshooting.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+
+  <section class="content-card">
+    <p class="eyebrow">Filters</p>
+    <div class="form-grid">
+      <input [(ngModel)]="filter.entityName" placeholder="Entity name" />
+      <select [(ngModel)]="filter.action">
+        <option value="">All actions</option>
+        <option value="Added">Added</option>
+        <option value="Modified">Modified</option>
+        <option value="Deleted">Deleted</option>
+      </select>
+      <select [(ngModel)]="filter.pageSize">
+        <option [ngValue]="25">25</option>
+        <option [ngValue]="50">50</option>
+        <option [ngValue]="100">100</option>
+      </select>
+      <button class="btn btn-secondary" type="button" (click)="search()">Search</button>
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">Records</p>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>Time</th><th>Entity</th><th>ID</th><th>Action</th><th>User</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logs">
+            <td>{{ log.timestamp | date:'short' }}</td>
+            <td>{{ log.entityName }}</td>
+            <td>{{ log.entityId }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ log.userId || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="form-grid">
+      <span>Total: {{ total }} | Page: {{ filter.page }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="filter.page <= 1" (click)="prevPage()">Previous</button>
+      <button class="btn btn-secondary" type="button" [disabled]="(filter.page * filter.pageSize) >= total" (click)="nextPage()">Next</button>
+    </div>
+  </section>
+</section>

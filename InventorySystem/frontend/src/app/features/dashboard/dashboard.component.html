@@ -1,0 +1,188 @@
+  <div class="hero-card">
+    <div>
+      <p class="eyebrow">Inventory Control Center</p>
+      <h1>Namaste! Welcome back.</h1>
+      <p>Quick overview of your business performance, GST summary, and stock alerts.</p>
+    </div>
+    <div class="hero-actions">
+      <a routerLink="/sales" class="btn btn-primary">➕ New Sale (Estimate/Invoice)</a>
+      <a routerLink="/purchase" class="btn btn-secondary">📥 New Purchase (GRN)</a>
+      <button class="btn btn-secondary" (click)="openBarcodeScanner()">🔍 Scan Barcode</button>
+    </div>
+  </div>
+
+  <div class="quick-stats-bar" *ngIf="!loading && accounting as a">
+    <div class="stat-item"><span>Today's Sales:</span> <strong>₹ {{ a.totalSales | number:'1.0-0' }}</strong></div>
+    <div class="stat-item" *ngIf="isOwner"><span>GST Payable:</span> <strong class="text-warning">₹ {{ a.gstNetPayable | number:'1.0-0' }}</strong></div>
+    <div class="stat-item" *ngIf="isOwner"><span>Total Profit:</span> <strong class="text-success">₹ {{ a.estimatedProfit | number:'1.0-0' }}</strong></div>
+    <div class="stat-item" *ngIf="!isOwner"><span class="text-muted">Profit Insight (Hidden)</span></div>
+  </div>
+
+  <div class="view-toggle">
+    <button class="btn btn-secondary btn-sm" (click)="toggleProfitMask()">
+      {{ isOwner ? "Switch to 'Salesman' View (Profit Hidden)" : "Switch to 'Owner' View (Show All)" }}
+    </button>
+  </div>
+
+  <div class="kpi-grid" *ngIf="!loading">
+    <article class="kpi-card">
+      <span>Products</span>
+      <strong>{{ overview.kpis.totalProducts }}</strong>
+      <small>Active catalogue</small>
+    </article>
+    <article class="kpi-card">
+      <span>Warehouses</span>
+      <strong>{{ overview.kpis.activeWarehouses }}</strong>
+      <small>Operational locations</small>
+    </article>
+    <article class="kpi-card">
+      <span>Low Stock</span>
+      <strong [class.text-danger]="overview.kpis.lowStockItems > 0">{{ overview.kpis.lowStockItems }}</strong>
+      <small>Need reorder review</small>
+    </article>
+    <article class="kpi-card">
+      <span>Inventory Value</span>
+      <strong>₹ {{ overview.kpis.inventoryValueEstimate | number:'1.2-2' }}</strong>
+      <small>Estimated current value</small>
+    </article>
+    <article class="kpi-card">
+      <span>Open Sales Orders</span>
+      <strong>{{ pendingSalesOrders() }}</strong>
+      <small>Pending invoicing / dispatch</small>
+    </article>
+    <article class="kpi-card">
+      <span>Pending Purchase Bills</span>
+      <strong>{{ pendingPurchaseInvoices() }}</strong>
+      <small>Supplier outstanding</small>
+    </article>
+    <article class="kpi-card">
+      <span>Dispatch Queue</span>
+      <strong>{{ pendingDispatches() }}</strong>
+      <small>Orders waiting dispatch</small>
+    </article>
+    <article class="kpi-card">
+      <span>Supplier Payments</span>
+      <strong>{{ supplierPaymentsToday() | number:'1.2-2' }}</strong>
+      <small>Total payments posted</small>
+    </article>
+    <article class="kpi-card">
+      <span>Module Readiness</span>
+      <strong>{{ moduleCompletion() }}%</strong>
+      <small>Active modules for go-live</small>
+    </article>
+  </div>
+
+  <div class="grid" *ngIf="!loading">
+    <section class="content-card" *ngIf="isOwner">
+      <p class="eyebrow">Finance Snapshot</p>
+      <h3>Accounting overview</h3>
+      <div class="kv" *ngIf="accounting as a">
+        <span>Total Sales</span><strong>{{ a.totalSales | number:'1.2-2' }}</strong>
+        <span>Total Purchase</span><strong>{{ a.totalPurchase | number:'1.2-2' }}</strong>
+        <span>Payables</span><strong>{{ a.totalPayables | number:'1.2-2' }}</strong>
+        <span>Net GST</span><strong>{{ a.gstNetPayable | number:'1.2-2' }}</strong>
+        <span>Estimated Profit</span><strong>{{ a.estimatedProfit | number:'1.2-2' }}</strong>
+      </div>
+      <a routerLink="/accounting" class="link-btn">Open full accounting</a>
+    </section>
+
+    <section class="content-card" *ngIf="!isOwner">
+       <p class="eyebrow">Stock Performance</p>
+       <h3>Inventory Health (Salesman View)</h3>
+       <div class="kv">
+         <span>Low Stock</span><strong>{{ overview.kpis.lowStockItems }}</strong>
+         <span>Active Products</span><strong>{{ overview.kpis.totalProducts }}</strong>
+       </div>
+       <p class="text-muted">Financial details are restricted. Contact administrator.</p>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Today Focus</p>
+      <h3>Action queue</h3>
+      <ul class="list">
+        <li>Review low-stock items and reorder suggestions.</li>
+        <li>Dispatch open sales orders from warehouse queue.</li>
+        <li>Close pending supplier invoices and payments.</li>
+      </ul>
+      <div class="chips">
+        <a class="chip" routerLink="/reports">Reports</a>
+        <a class="chip" routerLink="/inventory">Inventory</a>
+        <a class="chip" routerLink="/warehouse">Warehouse</a>
+        <a class="chip" routerLink="/gst">GST</a>
+      </div>
+    </section>
+
+    <section class="content-card full-width ai-prophet-card">
+      <div class="ai-header">
+        <p class="eyebrow">AI & Predictive Analysis</p>
+        <span class="ai-status">STOCKS PROPHET ONLINE 📡</span>
+      </div>
+      <h3>✨ AI: Smart Reorder Recommendations</h3>
+      <div class="ai-grid" *ngIf="reorderSuggestions.length">
+        <article class="ai-box" *ngFor="let item of reorderSuggestions.slice(0, 3)">
+          <div class="box-label">{{ item.name }}</div>
+          <div class="box-stat">Demand: <strong>High 📈</strong></div>
+          <p>Order <strong>{{ item.suggestedReorderQty }} units</strong> today because you will run out in <strong>{{ item.remainingDays || 4 }} days</strong>.</p>
+        </article>
+      </div>
+      <div class="empty-state" *ngIf="!reorderSuggestions.length">AI is analyzing your consumption patterns...</div>
+    </section>
+
+    <section class="content-card full-width expiry-radar-card">
+      <div class="radar-header">
+        <p class="eyebrow">Financial Risk Prevention</p>
+        <span class="radar-status">30-DAY EXPIRY RADAR 🚨</span>
+      </div>
+      <h3>🍎 Batches Expiring Soon (Prevention Radar)</h3>
+      <div class="radar-grid" *ngIf="expiryAlerts.length">
+        <article class="radar-box" *ngFor="let item of expiryAlerts.slice(0, 4)">
+          <div class="box-label">{{ item.productName }} ({{ item.batchNumber }})</div>
+          <div class="box-stat text-danger">Expires in <strong>{{ item.daysRemaining }} days</strong></div>
+          <p>Quantity: {{ item.quantity }} units. Mark for clearance sale or return to vendor!</p>
+        </article>
+      </div>
+      <div class="empty-state" *ngIf="!expiryAlerts.length">No batches expiring in the next 30 days. Your inventory is safe!</div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Recent Sales Orders</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let so of recentSalesOrders()">
+          <strong>{{ so.orderNumber }}</strong>
+          <span>Customer #{{ so.customerId }}</span>
+          <span>Total {{ so.grandTotal | number:'1.2-2' }}</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Recent Purchase Orders</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let po of recentPurchaseOrders()">
+          <strong>{{ po.orderNumber }}</strong>
+          <span>Vendor #{{ po.vendorId }}</span>
+          <span>Total {{ po.grandTotal | number:'1.2-2' }}</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card full-width">
+      <p class="eyebrow">Module Health</p>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th>Module</th><th>Status</th><th>Description</th><th>Features</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let module of moduleHealth">
+              <td>{{ module.name }}</td>
+              <td><span class="status-pill" [class.active]="module.status==='Active' || module.status==='In Progress'">{{ module.status }}</span></td>
+              <td>{{ module.description }}</td>
+              <td>{{ (module.features || []).join(', ') }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</section>

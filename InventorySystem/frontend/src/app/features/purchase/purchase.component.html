@@ -1,0 +1,153 @@
+<section class="txn-page" *ngIf="data as vm">
+  <div class="hero-card">
+    <p class="eyebrow">Purchase Module</p>
+    <h2>PO, GRN, Invoice, Payment</h2>
+    <p>Split workflow view with pagination for high-volume records.</p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="btn btn-secondary" (click)="activeTab='po'">Purchase Orders</button>
+    <button class="btn btn-secondary" (click)="activeTab='grn'">GRN</button>
+    <button class="btn btn-secondary" (click)="activeTab='invoice'">Invoices</button>
+    <button class="btn btn-secondary" (click)="activeTab='payment'">Payments</button>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+  <div class="message-card warning" *ngIf="validationMessage">{{ validationMessage }}</div>
+  <div class="message-card success" *ngIf="successMessage">{{ successMessage }}</div>
+
+  <div class="grid" *ngIf="activeTab==='po'">
+    <section class="content-card">
+      <p class="eyebrow">Create / Update PO</p>
+      <div class="form-grid">
+        <select [(ngModel)]="form.vendorId"><option [ngValue]="0">Vendor</option><option *ngFor="let item of vm.vendors" [ngValue]="item.id">{{ item.name }}</option></select>
+        <select [(ngModel)]="form.warehouseId"><option [ngValue]="0">Warehouse</option><option *ngFor="let item of vm.warehouses" [ngValue]="item.id">{{ item.name }}</option></select>
+        <input [(ngModel)]="form.supplyState" placeholder="Supply state" />
+      </div>
+      <div class="line-builder">
+        <select [(ngModel)]="form.current.productId" (ngModelChange)="selectPurchaseProduct()"><option [ngValue]="0">Product</option><option *ngFor="let item of vm.products" [ngValue]="item.id">{{ item.name }}</option></select>
+        <input type="number" [(ngModel)]="form.current.quantity" placeholder="Qty" />
+        <input type="number" [(ngModel)]="form.current.unitPrice" placeholder="Unit price" />
+        <input type="number" [(ngModel)]="form.current.gstRate" placeholder="GST %" />
+        <button class="btn btn-secondary" type="button" (click)="addLine()">Add line</button>
+      </div>
+      <div class="table-wrap" *ngIf="form.items.length">
+        <table class="table">
+          <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>GST %</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let item of form.items; let i = index">
+              <td>{{ item.productName }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.unitPrice }}</td>
+              <td>{{ item.gstRate }}</td>
+              <td><button class="btn btn-secondary" type="button" (click)="removeLine(i)">Remove</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="action-row">
+        <button class="btn btn-primary" type="button" (click)="createPurchaseOrder()">{{ form.editingOrderId ? 'Update PO' : 'Create PO' }}</button>
+        <button class="btn btn-secondary" *ngIf="form.editingOrderId" type="button" (click)="resetPoForm()">Cancel Edit</button>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Purchase Order Registry</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let po of purchaseOrders">
+          <div class="record-header">
+            <strong>{{ po.orderNumber }}</strong>
+            <span class="status-pill active">{{ po.status === 1 ? 'OPEN' : po.status === 2 ? 'LOCKED' : 'CLOSED' }}</span>
+          </div>
+          <div class="record-body">
+            <span>Supplier #{{ po.vendorId }}</span>
+            <span>Grand Total: <strong>₹ {{ po.grandTotal | number:'1.2-2' }}</strong></span>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-secondary btn-sm" type="button" (click)="prepareGrn(po.id)">📥 GRN</button>
+            <button class="btn btn-secondary btn-sm" type="button" [disabled]="po.status !== 1" (click)="editPurchaseOrder(po)">✏️ Edit</button>
+            <button class="btn btn-danger btn-sm" type="button" [disabled]="po.status !== 1" (click)="cancelPurchaseOrder(po.id)">🗑️ Cancel</button>
+          </div>
+        </article>
+      </div>
+      <div class="empty-state" *ngIf="!purchaseOrders.length">No purchase orders found for this page.</div>
+      <div class="pager">
+        <span>Total {{ poTotal }} | Page {{ poPage }}</span>
+        <button class="btn btn-secondary" [disabled]="poPage<=1" (click)="prevPoPage()">Prev</button>
+        <button class="btn btn-secondary" [disabled]="(poPage*pageSize)>=poTotal" (click)="nextPoPage()">Next</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="content-card" *ngIf="activeTab==='grn'">
+    <p class="eyebrow">Receive GRN</p>
+    <div *ngIf="grn.items.length" class="grn-builder">
+      <h3>GRN for PO #{{ grn.purchaseOrderId }}</h3>
+      <div class="line-builder" *ngFor="let item of grn.items">
+        <span>{{ item.productName }}</span>
+        <select [(ngModel)]="item.binId"><option *ngFor="let bin of vm.bins" [ngValue]="bin.id">{{ bin.binCode }}</option></select>
+        <input type="number" [(ngModel)]="item.quantityReceived" placeholder="Received qty" />
+      </div>
+      <button class="btn btn-primary" type="button" (click)="submitGrn()">Post GRN</button>
+    </div>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let grnItem of grns">
+        <strong>{{ grnItem.grnNumber }}</strong>
+        <span>PO #{{ grnItem.purchaseOrderId }} | Total {{ grnItem.grandTotal }}</span>
+        <button class="btn btn-secondary" type="button" [disabled]="!canCreateInvoice(grnItem.id)" (click)="prepareInvoice(grnItem.id)">Prepare Invoice</button>
+      </article>
+    </div>
+    <div class="empty-state" *ngIf="!grns.length">No GRN records available.</div>
+    <div class="pager">
+      <span>Total {{ grnTotal }} | Page {{ grnPage }}</span>
+      <button class="btn btn-secondary" [disabled]="grnPage<=1" (click)="prevGrnPage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(grnPage*pageSize)>=grnTotal" (click)="nextGrnPage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='invoice'">
+    <p class="eyebrow">Purchase Invoice</p>
+    <div class="line-builder" *ngIf="invoice.goodsReceiptNoteId">
+      <span>GRN #{{ invoice.goodsReceiptNoteId }}</span>
+      <input type="date" [(ngModel)]="invoice.dueDate" />
+      <button class="btn btn-primary" type="button" (click)="createPurchaseInvoice()">Create Purchase Invoice</button>
+    </div>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let invoiceItem of invoices">
+        <strong>{{ invoiceItem.invoiceNumber }}</strong>
+        <span>Balance {{ invoiceItem.balanceAmount }}</span>
+        <button class="btn btn-secondary" type="button" [disabled]="!hasPendingBalance(invoiceItem)" (click)="preparePayment(invoiceItem)">Record Payment</button>
+      </article>
+    </div>
+    <div class="empty-state" *ngIf="!invoices.length">No purchase invoices available.</div>
+    <div class="pager">
+      <span>Total {{ invoiceTotal }} | Page {{ invoicePage }}</span>
+      <button class="btn btn-secondary" [disabled]="invoicePage<=1" (click)="prevInvoicePage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(invoicePage*pageSize)>=invoiceTotal" (click)="nextInvoicePage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='payment'">
+    <p class="eyebrow">Supplier Payment</p>
+    <div class="form-grid" *ngIf="payment.purchaseInvoiceId">
+      <span>Invoice #{{ payment.purchaseInvoiceId }}</span>
+      <input type="number" [(ngModel)]="payment.amount" placeholder="Amount" />
+      <input [(ngModel)]="payment.paymentMode" placeholder="Payment mode" />
+      <input [(ngModel)]="payment.referenceNo" placeholder="Reference no" />
+      <input [(ngModel)]="payment.notes" placeholder="Notes" />
+      <button class="btn btn-primary" type="button" (click)="createSupplierPayment()">Submit Payment</button>
+    </div>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let paymentItem of pagedRows(vm.supplierPayments, paymentPage)">
+        <strong>{{ paymentItem.paymentNumber }}</strong>
+        <span>Invoice #{{ paymentItem.purchaseInvoiceId }} | Amount {{ paymentItem.amount }}</span>
+      </article>
+    </div>
+    <div class="empty-state" *ngIf="!vm.supplierPayments.length">No supplier payments posted yet.</div>
+    <div class="pager">
+      <span>Total {{ vm.supplierPayments.length }} | Page {{ paymentPage }}</span>
+      <button class="btn btn-secondary" [disabled]="paymentPage<=1" (click)="prevPaymentPage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(paymentPage*pageSize)>=vm.supplierPayments.length" (click)="nextPaymentPage()">Next</button>
+    </div>
+  </section>
+</section>

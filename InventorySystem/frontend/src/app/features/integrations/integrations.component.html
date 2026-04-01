@@ -1,0 +1,42 @@
+<section class="int-page">
+  <div class="hero-card">
+    <p class="eyebrow">Integrations Module</p>
+    <h2>WhatsApp and Razorpay Operations</h2>
+    <p>Use this page to run external provider flows and verify callback security.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+  <div class="message-card success" *ngIf="message">{{ message }}</div>
+
+  <div class="grid">
+    <section class="content-card">
+      <p class="eyebrow">WhatsApp Invoice Send</p>
+      <div class="form-grid">
+        <input type="number" [(ngModel)]="whatsappForm.salesInvoiceId" placeholder="Sales invoice ID" />
+        <input [(ngModel)]="whatsappForm.phoneNumber" placeholder="Phone number (with country code)" />
+        <button class="btn btn-primary" type="button" [disabled]="loading" (click)="sendWhatsAppInvoice()">Send Invoice</button>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Razorpay Order Create</p>
+      <div class="form-grid">
+        <input type="number" [(ngModel)]="razorpayOrderForm.amount" placeholder="Amount" />
+        <input [(ngModel)]="razorpayOrderForm.currency" placeholder="Currency" />
+        <input [(ngModel)]="razorpayOrderForm.receipt" placeholder="Receipt reference" />
+        <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="createRazorpayOrder()">Create Order</button>
+      </div>
+    </section>
+
+    <section class="content-card full-width">
+      <p class="eyebrow">Razorpay Callback Verification</p>
+      <div class="form-grid">
+        <input [(ngModel)]="razorpayVerifyForm.razorpayOrderId" placeholder="Razorpay order ID" />
+        <input [(ngModel)]="razorpayVerifyForm.razorpayPaymentId" placeholder="Razorpay payment ID" />
+        <input [(ngModel)]="razorpayVerifyForm.razorpaySignature" placeholder="Razorpay signature" />
+        <input [(ngModel)]="razorpayVerifyForm.rawPayload" placeholder="Raw payload (optional)" />
+        <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="verifyRazorpayCallback()">Verify Callback</button>
+      </div>
+    </section>
+  </div>
+</section>

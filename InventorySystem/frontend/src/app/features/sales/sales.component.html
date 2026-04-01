@@ -1,0 +1,246 @@
+<section class="txn-page" *ngIf="data as vm">
+  <div class="hero-card">
+    <p class="eyebrow">Sales module</p>
+    <h2>Sales workflow operations</h2>
+    <p>Split screens for enterprise execution: orders, invoices, quotations, dispatch, returns, and integrations.</p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="btn btn-secondary" (click)="activeTab='orders'">Sales Orders</button>
+    <button class="btn btn-secondary" (click)="activeTab='invoices'">Invoices</button>
+    <button class="btn btn-secondary" (click)="activeTab='quotations'">Quotations</button>
+    <button class="btn btn-secondary" (click)="activeTab='challans'">Delivery Challan</button>
+    <button class="btn btn-secondary" (click)="activeTab='returns'">Sales Return</button>
+    <button class="btn btn-secondary" (click)="activeTab='integrations'">Integrations</button>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+  <div class="message-card warning" *ngIf="validationMessage">{{ validationMessage }}</div>
+  <div class="message-card success" *ngIf="successMessage">{{ successMessage }}</div>
+
+  <div class="grid" *ngIf="activeTab==='orders'">
+    <section class="content-card">
+      <p class="eyebrow">Create / Update sales order</p>
+      <div class="form-grid">
+        <div class="field">
+          <label>Select Customer</label>
+          <select [(ngModel)]="form.customerId" name="customerId">
+            <option [value]="0">Select...</option>
+            <option *ngFor="let c of data?.customers" [value]="c.id">{{ c.name }} (L: ₹{{ c.creditLimit | number }})</option>
+          </select>
+        </div>
+        
+        <div class="field scan-mode">
+          <label>🔥 Rapid Scan (Serial/IMEI)</label>
+          <input type="text" placeholder="Scan & Press Enter..." #serialInput (keyup.enter)="rapidScan(serialInput.value); serialInput.value=''">
+          <small>Directly adds item to bill by scanning Batch/Serial</small>
+        </div>
+        <select [(ngModel)]="form.warehouseId">
+          <option [ngValue]="0">Select warehouse</option>
+          <option *ngFor="let item of vm.warehouses" [ngValue]="item.id">{{ item.name }}</option>
+        </select>
+        <input [(ngModel)]="form.placeOfSupplyState" placeholder="Place of supply state" />
+      </div>
+
+      <div class="line-builder">
+        <select [(ngModel)]="form.current.productId" (ngModelChange)="selectSalesProduct()">
+          <option [ngValue]="0">Product</option>
+          <option *ngFor="let item of vm.products" [ngValue]="item.id">{{ item.name }}</option>
+        </select>
+        <select [(ngModel)]="form.current.binId">
+          <option [ngValue]="0">Bin</option>
+          <option *ngFor="let item of vm.bins" [ngValue]="item.id">{{ item.binCode }}</option>
+        </select>
+        <input type="number" [(ngModel)]="form.current.quantity" placeholder="Qty" />
+        <input type="number" [(ngModel)]="form.current.unitPrice" placeholder="Unit price" />
+        <input type="number" [(ngModel)]="form.current.gstRate" placeholder="GST %" />
+        <button class="btn btn-secondary" type="button" (click)="addLine()">Add line</button>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" type="button" (click)="createSalesOrder()">
+          {{ form.editingOrderId ? 'Update Sales Order' : 'Create Sales Order' }}
+        </button>
+        <button class="btn btn-secondary" *ngIf="form.editingOrderId" type="button" (click)="resetSalesOrderForm()">Cancel Edit</button>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Sales Order Management</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let order of salesOrders">
+          <div class="record-header">
+            <strong>{{ order.orderNumber }}</strong>
+            <span class="status-pill active">{{ order.status === 1 ? 'OPEN' : order.status === 2 ? 'LOCKED' : 'COMPLETED' }}</span>
+          </div>
+          <div class="record-body">
+            <span>Party #{{ order.customerId }}</span>
+            <span>Grand Total: <strong>₹ {{ order.grandTotal | number:'1.2-2' }}</strong></span>
+          </div>
+          <div class="record-actions">
+            <button class="btn btn-primary btn-sm" type="button" [disabled]="!canCreateInvoice(order)" (click)="createInvoice(order.id)">📄 Tax Invoice</button>
+            <button class="btn btn-secondary btn-sm" type="button" [disabled]="order.status !== 1" (click)="editSalesOrder(order)">✏️ Edit</button>
+            <button class="btn btn-danger btn-sm" type="button" [disabled]="order.status !== 1" (click)="cancelSalesOrder(order.id)">🗑️ Cancel</button>
+          </div>
+        </article>
+      </div>
+      <div class="empty-state" *ngIf="!salesOrders.length">No sales orders found for this page.</div>
+      <div class="pager">
+        <span>Total {{ ordersTotal }} | Page {{ ordersPage }}</span>
+        <button class="btn btn-secondary" [disabled]="ordersPage <= 1" (click)="prevOrdersPage()">Prev</button>
+        <button class="btn btn-secondary" [disabled]="(ordersPage * pageSize) >= ordersTotal" (click)="nextOrdersPage()">Next</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="content-card" *ngIf="activeTab==='invoices'">
+    <p class="eyebrow">Recent sales invoices</p>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let invoice of salesInvoices">
+        <strong>{{ invoice.invoiceNumber }}</strong>
+        <span>Order #{{ invoice.salesOrderId }}</span>
+        <span>Total ₹ {{ invoice.grandTotal | number:'1.2-2' }}</span>
+        <div class="invoice-actions">
+          <button class="btn btn-secondary btn-sm" type="button" (click)="downloadInvoice(invoice)">📥 PDF</button>
+          <button class="btn btn-success btn-sm" type="button" (click)="shareOnWhatsApp(invoice)">🟢 WhatsApp Share</button>
+        </div>
+      </article>
+    </div>
+    <div class="empty-state" *ngIf="!salesInvoices.length">No sales invoices available.</div>
+    <div class="pager">
+      <span>Total {{ invoicesTotal }} | Page {{ invoicesPage }}</span>
+      <button class="btn btn-secondary" [disabled]="invoicesPage <= 1" (click)="prevInvoicesPage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(invoicesPage * pageSize) >= invoicesTotal" (click)="nextInvoicesPage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='quotations'">
+    <p class="eyebrow">Quotation flow</p>
+    <div class="form-grid">
+      <select [(ngModel)]="quotationForm.customerId">
+        <option [ngValue]="0">Select customer</option>
+        <option *ngFor="let item of vm.customers" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+      <select [(ngModel)]="quotationForm.warehouseId">
+        <option [ngValue]="0">Select warehouse</option>
+        <option *ngFor="let item of vm.warehouses" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+      <input [(ngModel)]="quotationForm.placeOfSupplyState" placeholder="Place of supply state" />
+      <input type="date" [(ngModel)]="quotationForm.validUntil" />
+    </div>
+    <div class="line-builder">
+      <select [(ngModel)]="quotationForm.current.productId">
+        <option [ngValue]="0">Product</option>
+        <option *ngFor="let item of vm.products" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+      <select [(ngModel)]="quotationForm.current.binId">
+        <option [ngValue]="0">Bin</option>
+        <option *ngFor="let item of vm.bins" [ngValue]="item.id">{{ item.binCode }}</option>
+      </select>
+      <input type="number" [(ngModel)]="quotationForm.current.quantity" placeholder="Qty" />
+      <input type="number" [(ngModel)]="quotationForm.current.unitPrice" placeholder="Unit price" />
+      <input type="number" [(ngModel)]="quotationForm.current.gstRate" placeholder="GST %" />
+      <button class="btn btn-secondary" type="button" (click)="addQuoteLine()">Add quote line</button>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-primary" type="button" (click)="createQuotation()">
+        {{ quotationForm.editingQuotationId ? 'Update quotation' : 'Create quotation' }}
+      </button>
+      <button class="btn btn-secondary" *ngIf="quotationForm.editingQuotationId" type="button" (click)="resetQuotationForm()">Cancel Edit</button>
+    </div>
+    <div class="record-list" *ngIf="advanced?.quotations?.length">
+      <article class="record-card" *ngFor="let quote of pagedRows(advanced?.quotations, quotationPage)">
+        <strong>{{ quote.quotationNumber }}</strong>
+        <span>Status: {{ quote.status }}</span>
+        <button class="btn btn-secondary" type="button" [disabled]="quote.status === 3" (click)="convertQuotation(quote.id)">Convert to order</button>
+        <button class="btn btn-secondary" type="button" [disabled]="quote.status !== 1" (click)="editQuotation(quote)">Edit</button>
+        <button class="btn btn-danger" type="button" [disabled]="quote.status !== 1" (click)="cancelQuotation(quote.id)">Soft Delete</button>
+      </article>
+    </div>
+    <div class="empty-state" *ngIf="!(advanced?.quotations || []).length">No quotations available.</div>
+    <div class="pager">
+      <span>Total {{ (advanced?.quotations || []).length }} | Page {{ quotationPage }}</span>
+      <button class="btn btn-secondary" [disabled]="quotationPage <= 1" (click)="prevQuotationPage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(quotationPage * pageSize) >= (advanced?.quotations || []).length" (click)="nextQuotationPage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='challans'">
+    <p class="eyebrow">Delivery challan</p>
+    <div class="form-grid">
+      <select [(ngModel)]="challanForm.salesOrderId">
+        <option [ngValue]="0">Select sales order</option>
+        <option *ngFor="let order of salesOrders" [ngValue]="order.id">{{ order.orderNumber }}</option>
+      </select>
+      <input [(ngModel)]="challanForm.notes" placeholder="Dispatch notes" />
+      <button class="btn btn-secondary" type="button" (click)="createDeliveryChallan()">Generate challan</button>
+    </div>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let dc of pagedRows(advanced?.deliveryChallans, challanPage)">
+        <strong>{{ dc.challanNumber }}</strong>
+        <span>SO #{{ dc.salesOrderId }} | Status {{ dc.status }}</span>
+      </article>
+    </div>
+    <div class="empty-state" *ngIf="!(advanced?.deliveryChallans || []).length">No delivery challans available.</div>
+    <div class="pager">
+      <span>Total {{ (advanced?.deliveryChallans || []).length }} | Page {{ challanPage }}</span>
+      <button class="btn btn-secondary" [disabled]="challanPage <= 1" (click)="prevChallanPage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(challanPage * pageSize) >= (advanced?.deliveryChallans || []).length" (click)="nextChallanPage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='returns'">
+    <p class="eyebrow">Sales return</p>
+    <div class="form-grid">
+      <select [(ngModel)]="returnForm.salesInvoiceId" (ngModelChange)="loadReturnItems()">
+        <option [ngValue]="0">Select invoice</option>
+        <option *ngFor="let invoice of salesInvoices" [ngValue]="invoice.id">{{ invoice.invoiceNumber }}</option>
+      </select>
+      <input [(ngModel)]="returnForm.reason" placeholder="Return reason" />
+      <button class="btn btn-secondary" type="button" (click)="createSalesReturn()">Post return</button>
+    </div>
+    <div class="table-wrap" *ngIf="returnForm.items.length">
+      <table class="table">
+        <thead><tr><th>Invoice item</th><th>Bin</th><th>Qty</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of returnForm.items">
+            <td>{{ item.salesInvoiceItemId }}</td>
+            <td><input type="number" [(ngModel)]="item.binId" /></td>
+            <td><input type="number" [(ngModel)]="item.quantity" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let sr of pagedRows(advanced?.salesReturns, returnPage)">
+        <strong>{{ sr.returnNumber }}</strong>
+        <span>Invoice #{{ sr.salesInvoiceId }} | Status {{ sr.status }}</span>
+      </article>
+    </div>
+    <div class="empty-state" *ngIf="!(advanced?.salesReturns || []).length">No sales returns posted yet.</div>
+    <div class="pager">
+      <span>Total {{ (advanced?.salesReturns || []).length }} | Page {{ returnPage }}</span>
+      <button class="btn btn-secondary" [disabled]="returnPage <= 1" (click)="prevReturnPage()">Prev</button>
+      <button class="btn btn-secondary" [disabled]="(returnPage * pageSize) >= (advanced?.salesReturns || []).length" (click)="nextReturnPage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="activeTab==='integrations'">
+    <p class="eyebrow">Integrations: WhatsApp + Razorpay/UPI</p>
+    <div class="form-grid">
+      <select [(ngModel)]="whatsappForm.salesInvoiceId">
+        <option [ngValue]="0">Invoice for WhatsApp</option>
+        <option *ngFor="let invoice of salesInvoices" [ngValue]="invoice.id">{{ invoice.invoiceNumber }}</option>
+      </select>
+      <input [(ngModel)]="whatsappForm.phoneNumber" placeholder="Phone number (e.g. 9198xxxxxx)" />
+      <button class="btn btn-secondary" type="button" (click)="sendWhatsAppInvoice()">Send WhatsApp invoice</button>
+    </div>
+    <div class="form-grid">
+      <input type="number" [(ngModel)]="razorpayForm.amount" placeholder="Amount" />
+      <input [(ngModel)]="razorpayForm.currency" placeholder="Currency" />
+      <input [(ngModel)]="razorpayForm.receipt" placeholder="Receipt reference" />
+      <button class="btn btn-secondary" type="button" (click)="createRazorpayOrder()">Create Razorpay order</button>
+    </div>
+    <div class="message-card" *ngIf="integrationMessage">{{ integrationMessage }}</div>
+  </section>
+</section>

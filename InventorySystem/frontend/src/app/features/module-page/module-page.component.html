@@ -1,0 +1,61 @@
+<section class="module-shell" *ngIf="module$ | async as module">
+  <div class="hero-card">
+    <p class="eyebrow">ERP module</p>
+    <div class="hero-topline">
+      <div>
+        <h2>{{ module.title }}</h2>
+        <p class="subtitle">{{ module.subtitle }}</p>
+      </div>
+      <span class="status-pill" [ngClass]="statusClass(module)">{{ module.status }}</span>
+    </div>
+    <p class="summary">{{ module.summary }}</p>
+  </div>
+
+  <div class="content-card error-card" *ngIf="error">{{ error }}</div>
+
+  <div class="module-grid">
+    <section class="content-card">
+      <p class="eyebrow">Key points</p>
+      <div class="metric-grid">
+        <article class="metric-card" *ngFor="let metric of module.metrics; trackBy: trackByLabel">
+          <span>{{ metric.label }}</span>
+          <h3>{{ metric.value }}</h3>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Workflow</p>
+      <ol class="flow-list">
+        <li *ngFor="let item of module.workflows">{{ item }}</li>
+      </ol>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Live data</p>
+      <div class="metric-grid">
+        <article class="metric-card" *ngFor="let metric of liveMetrics(module.key); trackBy: trackByLabel">
+          <span>{{ metric.label }}</span>
+          <h3>{{ metric.value }}</h3>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Dummy entries</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let record of liveRecords(module.key); trackBy: trackByLabel">
+          <span>{{ record.label }}</span>
+          <strong>{{ record.value }}</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Open other modules</p>
+      <div class="related-links">
+        <a *ngFor="let related of relatedModules" [routerLink]="'/' + related.key">{{ related.title }}</a>
+      </div>
+    </section>
+  </div>
+</section>

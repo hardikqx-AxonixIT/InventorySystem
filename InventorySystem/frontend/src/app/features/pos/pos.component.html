@@ -1,0 +1,66 @@
+<section class="pos-page" *ngIf="data as vm">
+  <div class="hero-card">
+    <p class="eyebrow">POS Billing</p>
+    <h2>Barcode Billing Counter</h2>
+    <p>Scan barcode, bill instantly, share invoice on WhatsApp, and collect UPI payment.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+
+  <section class="content-card">
+    <div class="form-grid">
+      <select [(ngModel)]="customerId">
+        <option [ngValue]="0">Customer</option>
+        <option *ngFor="let c of vm.customers" [ngValue]="c.id">{{ c.name }}</option>
+      </select>
+      <select [(ngModel)]="warehouseId">
+        <option [ngValue]="0">Warehouse</option>
+        <option *ngFor="let w of vm.warehouses" [ngValue]="w.id">{{ w.name }}</option>
+      </select>
+      <select [(ngModel)]="defaultBinId">
+        <option [ngValue]="0">Bin</option>
+        <option *ngFor="let b of vm.bins" [ngValue]="b.id">{{ b.binCode }}</option>
+      </select>
+    </div>
+    <div class="scan-row">
+      <input [(ngModel)]="barcode" placeholder="Scan barcode" (keyup.enter)="scanBarcode()" />
+      <input type="number" [(ngModel)]="scanQty" placeholder="Qty" />
+      <button class="btn btn-primary" type="button" (click)="scanBarcode()">Add</button>
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">Cart</p>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Product</th><th>Qty</th><th>Rate</th><th>GST%</th><th>Total</th><th></th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of cart; let i = index">
+            <td>{{ item.productName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unitPrice }}</td>
+            <td>{{ item.gstRate }}</td>
+            <td>{{ item.lineTotal | number:'1.2-2' }}</td>
+            <td><button class="btn btn-secondary" type="button" (click)="removeLine(i)">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="checkout-row">
+      <strong>Subtotal: {{ subtotal() | number:'1.2-2' }}</strong>
+      <button class="btn btn-primary" type="button" (click)="checkout()">Generate Invoice</button>
+    </div>
+  </section>
+
+  <section class="content-card" *ngIf="lastInvoice">
+    <p class="eyebrow">Payment & Share</p>
+    <p>Invoice {{ lastInvoice.invoiceNumber }} | Amount {{ lastInvoice.grandTotal | number:'1.2-2' }}</p>
+    <div class="actions">
+      <a class="btn btn-secondary" [href]="whatsappLink" target="_blank">Send WhatsApp Invoice</a>
+      <a class="btn btn-primary" [href]="upiLink">Pay via UPI</a>
+    </div>
+    <p class="muted">UPI link can be opened in any installed UPI app.</p>
+  </section>
+</section>
+
+<div class="message-card" *ngIf="loading">Loading POS...</div>

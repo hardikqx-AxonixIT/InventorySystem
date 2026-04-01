@@ -1,0 +1,99 @@
+<section class="rep-page" *ngIf="!loading">
+  <div class="hero-card">
+    <p class="eyebrow">Reports module</p>
+    <h2>Operational analytics</h2>
+    <p>Track sales, purchase, margin, low stock, and product movement trends.</p>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="exportInventory()">📦 Download Inventory Excel</button>
+      <button class="btn btn-secondary" (click)="exportTallyXml()" style="background: #114232; color: white;">📈 Export to Tally Prime</button>
+    </div>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+
+  <div class="kpi-grid" *ngIf="report && !error">
+    <article class="kpi-card"><span>Sales Total</span><strong>{{ report.salesTotal | number:'1.2-2' }}</strong></article>
+    <article class="kpi-card"><span>Purchase Total</span><strong>{{ report.purchaseTotal | number:'1.2-2' }}</strong></article>
+    <article class="kpi-card"><span>Margin Estimate</span><strong>{{ report.grossMarginEstimate | number:'1.2-2' }}</strong></article>
+    <article class="kpi-card"><span>Low Stock SKUs</span><strong>{{ report.lowStock.length }}</strong></article>
+  </div>
+
+  <div class="charts-row" *ngIf="lineChartData">
+    <section class="content-card">
+      <p class="eyebrow">Financial movement (Last 7 days)</p>
+      <div class="chart-container">
+        <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
+      </div>
+    </section>
+    
+    <section class="content-card">
+      <p class="eyebrow">Top selling products</p>
+      <div class="chart-container">
+        <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid" *ngIf="report && !error">
+    <section class="content-card">
+      <p class="eyebrow">Fast moving</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let item of report.fastMoving">
+          <strong>{{ item.productName || item.productId }}</strong>
+          <span>Qty sold {{ item.qty }}</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Slow moving</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let item of report.slowMoving">
+          <strong>{{ item.productName || item.productId }}</strong>
+          <span>Qty sold {{ item.qty }}</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card full-width">
+      <p class="eyebrow">Low stock alert</p>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>SKU</th><th>Product</th><th>Available</th><th>Reorder</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let item of report.lowStock">
+              <td>{{ item.sku }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.available }}</td>
+              <td>{{ item.reorderLevel }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">AI demand prediction</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let item of (ai?.predictions || []).slice(0,8)">
+          <strong>{{ item.name }}</strong>
+          <span>Avg daily {{ item.avgDailyDemand }}</span>
+          <span>Next 15 days {{ item.forecastNext15Days }}</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Auto reorder suggestions</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let item of (reorder?.suggestions || []).slice(0,8)">
+          <strong>{{ item.name }}</strong>
+          <span>Available {{ item.available }} | Forecast {{ item.forecastDemand }}</span>
+          <span>Suggested reorder {{ item.suggestedReorderQty }}</span>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>
+
+<div class="message-card" *ngIf="loading">Loading reports...</div>

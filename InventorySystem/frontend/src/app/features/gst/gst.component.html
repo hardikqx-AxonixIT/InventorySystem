@@ -1,0 +1,113 @@
+<section class="gst-page" *ngIf="data as vm">
+  <div class="hero-card">
+    <p class="eyebrow">GST module</p>
+    <h2>Purchase and sales GST summary</h2>
+    <p>Taxes are calculated live from transaction state comparison and split into CGST/SGST or IGST.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+
+  <div class="summary-grid">
+    <article class="summary-card">
+      <span>Purchase CGST</span>
+      <strong>₹ {{ vm.gstSummary.purchaseCgst | number:'1.2-2' }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Purchase SGST</span>
+      <strong>₹ {{ vm.gstSummary.purchaseSgst | number:'1.2-2' }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Purchase IGST</span>
+      <strong>₹ {{ vm.gstSummary.purchaseIgst | number:'1.2-2' }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Sales CGST</span>
+      <strong>₹ {{ vm.gstSummary.salesCgst | number:'1.2-2' }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Sales SGST</span>
+      <strong>₹ {{ vm.gstSummary.salesSgst | number:'1.2-2' }}</strong>
+    </article>
+    <article class="summary-card">
+      <span>Sales IGST</span>
+      <strong>₹ {{ vm.gstSummary.salesIgst | number:'1.2-2' }}</strong>
+    </article>
+  </div>
+
+  <div class="net-card">
+    <p class="eyebrow">Net GST Payable to Govt.</p>
+    <h3 [class.text-danger]="vm.gstSummary.netGstPayable > 0">₹ {{ vm.gstSummary.netGstPayable | number:'1.2-2' }}</h3>
+  </div>
+
+  <div class="doc-grid">
+    <section class="content-card">
+      <p class="eyebrow">Purchase tax documents</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let pinv of vm.purchaseInvoices">
+          <strong>{{ pinv.invoiceNumber }}</strong>
+          <span>CGST {{ pinv.cgstAmount }} | SGST {{ pinv.sgstAmount }} | IGST {{ pinv.igstAmount }}</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Sales tax documents</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let invoice of vm.salesInvoices">
+          <strong>{{ invoice.invoiceNumber }}</strong>
+          <span>CGST {{ invoice.cgstAmount }} | SGST {{ invoice.sgstAmount }} | IGST {{ invoice.igstAmount }}</span>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <section class="content-card">
+    <p class="eyebrow">GST compliance exports</p>
+    <div class="form-grid">
+      <input type="date" [(ngModel)]="filter.fromDate" />
+      <input type="date" [(ngModel)]="filter.toDate" />
+      <button class="btn btn-secondary" type="button" (click)="runGstr1()">Generate GSTR-1</button>
+      <button class="btn btn-secondary" type="button" (click)="runGstr3b()">Generate GSTR-3B</button>
+    </div>
+    <div class="record-list" *ngIf="gstr1 || gstr3b">
+      <article class="record-card" *ngIf="gstr1">
+        <strong>GSTR-1</strong>
+        <span>Invoices: {{ gstr1.count }}</span>
+      </article>
+      <article class="record-card" *ngIf="gstr3b">
+        <strong>GSTR-3B</strong>
+        <span>Net Tax Payable: {{ gstr3b.netTaxPayable | number:'1.2-2' }}</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">E-invoice IRN flow</p>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let invoice of vm.salesInvoices">
+        <strong>{{ invoice.invoiceNumber }}</strong>
+        <span>Invoice value: {{ invoice.grandTotal | number:'1.2-2' }}</span>
+        <button class="btn btn-secondary" type="button" (click)="generateIrn(invoice.id)">Generate IRN</button>
+      </article>
+    </div>
+    <div class="message-card" *ngIf="eInvoiceResult">
+      IRN: {{ eInvoiceResult.irn }} | Ack: {{ eInvoiceResult.ackNo }}
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">E-way bill generation</p>
+    <div class="form-grid">
+      <select [(ngModel)]="eWayForm.salesInvoiceId">
+        <option [ngValue]="0">Select invoice</option>
+        <option *ngFor="let invoice of vm.salesInvoices" [ngValue]="invoice.id">{{ invoice.invoiceNumber }}</option>
+      </select>
+      <input [(ngModel)]="eWayForm.vehicleNumber" placeholder="Vehicle number" />
+      <input type="number" [(ngModel)]="eWayForm.distanceKm" placeholder="Distance (km)" />
+      <button class="btn btn-primary" type="button" (click)="generateEWayBill()">Generate E-way Bill</button>
+    </div>
+    <div class="message-card" *ngIf="eWayResult">
+      E-way Bill: {{ eWayResult.eWayBillNumber }} valid till {{ eWayResult.validUntil | date:'short' }}
+    </div>
+  </section>
+</section>

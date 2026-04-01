@@ -1,0 +1,90 @@
+<section class="usr-page" *ngIf="!loading">
+  <div class="hero-card">
+    <p class="eyebrow">Users module</p>
+    <h2>User and role management</h2>
+    <p>Create users, assign roles, and review access setup for operations.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+
+  <section class="content-card">
+    <p class="eyebrow">Create user</p>
+    <div class="form-grid">
+      <input [(ngModel)]="form.fullName" placeholder="Full name" />
+      <input [(ngModel)]="form.email" placeholder="Email" />
+      <input [(ngModel)]="form.password" placeholder="Password" />
+      <select [(ngModel)]="form.role">
+        <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+      </select>
+      <button class="btn btn-primary" type="button" (click)="createUser()">Create User</button>
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">Current users</p>
+    <div class="form-grid">
+      <input [(ngModel)]="search" placeholder="Search by email or name" />
+      <select [(ngModel)]="pageSize">
+        <option [ngValue]="10">10</option>
+        <option [ngValue]="25">25</option>
+        <option [ngValue]="50">50</option>
+      </select>
+      <button class="btn btn-secondary" type="button" (click)="searchUsers()">Apply</button>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Email</th><th>Name</th><th>Roles</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.email }}</td>
+            <td>{{ user.fullName || '-' }}</td>
+            <td>{{ (user.roles || []).join(', ') }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="form-grid">
+      <span>Total: {{ totalUsers }} | Page: {{ page }}</span>
+      <button class="btn btn-secondary" type="button" [disabled]="page <= 1" (click)="prevPage()">Previous</button>
+      <button class="btn btn-secondary" type="button" [disabled]="(page * pageSize) >= totalUsers" (click)="nextPage()">Next</button>
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">Granular permission matrix</p>
+    <div class="form-grid">
+      <select [(ngModel)]="permissionForm.roleName">
+        <option value="">Select role</option>
+        <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+      </select>
+      <input [(ngModel)]="permissionForm.moduleKey" placeholder="Module key (sales, purchase...)" />
+      <label><input type="checkbox" [(ngModel)]="permissionForm.canView" /> View</label>
+      <label><input type="checkbox" [(ngModel)]="permissionForm.canCreate" /> Create</label>
+      <label><input type="checkbox" [(ngModel)]="permissionForm.canUpdate" /> Update</label>
+      <label><input type="checkbox" [(ngModel)]="permissionForm.canDelete" /> Delete</label>
+      <label><input type="checkbox" [(ngModel)]="permissionForm.canApprove" /> Approve</label>
+      <label><input type="checkbox" [(ngModel)]="permissionForm.canExport" /> Export</label>
+      <button class="btn btn-secondary" type="button" (click)="savePermission()">Save permission</button>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Role</th><th>Module</th><th>V</th><th>C</th><th>U</th><th>D</th><th>A</th><th>E</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let p of permissions">
+            <td>{{ p.roleName }}</td>
+            <td>{{ p.moduleKey }}</td>
+            <td>{{ p.canView ? 'Y' : 'N' }}</td>
+            <td>{{ p.canCreate ? 'Y' : 'N' }}</td>
+            <td>{{ p.canUpdate ? 'Y' : 'N' }}</td>
+            <td>{{ p.canDelete ? 'Y' : 'N' }}</td>
+            <td>{{ p.canApprove ? 'Y' : 'N' }}</td>
+            <td>{{ p.canExport ? 'Y' : 'N' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</section>
+
+<div class="message-card" *ngIf="loading">Loading users...</div>

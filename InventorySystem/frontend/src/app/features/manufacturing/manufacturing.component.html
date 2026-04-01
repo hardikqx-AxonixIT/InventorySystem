@@ -1,0 +1,118 @@
+<section class="mfg-page" *ngIf="data as vm">
+  <div class="hero-card">
+    <p class="eyebrow">Manufacturing module</p>
+    <h2>Production run</h2>
+    <p>Consume raw material components and post finished goods output in one run.</p>
+  </div>
+
+  <div class="message-card error" *ngIf="error">{{ error }}</div>
+  <div class="message-card warning" *ngIf="validationMessage">{{ validationMessage }}</div>
+  <div class="message-card success" *ngIf="successMessage">{{ successMessage }}</div>
+
+  <section class="content-card">
+    <p class="eyebrow">Run details</p>
+    <div class="form-grid">
+      <select [(ngModel)]="runForm.finishedProductId">
+        <option [ngValue]="0">Finished product</option>
+        <option *ngFor="let item of vm.products" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+      <select [(ngModel)]="runForm.outputBinId">
+        <option [ngValue]="0">Output bin</option>
+        <option *ngFor="let item of vm.bins" [ngValue]="item.id">{{ item.binCode }}</option>
+      </select>
+      <input type="number" [(ngModel)]="runForm.outputQuantity" placeholder="Output qty" />
+      <input [(ngModel)]="runForm.referenceNo" placeholder="Reference no" />
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">Components</p>
+    <div class="form-grid">
+      <select [(ngModel)]="runForm.current.productId">
+        <option [ngValue]="0">Component product</option>
+        <option *ngFor="let item of vm.products" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+      <select [(ngModel)]="runForm.current.binId">
+        <option [ngValue]="0">Component bin</option>
+        <option *ngFor="let item of vm.bins" [ngValue]="item.id">{{ item.binCode }}</option>
+      </select>
+      <input type="number" [(ngModel)]="runForm.current.quantity" placeholder="Qty" />
+      <button class="btn btn-secondary" type="button" (click)="addComponent()">Add component</button>
+    </div>
+
+    <div class="table-wrap" *ngIf="runForm.components.length">
+      <table class="table">
+        <thead><tr><th>Product</th><th>Bin</th><th>Qty</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let item of runForm.components">
+            <td>{{ item.productName }}</td>
+            <td>{{ item.binCode }}</td>
+            <td>{{ item.quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="createRun()">Post Production Run</button>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">BOM templates</p>
+    <div class="form-grid">
+      <input [(ngModel)]="bomForm.name" placeholder="BOM name" />
+      <input [(ngModel)]="bomForm.bomCode" placeholder="BOM code (optional)" />
+      <select [(ngModel)]="bomForm.finishedProductId">
+        <option [ngValue]="0">Finished product</option>
+        <option *ngFor="let item of vm.products" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+      <input type="number" [(ngModel)]="bomForm.standardOutputQty" placeholder="Standard output qty" />
+    </div>
+    <div class="form-grid">
+      <select [(ngModel)]="bomForm.current.componentProductId">
+        <option [ngValue]="0">Component product</option>
+        <option *ngFor="let item of vm.products" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+      <input type="number" [(ngModel)]="bomForm.current.quantityPerOutput" placeholder="Qty per output" />
+      <button class="btn btn-secondary" type="button" (click)="addBomItem()">Add BOM item</button>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="createBom()">
+      {{ bomForm.editingBomId ? 'Update BOM template' : 'Create BOM template' }}
+    </button>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let bom of advanced?.bomTemplates || []">
+        <strong>{{ bom.bomCode }}</strong>
+        <span>{{ bom.name }} | Finished product #{{ bom.finishedProductId }}</span>
+        <button class="btn btn-secondary" type="button" [disabled]="!bom.isActive" (click)="editBom(bom)">Edit</button>
+        <button class="btn btn-secondary" type="button" [disabled]="!bom.isActive" (click)="deactivateBom(bom)">Soft Delete</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="content-card">
+    <p class="eyebrow">Production planning calendar / work orders</p>
+    <div class="form-grid">
+      <select [(ngModel)]="workOrderForm.bomTemplateId">
+        <option [ngValue]="0">BOM template</option>
+        <option *ngFor="let bom of advanced?.bomTemplates || []" [ngValue]="bom.id">{{ bom.bomCode }} - {{ bom.name }}</option>
+      </select>
+      <input type="date" [(ngModel)]="workOrderForm.plannedDate" />
+      <input type="number" [(ngModel)]="workOrderForm.plannedOutputQty" placeholder="Planned output qty" />
+      <select [(ngModel)]="workOrderForm.inputBinId">
+        <option [ngValue]="0">Input bin</option>
+        <option *ngFor="let item of vm.bins" [ngValue]="item.id">{{ item.binCode }}</option>
+      </select>
+      <select [(ngModel)]="workOrderForm.outputBinId">
+        <option [ngValue]="0">Output bin</option>
+        <option *ngFor="let item of vm.bins" [ngValue]="item.id">{{ item.binCode }}</option>
+      </select>
+      <button class="btn btn-secondary" type="button" (click)="createWorkOrder()">Create work order</button>
+    </div>
+    <div class="record-list">
+      <article class="record-card" *ngFor="let wo of advanced?.workOrders || []">
+        <strong>{{ wo.workOrderNumber }}</strong>
+        <span>Planned qty {{ wo.plannedOutputQty }} | Status {{ wo.status }}</span>
+        <button class="btn btn-secondary" type="button" [disabled]="wo.status !== 1" (click)="releaseWorkOrder(wo.id)">Release</button>
+        <button class="btn btn-secondary" type="button" [disabled]="wo.status !== 1" (click)="cancelWorkOrder(wo.id)">Soft Delete</button>
+      </article>
+    </div>
+  </section>
+</section>

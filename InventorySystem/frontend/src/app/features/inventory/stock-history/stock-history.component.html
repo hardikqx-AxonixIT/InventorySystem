@@ -1,0 +1,58 @@
+<div class="page-container">
+  <div class="header">
+    <div class="title-section">
+      <p class="breadcrumb">
+        <a routerLink="/inventory">Inventory</a> / 
+        <span>Stock History</span>
+      </p>
+      <h2>Movement history: {{ productName || 'Product #' + productId }}</h2>
+    </div>
+    <div class="action-section">
+      <button class="btn-refresh" (click)="loadHistory()">Refresh</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    Loading movement ledger...
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="ledger-container">
+    <div class="table-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Type / Reason</th>
+            <th>Reference</th>
+            <th class="text-right">Change</th>
+            <th class="text-right">Closing Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of history">
+            <td>{{ item.createdAt | date:'medium' }}</td>
+            <td>
+              <span class="reason-tag" [ngClass]="item.reasonCode.toLowerCase()">
+                {{ getReasonLabel(item.reasonCode) }}
+              </span>
+            </td>
+            <td><code>{{ item.referenceDocumentId || '-' }}</code></td>
+            <td class="text-right" [ngClass]="item.changeAmount > 0 ? 'text-positive' : 'text-negative'">
+              {{ item.changeAmount > 0 ? '+' : '' }}{{ item.changeAmount | number:'1.0-2' }}
+            </td>
+            <td class="text-right bold">
+              {{ item.postChangeBalance | number:'1.0-2' }}
+            </td>
+          </tr>
+          <tr *ngIf="history.length === 0">
+            <td colspan="5" class="empty-state">No movements found for this product.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
