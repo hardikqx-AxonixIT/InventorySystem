@@ -64,10 +64,8 @@ export class I18nService {
   }
 
   init(): void {
-    const saved = localStorage.getItem('app_lang') as AppLang | null;
-    if (saved && this.dict[saved]) {
-      this.lang$.next(saved);
-    }
+    this.lang$.next('en');
+    localStorage.setItem('app_lang', 'en');
   }
 
   current(): AppLang {

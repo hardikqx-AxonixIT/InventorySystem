@@ -1,18 +1,20 @@
 <div class="shell-layout">
+  <!-- Mobile Overlay -->
+  <div class="sidebar-overlay" *ngIf="menuOpen" (click)="toggleMenu()"></div>
+
   <aside class="sidebar-panel" [class.mobile-open]="menuOpen">
-    <div class="brand-block">
-      <p class="eyebrow">Axonix ERP</p>
-      <h1>Inventory Suite</h1>
-      <p>Inventory, billing, warehouse, and accounting operations in one place.</p>
-      <div class="lang-switch">
-        <button class="lang-btn" type="button" (click)="setLang('en')">EN</button>
-        <button class="lang-btn" type="button" (click)="setLang('hi')">HI</button>
-        <button class="lang-btn" type="button" (click)="setLang('gu')">GU</button>
+    <div class="brand-block" routerLink="/dashboard" (click)="closeMenuOnNavigate()" style="cursor: pointer;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <p class="eyebrow">Axonix ERP</p>
+          <h1>Inventory Suite</h1>
+        </div>
+        <button class="menu-close-btn" (click)="$event.stopPropagation(); toggleMenu()">✕</button>
       </div>
     </div>
 
     <nav class="nav-group">
-      <p class="nav-label">Quick Access</p>
+      <div class="nav-label">General</div>
       <a
         *ngFor="let link of quickLinks"
         [routerLink]="link.route"
@@ -22,53 +24,66 @@
         <span class="icon-chip">{{ link.icon }}</span>
         <span>{{ navLabel(link.label) }}</span>
       </a>
-    </nav>
 
-    <nav class="nav-group">
-      <p class="nav-label">All Modules</p>
+      <!-- Renamed 'Modules' to 'Workspace' and removed duplicates like Sales/Purchase -->
+      <div class="nav-label">ERP Suite</div>
+      <ng-container *ngFor="let module of moduleLinks">
+        <a
+          *ngIf="module.key !== 'audit-logs' && module.key !== 'sales' && module.key !== 'purchase' && module.key !== 'dashboard' && module.key !== 'masters' && module.key !== 'mobile'"
+          [routerLink]="'/' + module.key"
+          routerLinkActive="active-link"
+          class="nav-link"
+          (click)="closeMenuOnNavigate()">
+          <span class="icon-chip">{{ moduleIcon(module.key) }}</span>
+          <span>{{ moduleLabel(module.key, module.title) }}</span>
+        </a>
+      </ng-container>
+
+      <div class="nav-label">Master & Logs</div>
       <a
-        *ngFor="let module of moduleLinks"
-        [routerLink]="'/' + module.key"
+        routerLink="/masters"
         routerLinkActive="active-link"
         class="nav-link"
         (click)="closeMenuOnNavigate()">
-        <span class="icon-chip">{{ moduleIcon(module.key) }}</span>
-        <span>{{ moduleLabel(module.key, module.title) }}</span>
+        <span class="icon-chip">{{ moduleIcon('masters') }}</span>
+        <span>Master Setup</span>
+      </a>
+      <a
+        routerLink="/audit-logs"
+        routerLinkActive="active-link"
+        class="nav-link"
+        (click)="closeMenuOnNavigate()">
+        <span class="icon-chip">{{ moduleIcon('audit-logs') }}</span>
+        <span>History Log</span>
       </a>
     </nav>
-
-    <div class="sidebar-footer">
-      <p class="demo-label">Demo Login</p>
-      <p>admin@axonix.local</p>
-      <p>Admin@123</p>
-      <button class="btn btn-secondary" (click)="logout()">Logout</button>
-    </div>
   </aside>
 
   <main class="main-panel">
-    <header class="mobile-header">
-      <button class="menu-btn" type="button" (click)="toggleMenu()">Menu</button>
-      <p>Axonix ERP</p>
-      <button class="btn btn-secondary" (click)="logout()">Logout</button>
-    </header>
-    <router-outlet></router-outlet>
-  </main>
+    <header class="top-header">
+      <div class="mobile-toggle-zone">
+        <button class="menu-toggle-pill" type="button" (click)="toggleMenu()">
+          <span class="burger-icon">☰</span>
+          <span class="menu-text">Menu</span>
+        </button>
+      </div>
 
-  <nav class="bottom-nav">
-    <a routerLink="/dashboard" routerLinkActive="active" class="bnav-item">
-      <span>🏠 Home</span>
-    </a>
-    <a routerLink="/sales" routerLinkActive="active" class="bnav-item">
-      <span>💰 Sale</span>
-    </a>
-    <a routerLink="/pos" routerLinkActive="active" class="bnav-item">
-      <span>🛒 POS</span>
-    </a>
-    <a routerLink="/inventory" routerLinkActive="active" class="bnav-item">
-      <span>📦 Stock</span>
-    </a>
-    <button (click)="toggleMenu()" class="bnav-item">
-      <span>☰ Menu</span>
-    </button>
-  </nav>
+      <div class="header-brand-mobile">Axonix Suite</div>
+
+      <div class="user-corner">
+        <div class="user-meta">
+          <span class="u-name">Admin User</span>
+          <span class="u-role">Super Admin</span>
+        </div>
+        <button class="btn logout-pill" (click)="logout()">
+          <span>Logout</span>
+          <span class="logout-icon">🚪</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="scroll-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
 </div>

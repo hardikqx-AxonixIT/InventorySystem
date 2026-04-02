@@ -18,6 +18,9 @@ export interface DashboardKpis {
   pendingAdjustments: number;
   lowStockItems: number;
   inventoryValueEstimate: number;
+  totalRevenue: number;
+  pendingSalesOrders: number;
+  lowStockAlerts: number;
 }
 
 export interface DashboardModule {

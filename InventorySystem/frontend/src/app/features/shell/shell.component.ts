@@ -19,7 +19,7 @@ export class ShellComponent {
     { label: 'Dashboard', route: '/dashboard', icon: 'DS' },
     { label: 'Sales', route: '/sales', icon: 'SL' },
     { label: 'Purchase', route: '/purchase', icon: 'PU' },
-    { label: 'POS', route: '/pos', icon: 'PO' }
+    { label: 'POS Billing', route: '/pos', icon: 'PO' }
   ];
 
   readonly moduleLinks = ERP_MODULES;
@@ -47,8 +47,8 @@ export class ShellComponent {
 
   navLabel(label: string): string {
     const key = label.toLowerCase();
-    if (key === 'pos') return this.i18n.t('pos');
-    return this.i18n.t(key);
+    if (key === 'pos billing') return 'POS Billing';
+    return this.i18n.t(key) || label;
   }
 
   moduleLabel(key: string, fallback: string): string {
@@ -69,7 +69,7 @@ export class ShellComponent {
       users: 'US',
       mobile: 'MB',
       integrations: 'IN',
-      'audit-logs': 'AL'
+      'audit-logs': '📜'
     };
     return icons[key] ?? 'MD';
   }
