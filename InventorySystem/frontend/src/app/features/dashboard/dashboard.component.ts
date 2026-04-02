@@ -90,6 +90,7 @@ export class DashboardComponent implements OnInit {
     return +(this.accounting?.totalSupplierPayments ?? 0);
   }
 
+  reorderSuggestions: any[] = [];
   expiryAlerts: any[] = [];
   isOwner = true; // Toggle this for Salesman view demo
 

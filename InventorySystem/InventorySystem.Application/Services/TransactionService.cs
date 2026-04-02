@@ -1560,8 +1560,8 @@ namespace InventorySystem.Application.Services
                     ProductId = batch.ProductId, 
                     BinId = batch.BinId, 
                     Quantity = 1, 
-                    UnitPrice = product.SalesPrice ?? 0, 
-                    GstRate = product.GstRate ?? 0 
+                    UnitPrice = product.SalesPrice, 
+                    GstRate = product.GstRate 
                 });
             }
 
@@ -1583,19 +1583,6 @@ namespace InventorySystem.Application.Services
 
             await _context.SaveChangesAsync(cancellationToken);
             return new { order.Id, order.OrderNumber, ScannedProduct = batch.Product!.Name, order.GrandTotal };
-        }
-
-        private static (decimal TaxableAmount, decimal CgstAmount, decimal SgstAmount, decimal IgstAmount, decimal LineTotal) CalculateTax(decimal quantity, decimal unitPrice, decimal gstRate, string? originState, string? destinationState)
-        {
-            var taxable = Math.Round(quantity * unitPrice, 2);
-            var totalTax = Math.Round(taxable * gstRate / 100m, 2);
-            var intra = string.Equals(originState?.Trim(), destinationState?.Trim(), StringComparison.OrdinalIgnoreCase);
-            if (intra)
-            {
-                var half = Math.Round(totalTax / 2m, 2);
-                return (taxable, half, totalTax - half, 0, taxable + totalTax);
-            }
-            return (taxable, 0, 0, totalTax, taxable + totalTax);
         }
     }
 }
