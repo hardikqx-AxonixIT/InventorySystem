@@ -56,6 +56,11 @@ input:focus, select:focus {
   box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
+select option {
+  background: #18181b;
+  color: var(--text-primary);
+}
+
 .glass-card {
   background: var(--bg-card);
   backdrop-filter: blur(20px);

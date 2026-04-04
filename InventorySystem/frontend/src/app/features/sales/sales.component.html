@@ -3,6 +3,10 @@
     <p class="eyebrow">Sales module</p>
     <h2>Sales workflow operations</h2>
     <p>Split screens for enterprise execution: orders, invoices, quotations, dispatch, returns, and integrations.</p>
+    <div class="action-row">
+      <button class="btn btn-primary" type="button" routerLink="/pos">Quick invoice screen</button>
+      <button class="btn btn-secondary" type="button" (click)="activeTab='orders'">Reduce steps: order-first mode</button>
+    </div>
   </div>
 
   <div class="tab-bar">
@@ -18,7 +22,7 @@
   <div class="message-card warning" *ngIf="validationMessage">{{ validationMessage }}</div>
   <div class="message-card success" *ngIf="successMessage">{{ successMessage }}</div>
 
-  <div class="grid" *ngIf="activeTab==='orders'">
+  <ng-container *ngIf="activeTab==='orders'">
     <section class="content-card">
       <p class="eyebrow">Create / Update sales order</p>
       <div class="form-grid">
@@ -26,13 +30,13 @@
           <label>Select Customer</label>
           <select [(ngModel)]="form.customerId" name="customerId">
             <option [value]="0">Select...</option>
-            <option *ngFor="let c of data?.customers" [value]="c.id">{{ c.name }} (L: ₹{{ c.creditLimit | number }})</option>
+            <option *ngFor="let c of data?.customers" [value]="c.id">{{ c.name }} (L: &#8377;{{ c.creditLimit | number }})</option>
           </select>
         </div>
-        
+
         <div class="field scan-mode">
-          <label>🔥 Rapid Scan (Serial/IMEI)</label>
-          <input type="text" placeholder="Scan & Press Enter..." #serialInput (keyup.enter)="rapidScan(serialInput.value); serialInput.value=''">
+          <label>Rapid Scan (Serial/IMEI)</label>
+          <input type="text" placeholder="Scan and press Enter..." #serialInput (keyup.enter)="rapidScan(serialInput.value); serialInput.value=''">
           <small>Directly adds item to bill by scanning Batch/Serial</small>
         </div>
         <select [(ngModel)]="form.warehouseId">
@@ -57,6 +61,23 @@
         <button class="btn btn-secondary" type="button" (click)="addLine()">Add line</button>
       </div>
 
+      <div class="table-wrap" *ngIf="form.items.length">
+        <table class="table">
+          <thead>
+            <tr><th>Product</th><th>Bin</th><th>Qty</th><th>Unit Price</th><th>GST %</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of form.items">
+              <td>{{ item.productName }}</td>
+              <td>{{ item.binCode }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.unitPrice }}</td>
+              <td>{{ item.gstRate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="action-row">
         <button class="btn btn-primary" type="button" (click)="createSalesOrder()">
           {{ form.editingOrderId ? 'Update Sales Order' : 'Create Sales Order' }}
@@ -66,23 +87,44 @@
     </section>
 
     <section class="content-card">
-      <p class="eyebrow">Sales Order Management</p>
-      <div class="record-list">
-        <article class="record-card" *ngFor="let order of salesOrders">
-          <div class="record-header">
-            <strong>{{ order.orderNumber }}</strong>
-            <span class="status-pill active">{{ order.status === 1 ? 'OPEN' : order.status === 2 ? 'LOCKED' : 'COMPLETED' }}</span>
-          </div>
-          <div class="record-body">
-            <span>Party #{{ order.customerId }}</span>
-            <span>Grand Total: <strong>₹ {{ order.grandTotal | number:'1.2-2' }}</strong></span>
-          </div>
-          <div class="record-actions">
-            <button class="btn btn-primary btn-sm" type="button" [disabled]="!canCreateInvoice(order)" (click)="createInvoice(order.id)">📄 Tax Invoice</button>
-            <button class="btn btn-secondary btn-sm" type="button" [disabled]="order.status !== 1" (click)="editSalesOrder(order)">✏️ Edit</button>
-            <button class="btn btn-danger btn-sm" type="button" [disabled]="order.status !== 1" (click)="cancelSalesOrder(order.id)">🗑️ Cancel</button>
-          </div>
-        </article>
+      <div class="listing-head">
+        <p class="eyebrow">Sales Order Listing</p>
+        <div class="listing-tools">
+          <span class="record-count">Total Records: {{ ordersTotal }}</span>
+          <button class="btn btn-secondary btn-sm" type="button" (click)="exportSalesOrdersCsv()">Export Excel</button>
+          <button class="btn btn-secondary btn-sm" type="button" (click)="exportSalesOrdersPdf()">Export PDF</button>
+        </div>
+      </div>
+      <div class="table-container" *ngIf="salesOrders.length">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Order No</th>
+              <th>Customer</th>
+              <th>Warehouse</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of salesOrders; let rowIndex = index">
+              <td data-label="#">{{ ((ordersPage - 1) * pageSize) + rowIndex + 1 }}</td>
+              <td data-label="Order No">{{ order.orderNumber }}</td>
+              <td data-label="Customer">{{ customerName(order.customerId) }}</td>
+              <td data-label="Warehouse">{{ warehouseName(order.warehouseId) }}</td>
+              <td data-label="Status">{{ order.status === 1 ? 'OPEN' : order.status === 2 ? 'LOCKED' : 'COMPLETED' }}</td>
+              <td data-label="Total">&#8377; {{ order.grandTotal | number:'1.2-2' }}</td>
+              <td data-label="Actions">
+                <div class="table-actions">
+                  <button class="btn btn-secondary btn-sm icon-only" type="button" title="Edit order" (click)="editSalesOrder(order)">&#9998;</button>
+                  <button class="btn btn-danger btn-sm icon-only" type="button" title="Cancel order" (click)="cancelSalesOrder(order.id)">&#128465;</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="empty-state" *ngIf="!salesOrders.length">No sales orders found for this page.</div>
       <div class="pager">
@@ -91,8 +133,7 @@
         <button class="btn btn-secondary" [disabled]="(ordersPage * pageSize) >= ordersTotal" (click)="nextOrdersPage()">Next</button>
       </div>
     </section>
-  </div>
-
+  </ng-container>
   <section class="content-card" *ngIf="activeTab==='invoices'">
     <p class="eyebrow">Recent sales invoices</p>
     <div class="record-list">
@@ -244,3 +285,5 @@
     <div class="message-card" *ngIf="integrationMessage">{{ integrationMessage }}</div>
   </section>
 </section>
+
+
