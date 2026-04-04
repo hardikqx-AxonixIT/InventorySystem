@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TransactionBootstrap, TransactionDataService } from '../../core/services/transaction-data.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-sales',
@@ -74,7 +75,38 @@ export class SalesComponent implements OnInit {
     receipt: ''
   };
 
-  constructor(private transactions: TransactionDataService) {}
+  constructor(private transactions: TransactionDataService, private toast: ToastService) {}
+
+  private clearMessages(): void {
+    this.error = '';
+    this.validationMessage = '';
+    this.successMessage = '';
+  }
+
+  private setError(err: any, fallback: string): void {
+    if (typeof err?.error === 'string') {
+      this.error = err.error;
+      this.toast.error(this.error);
+      return;
+    }
+    if (typeof err?.message === 'string') {
+      this.error = err.message;
+      this.toast.error(this.error);
+      return;
+    }
+    this.error = fallback;
+    this.toast.error(this.error);
+  }
+
+  private setValidation(message: string): void {
+    this.validationMessage = message;
+    this.toast.warning(message);
+  }
+
+  private setSuccess(message: string): void {
+    this.successMessage = message;
+    this.toast.success(message);
+  }
 
   ngOnInit(): void {
     this.load();
@@ -90,6 +122,7 @@ export class SalesComponent implements OnInit {
       },
       error: () => {
         this.error = 'Unable to load sales module data.';
+        this.toast.error(this.error);
         this.loading = false;
       }
     });
@@ -127,9 +160,17 @@ export class SalesComponent implements OnInit {
   }
 
   addLine(): void {
-    this.validationMessage = '';
+    this.clearMessages();
     if (!this.form.current.productId || !this.form.current.binId || !this.form.current.quantity) {
-      this.validationMessage = 'Select product, bin and quantity before adding line.';
+      this.setValidation('Select product, bin and quantity before adding line.');
+      return;
+    }
+    if (+this.form.current.quantity <= 0) {
+      this.setValidation('Quantity must be greater than 0.');
+      return;
+    }
+    if (+this.form.current.unitPrice < 0 || +this.form.current.gstRate < 0) {
+      this.setValidation('Price and GST cannot be negative.');
       return;
     }
     const product = this.data?.products.find(x => x.id === +this.form.current.productId);
@@ -208,10 +249,9 @@ export class SalesComponent implements OnInit {
   }
 
   createSalesOrder(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.form.customerId || !this.form.warehouseId || this.form.items.length === 0) {
-      this.validationMessage = 'Customer, warehouse and at least one line item are required.';
+      this.setValidation('Customer, warehouse and at least one line item are required.');
       return;
     }
     const payload = {
@@ -229,14 +269,15 @@ export class SalesComponent implements OnInit {
     const save$ = this.form.editingOrderId
       ? this.transactions.updateSalesOrder(this.form.editingOrderId, payload)
       : this.transactions.createSalesOrder(payload);
+    const wasEdit = !!this.form.editingOrderId;
     save$.subscribe({
       next: () => {
         this.resetSalesOrderForm();
-        this.successMessage = this.form.editingOrderId ? 'Sales order updated.' : 'Sales order created.';
+        this.setSuccess(wasEdit ? 'Sales order updated successfully.' : 'Sales order saved successfully.');
         this.loadPagedData();
         this.refreshAdvanced();
       },
-      error: (err) => this.error = err?.error ?? (this.form.editingOrderId ? 'Sales order update failed.' : 'Sales order creation failed.')
+      error: (err) => this.setError(err, wasEdit ? 'Sales order update failed.' : 'Sales order save failed.')
     });
   }
 
@@ -247,7 +288,7 @@ export class SalesComponent implements OnInit {
     }
     this.transactions.scanBatchToOrder(this.form.editingOrderId, serial).subscribe({
       next: (res) => {
-        this.successMessage = `Item ${res.scannedProduct} added!`;
+        this.setSuccess(`Item ${res.scannedProduct} added!`);
         this.loadPagedData();
       },
       error: (err) => alert(err.error || 'Serial/IMEI not found.')
@@ -255,22 +296,21 @@ export class SalesComponent implements OnInit {
   }
 
   createInvoice(orderId: number): void {
-    this.successMessage = '';
+    this.clearMessages();
     this.transactions.createSalesInvoice({ salesOrderId: orderId }).subscribe({
       next: () => {
-        this.successMessage = 'Sales invoice created.';
+        this.setSuccess('Sales invoice created.');
         this.loadPagedData();
         this.refreshAdvanced();
       },
-      error: (err) => this.error = err?.error ?? 'Invoice creation failed.'
+      error: (err) => this.setError(err, 'Invoice creation failed.')
     });
   }
 
   createQuotation(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.quotationForm.customerId || !this.quotationForm.warehouseId || this.quotationForm.items.length === 0) {
-      this.validationMessage = 'Customer, warehouse and quotation lines are required.';
+      this.setValidation('Customer, warehouse and quotation lines are required.');
       return;
     }
     const payload = {
@@ -285,67 +325,67 @@ export class SalesComponent implements OnInit {
     const save$ = this.quotationForm.editingQuotationId
       ? this.transactions.updateQuotation(this.quotationForm.editingQuotationId, payload)
       : this.transactions.createQuotation(payload);
+    const wasEdit = !!this.quotationForm.editingQuotationId;
     save$.subscribe({
       next: () => {
         this.resetQuotationForm();
-        this.successMessage = this.quotationForm.editingQuotationId ? 'Quotation updated.' : 'Quotation created.';
+        this.setSuccess(wasEdit ? 'Quotation updated successfully.' : 'Quotation saved successfully.');
         this.refreshAdvanced();
       },
-      error: (err) => this.error = err?.error ?? (this.quotationForm.editingQuotationId ? 'Quotation update failed.' : 'Quotation creation failed.')
+      error: (err) => this.setError(err, wasEdit ? 'Quotation update failed.' : 'Quotation save failed.')
     });
   }
 
   convertQuotation(quotationId: number): void {
     if (!confirm('Convert this quotation to sales order?')) return;
-    this.successMessage = '';
+    this.clearMessages();
     this.transactions.convertQuotation(quotationId).subscribe({
       next: () => {
-        this.successMessage = 'Quotation converted to sales order.';
+        this.setSuccess('Quotation converted to sales order.');
         this.loadPagedData();
         this.refreshAdvanced();
       },
-      error: (err) => this.error = err?.error ?? 'Quotation conversion failed.'
+      error: (err) => this.setError(err, 'Quotation conversion failed.')
     });
   }
 
   cancelQuotation(quotationId: number): void {
     if (!confirm('Soft delete this quotation?')) return;
-    this.successMessage = '';
+    this.clearMessages();
     this.transactions.cancelQuotation(quotationId).subscribe({
       next: () => {
-        this.successMessage = 'Quotation soft deleted.';
+        this.setSuccess('Quotation soft deleted.');
         this.refreshAdvanced();
       },
-      error: (err) => this.error = err?.error ?? 'Quotation cancel failed.'
+      error: (err) => this.setError(err, 'Quotation cancel failed.')
     });
   }
 
   cancelSalesOrder(orderId: number): void {
     if (!confirm('Soft delete this sales order?')) return;
-    this.successMessage = '';
+    this.clearMessages();
     this.transactions.cancelSalesOrder(orderId).subscribe({
       next: () => {
-        this.successMessage = 'Sales order soft deleted.';
+        this.setSuccess('Sales order cancelled successfully.');
         this.loadPagedData();
       },
-      error: (err) => this.error = err?.error ?? 'Sales order cancel failed.'
+      error: (err) => this.setError(err, 'Sales order cancel failed.')
     });
   }
 
   createDeliveryChallan(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.challanForm.salesOrderId) {
-      this.validationMessage = 'Select a sales order for delivery challan.';
+      this.setValidation('Select a sales order for delivery challan.');
       return;
     }
     this.transactions.createDeliveryChallan(this.challanForm).subscribe({
       next: () => {
         this.challanForm = { salesOrderId: 0, notes: '' };
-        this.successMessage = 'Delivery challan created.';
+        this.setSuccess('Delivery challan created.');
         this.refreshAdvanced();
       },
-      error: (err) => this.error = err?.error ?? 'Delivery challan creation failed.'
+      error: (err) => this.setError(err, 'Delivery challan creation failed.')
     });
   }
 
@@ -357,10 +397,9 @@ export class SalesComponent implements OnInit {
   }
 
   createSalesReturn(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.returnForm.salesInvoiceId || this.returnForm.items.length === 0) {
-      this.validationMessage = 'Select invoice and return lines to post return.';
+      this.setValidation('Select invoice and return lines to post return.');
       return;
     }
     const payload = {
@@ -371,35 +410,91 @@ export class SalesComponent implements OnInit {
     this.transactions.createSalesReturn(payload).subscribe({
       next: () => {
         this.returnForm = { salesInvoiceId: 0, reason: '', items: [] };
-        this.successMessage = 'Sales return posted.';
+        this.setSuccess('Sales return posted.');
         this.refreshAdvanced();
       },
-      error: (err) => this.error = err?.error ?? 'Sales return failed.'
+      error: (err) => this.setError(err, 'Sales return failed.')
     });
   }
 
   sendWhatsAppInvoice(): void {
-    this.validationMessage = '';
+    this.clearMessages();
     if (!this.whatsappForm.salesInvoiceId || !this.whatsappForm.phoneNumber) {
-      this.validationMessage = 'Invoice and phone number are required for WhatsApp.';
+      this.setValidation('Invoice and phone number are required for WhatsApp.');
       return;
     }
     this.transactions.sendWhatsAppInvoice(this.whatsappForm).subscribe({
       next: (res) => this.integrationMessage = res?.note ?? (res?.success ? 'WhatsApp API request sent.' : 'WhatsApp not configured. Preview link generated.'),
-      error: (err) => this.error = err?.error ?? 'WhatsApp send failed.'
+      error: (err) => this.setError(err, 'WhatsApp send failed.')
     });
   }
 
   createRazorpayOrder(): void {
-    this.validationMessage = '';
+    this.clearMessages();
     if (!this.razorpayForm.amount) {
-      this.validationMessage = 'Amount is required for Razorpay order.';
+      this.setValidation('Amount is required for Razorpay order.');
       return;
     }
     this.transactions.createRazorpayOrder(this.razorpayForm).subscribe({
       next: (res) => this.integrationMessage = res?.success ? 'Razorpay order created.' : (res?.note ?? 'Razorpay not configured.'),
-      error: (err) => this.error = err?.error ?? 'Razorpay order failed.'
+      error: (err) => this.setError(err, 'Razorpay order failed.')
     });
+  }
+
+  customerName(customerId: number): string {
+    return this.data?.customers.find((x) => +x.id === +customerId)?.name ?? `Customer #${customerId}`;
+  }
+
+  warehouseName(warehouseId: number): string {
+    return this.data?.warehouses.find((x) => +x.id === +warehouseId)?.name ?? `Warehouse #${warehouseId}`;
+  }
+
+  exportSalesOrdersCsv(): void {
+    const headers = ['Order Number', 'Customer', 'Warehouse', 'Status', 'Grand Total'];
+    const rows = this.salesOrders.map((order) => [
+      order.orderNumber,
+      this.customerName(order.customerId),
+      this.warehouseName(order.warehouseId),
+      order.status === 1 ? 'OPEN' : order.status === 2 ? 'LOCKED' : 'COMPLETED',
+      (+order.grandTotal || 0).toFixed(2)
+    ]);
+    const csv = [headers, ...rows]
+      .map((line) => line.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `sales-orders-page-${this.ordersPage}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  exportSalesOrdersPdf(): void {
+    const rows = this.salesOrders
+      .map((order) => `
+        <tr>
+          <td>${order.orderNumber ?? ''}</td>
+          <td>${this.customerName(order.customerId)}</td>
+          <td>${this.warehouseName(order.warehouseId)}</td>
+          <td>${order.status === 1 ? 'OPEN' : order.status === 2 ? 'LOCKED' : 'COMPLETED'}</td>
+          <td>${(+order.grandTotal || 0).toFixed(2)}</td>
+        </tr>
+      `)
+      .join('');
+    const win = window.open('', '_blank');
+    if (!win) return;
+    win.document.write(`
+      <html><head><title>Sales Orders</title>
+      <style>body{font-family:Arial,sans-serif;padding:16px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f5f5f5}</style>
+      </head><body>
+      <h2>Sales Orders (Page ${this.ordersPage})</h2>
+      <p>Total Records: ${this.ordersTotal}</p>
+      <table><thead><tr><th>Order</th><th>Customer</th><th>Warehouse</th><th>Status</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table>
+      </body></html>
+    `);
+    win.document.close();
+    win.focus();
+    win.print();
   }
 
   canCreateInvoice(order: any): boolean {
@@ -425,7 +520,7 @@ export class SalesComponent implements OnInit {
         if (res.previewUrl) {
           window.open(res.previewUrl, '_blank');
         } else {
-          this.successMessage = 'WhatsApp message sent via API.';
+          this.setSuccess('WhatsApp message sent via API.');
         }
       },
       error: () => alert('WhatsApp integration failed.')

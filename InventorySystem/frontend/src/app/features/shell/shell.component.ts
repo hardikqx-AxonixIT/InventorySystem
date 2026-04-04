@@ -14,12 +14,13 @@ import { AppLang, I18nService } from '../../core/services/i18n.service';
 })
 export class ShellComponent {
   menuOpen = false;
+  sidebarCollapsed = false;
 
   readonly quickLinks = [
-    { label: 'Dashboard', route: '/dashboard', icon: 'DS' },
-    { label: 'Sales', route: '/sales', icon: 'SL' },
-    { label: 'Purchase', route: '/purchase', icon: 'PU' },
-    { label: 'POS Billing', route: '/pos', icon: 'PO' }
+    { label: 'Dashboard', route: '/dashboard', icon: '&#128200;' },
+    { label: 'Sales', route: '/sales', icon: '&#128722;' },
+    { label: 'Purchase', route: '/purchase', icon: '&#128717;' },
+    { label: 'POS Billing', route: '/pos', icon: '&#128179;' }
   ];
 
   readonly moduleLinks = ERP_MODULES;
@@ -30,6 +31,10 @@ export class ShellComponent {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+
+  toggleSidebarCollapse(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
   closeMenuOnNavigate(): void {
@@ -57,20 +62,20 @@ export class ShellComponent {
 
   moduleIcon(key: string): string {
     const icons: Record<string, string> = {
-      masters: 'MS',
-      inventory: 'IV',
-      purchase: 'PU',
-      sales: 'SL',
-      gst: 'TX',
-      accounting: 'AC',
-      warehouse: 'WH',
-      manufacturing: 'MF',
-      reports: 'RP',
-      users: 'US',
-      mobile: 'MB',
-      integrations: 'IN',
-      'audit-logs': '📜'
+      masters: '&#128203;',
+      inventory: '&#128230;',
+      purchase: '&#128717;',
+      sales: '&#128722;',
+      gst: '&#128196;',
+      accounting: '&#128178;',
+      warehouse: '&#127970;',
+      manufacturing: '&#127981;',
+      reports: '&#128202;',
+      users: '&#128101;',
+      mobile: '&#128241;',
+      integrations: '&#128279;',
+      'audit-logs': '&#128221;'
     };
-    return icons[key] ?? 'MD';
+    return icons[key] ?? '&#128193;';
   }
 }

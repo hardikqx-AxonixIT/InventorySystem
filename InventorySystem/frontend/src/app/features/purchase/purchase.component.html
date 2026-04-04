@@ -16,7 +16,7 @@
   <div class="message-card warning" *ngIf="validationMessage">{{ validationMessage }}</div>
   <div class="message-card success" *ngIf="successMessage">{{ successMessage }}</div>
 
-  <div class="grid" *ngIf="activeTab==='po'">
+  <ng-container *ngIf="activeTab==='po'">
     <section class="content-card">
       <p class="eyebrow">Create / Update PO</p>
       <div class="form-grid">
@@ -52,23 +52,44 @@
     </section>
 
     <section class="content-card">
-      <p class="eyebrow">Purchase Order Registry</p>
-      <div class="record-list">
-        <article class="record-card" *ngFor="let po of purchaseOrders">
-          <div class="record-header">
-            <strong>{{ po.orderNumber }}</strong>
-            <span class="status-pill active">{{ po.status === 1 ? 'OPEN' : po.status === 2 ? 'LOCKED' : 'CLOSED' }}</span>
-          </div>
-          <div class="record-body">
-            <span>Supplier #{{ po.vendorId }}</span>
-            <span>Grand Total: <strong>₹ {{ po.grandTotal | number:'1.2-2' }}</strong></span>
-          </div>
-          <div class="record-actions">
-            <button class="btn btn-secondary btn-sm" type="button" (click)="prepareGrn(po.id)">📥 GRN</button>
-            <button class="btn btn-secondary btn-sm" type="button" [disabled]="po.status !== 1" (click)="editPurchaseOrder(po)">✏️ Edit</button>
-            <button class="btn btn-danger btn-sm" type="button" [disabled]="po.status !== 1" (click)="cancelPurchaseOrder(po.id)">🗑️ Cancel</button>
-          </div>
-        </article>
+      <div class="listing-head">
+        <p class="eyebrow">Purchase Order Listing</p>
+        <div class="listing-tools">
+          <span class="record-count">Total Records: {{ poTotal }}</span>
+          <button class="btn btn-secondary btn-sm" type="button" (click)="exportPurchaseOrdersCsv()">Export Excel</button>
+          <button class="btn btn-secondary btn-sm" type="button" (click)="exportPurchaseOrdersPdf()">Export PDF</button>
+        </div>
+      </div>
+      <div class="table-container" *ngIf="purchaseOrders.length">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>PO No</th>
+              <th>Vendor</th>
+              <th>Warehouse</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let po of purchaseOrders; let rowIndex = index">
+              <td data-label="#">{{ ((poPage - 1) * pageSize) + rowIndex + 1 }}</td>
+              <td data-label="PO No">{{ po.orderNumber }}</td>
+              <td data-label="Vendor">{{ vendorName(po.vendorId) }}</td>
+              <td data-label="Warehouse">{{ warehouseName(po.warehouseId) }}</td>
+              <td data-label="Status">{{ po.status === 1 ? 'OPEN' : po.status === 2 ? 'LOCKED' : 'CLOSED' }}</td>
+              <td data-label="Total">&#8377; {{ po.grandTotal | number:'1.2-2' }}</td>
+              <td data-label="Actions">
+                <div class="table-actions">
+                  <button class="btn btn-secondary btn-sm icon-only" type="button" title="Edit PO" (click)="editPurchaseOrder(po)">&#9998;</button>
+                  <button class="btn btn-danger btn-sm icon-only" type="button" title="Cancel PO" (click)="cancelPurchaseOrder(po.id)">&#128465;</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="empty-state" *ngIf="!purchaseOrders.length">No purchase orders found for this page.</div>
       <div class="pager">
@@ -77,8 +98,7 @@
         <button class="btn btn-secondary" [disabled]="(poPage*pageSize)>=poTotal" (click)="nextPoPage()">Next</button>
       </div>
     </section>
-  </div>
-
+  </ng-container>
   <section class="content-card" *ngIf="activeTab==='grn'">
     <p class="eyebrow">Receive GRN</p>
     <div *ngIf="grn.items.length" class="grn-builder">
@@ -151,3 +171,5 @@
     </div>
   </section>
 </section>
+
+

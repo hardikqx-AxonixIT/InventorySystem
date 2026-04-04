@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TransactionBootstrap, TransactionDataService } from '../../core/services/transaction-data.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-purchase',
@@ -45,7 +46,38 @@ export class PurchaseComponent implements OnInit {
   invoice = { goodsReceiptNoteId: 0, dueDate: '' };
   payment = { purchaseInvoiceId: 0, amount: 0, paymentMode: 'BANK', referenceNo: '', notes: '' };
 
-  constructor(private transactions: TransactionDataService) {}
+  constructor(private transactions: TransactionDataService, private toast: ToastService) {}
+
+  private clearMessages(): void {
+    this.error = '';
+    this.validationMessage = '';
+    this.successMessage = '';
+  }
+
+  private setError(err: any, fallback: string): void {
+    if (typeof err?.error === 'string') {
+      this.error = err.error;
+      this.toast.error(this.error);
+      return;
+    }
+    if (typeof err?.message === 'string') {
+      this.error = err.message;
+      this.toast.error(this.error);
+      return;
+    }
+    this.error = fallback;
+    this.toast.error(this.error);
+  }
+
+  private setValidation(message: string): void {
+    this.validationMessage = message;
+    this.toast.warning(message);
+  }
+
+  private setSuccess(message: string): void {
+    this.successMessage = message;
+    this.toast.success(message);
+  }
 
   ngOnInit(): void {
     this.load();
@@ -63,6 +95,7 @@ export class PurchaseComponent implements OnInit {
       },
       error: () => {
         this.error = 'Unable to load purchase module data.';
+        this.toast.error(this.error);
         this.loading = false;
       }
     });
@@ -91,19 +124,22 @@ export class PurchaseComponent implements OnInit {
   }
 
   addLine(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.form.current.productId) {
-      this.validationMessage = 'Select a product before adding line.';
+      this.setValidation('Select a product before adding line.');
       return;
     }
     if (+this.form.current.quantity <= 0) {
-      this.validationMessage = 'Quantity must be greater than 0.';
+      this.setValidation('Quantity must be greater than 0.');
+      return;
+    }
+    if (+this.form.current.unitPrice < 0 || +this.form.current.gstRate < 0) {
+      this.setValidation('Price and GST cannot be negative.');
       return;
     }
     const product = this.data?.products.find(x => x.id === +this.form.current.productId);
     if (!product) {
-      this.validationMessage = 'Selected product is invalid.';
+      this.setValidation('Selected product is invalid.');
       return;
     }
     this.form.items.push({
@@ -140,18 +176,17 @@ export class PurchaseComponent implements OnInit {
   }
 
   createPurchaseOrder(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.form.vendorId) {
-      this.validationMessage = 'Vendor is required.';
+      this.setValidation('Vendor is required.');
       return;
     }
     if (!this.form.warehouseId) {
-      this.validationMessage = 'Warehouse is required.';
+      this.setValidation('Warehouse is required.');
       return;
     }
     if (this.form.items.length === 0) {
-      this.validationMessage = 'Add at least one line item.';
+      this.setValidation('Add at least one line item.');
       return;
     }
     const payload = {
@@ -167,17 +202,21 @@ export class PurchaseComponent implements OnInit {
     save$.subscribe({
       next: () => {
         this.resetPoForm();
-        this.successMessage = wasEdit ? 'Purchase order updated.' : 'Purchase order created.';
+        this.setSuccess(wasEdit ? 'Purchase order updated.' : 'Purchase order created.');
         this.loadPagedData();
       },
-      error: (err) => this.error = err?.error ?? 'Purchase order save failed.'
+      error: (err) => this.setError(err, 'Purchase order save failed.')
     });
   }
 
   cancelPurchaseOrder(orderId: number): void {
+    this.clearMessages();
     this.transactions.cancelPurchaseOrder(orderId).subscribe({
-      next: () => this.loadPagedData(),
-      error: (err) => this.error = err?.error ?? 'Purchase order cancel failed.'
+      next: () => {
+        this.setSuccess('Purchase order cancelled successfully.');
+        this.loadPagedData();
+      },
+      error: (err) => this.setError(err, 'Purchase order cancel failed.')
     });
   }
 
@@ -195,18 +234,17 @@ export class PurchaseComponent implements OnInit {
   }
 
   submitGrn(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.grn.purchaseOrderId) {
-      this.validationMessage = 'Select a purchase order first.';
+      this.setValidation('Select a purchase order first.');
       return;
     }
     if (!this.grn.items.length) {
-      this.validationMessage = 'No GRN lines available for receipt.';
+      this.setValidation('No GRN lines available for receipt.');
       return;
     }
     if (this.grn.items.some(x => +x.binId <= 0 || +x.quantityReceived <= 0)) {
-      this.validationMessage = 'Each GRN line needs valid bin and received quantity.';
+      this.setValidation('Each GRN line needs valid bin and received quantity.');
       return;
     }
     const payload = {
@@ -216,10 +254,10 @@ export class PurchaseComponent implements OnInit {
     this.transactions.createGoodsReceipt(payload).subscribe({
       next: () => {
         this.grn = { purchaseOrderId: 0, items: [] };
-        this.successMessage = 'GRN posted successfully.';
+        this.setSuccess('GRN posted successfully.');
         this.loadPagedData();
       },
-      error: (err) => this.error = err?.error ?? 'GRN creation failed.'
+      error: (err) => this.setError(err, 'GRN creation failed.')
     });
   }
 
@@ -236,20 +274,19 @@ export class PurchaseComponent implements OnInit {
   }
 
   createPurchaseInvoice(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.invoice.goodsReceiptNoteId) {
-      this.validationMessage = 'Select GRN before creating invoice.';
+      this.setValidation('Select GRN before creating invoice.');
       return;
     }
     const payload = { goodsReceiptNoteId: +this.invoice.goodsReceiptNoteId, dueDate: this.invoice.dueDate || null };
     this.transactions.createPurchaseInvoice(payload).subscribe({
       next: () => {
         this.invoice = { goodsReceiptNoteId: 0, dueDate: '' };
-        this.successMessage = 'Purchase invoice created.';
+        this.setSuccess('Purchase invoice created.');
         this.loadPagedData();
       },
-      error: (err) => this.error = err?.error ?? 'Purchase invoice creation failed.'
+      error: (err) => this.setError(err, 'Purchase invoice creation failed.')
     });
   }
 
@@ -267,25 +304,80 @@ export class PurchaseComponent implements OnInit {
   }
 
   createSupplierPayment(): void {
-    this.validationMessage = '';
-    this.successMessage = '';
+    this.clearMessages();
     if (!this.payment.purchaseInvoiceId) {
-      this.validationMessage = 'Select invoice before payment.';
+      this.setValidation('Select invoice before payment.');
       return;
     }
     if (this.payment.amount <= 0) {
-      this.validationMessage = 'Payment amount must be greater than 0.';
+      this.setValidation('Payment amount must be greater than 0.');
       return;
     }
     const payload = { purchaseInvoiceId: +this.payment.purchaseInvoiceId, amount: +this.payment.amount, paymentMode: this.payment.paymentMode, referenceNo: this.payment.referenceNo, notes: this.payment.notes };
     this.transactions.createSupplierPayment(payload).subscribe({
       next: () => {
         this.payment = { purchaseInvoiceId: 0, amount: 0, paymentMode: 'BANK', referenceNo: '', notes: '' };
-        this.successMessage = 'Supplier payment recorded.';
+        this.setSuccess('Supplier payment recorded.');
         this.loadPagedData();
       },
-      error: (err) => this.error = err?.error ?? 'Supplier payment failed.'
+      error: (err) => this.setError(err, 'Supplier payment failed.')
     });
+  }
+
+  vendorName(vendorId: number): string {
+    return this.data?.vendors.find((x) => +x.id === +vendorId)?.name ?? `Vendor #${vendorId}`;
+  }
+
+  warehouseName(warehouseId: number): string {
+    return this.data?.warehouses.find((x) => +x.id === +warehouseId)?.name ?? `Warehouse #${warehouseId}`;
+  }
+
+  exportPurchaseOrdersCsv(): void {
+    const headers = ['PO Number', 'Vendor', 'Warehouse', 'Status', 'Grand Total'];
+    const rows = this.purchaseOrders.map((po) => [
+      po.orderNumber,
+      this.vendorName(po.vendorId),
+      this.warehouseName(po.warehouseId),
+      po.status === 1 ? 'OPEN' : po.status === 2 ? 'LOCKED' : 'CLOSED',
+      (+po.grandTotal || 0).toFixed(2)
+    ]);
+    const csv = [headers, ...rows]
+      .map((line) => line.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `purchase-orders-page-${this.poPage}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  exportPurchaseOrdersPdf(): void {
+    const rows = this.purchaseOrders
+      .map((po) => `
+        <tr>
+          <td>${po.orderNumber ?? ''}</td>
+          <td>${this.vendorName(po.vendorId)}</td>
+          <td>${this.warehouseName(po.warehouseId)}</td>
+          <td>${po.status === 1 ? 'OPEN' : po.status === 2 ? 'LOCKED' : 'CLOSED'}</td>
+          <td>${(+po.grandTotal || 0).toFixed(2)}</td>
+        </tr>
+      `)
+      .join('');
+    const win = window.open('', '_blank');
+    if (!win) return;
+    win.document.write(`
+      <html><head><title>Purchase Orders</title>
+      <style>body{font-family:Arial,sans-serif;padding:16px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f5f5f5}</style>
+      </head><body>
+      <h2>Purchase Orders (Page ${this.poPage})</h2>
+      <p>Total Records: ${this.poTotal}</p>
+      <table><thead><tr><th>PO</th><th>Vendor</th><th>Warehouse</th><th>Status</th><th>Total</th></tr></thead><tbody>${rows}</tbody></table>
+      </body></html>
+    `);
+    win.document.close();
+    win.focus();
+    win.print();
   }
 
   nextPoPage(): void { if ((this.poPage * this.pageSize) >= this.poTotal) return; this.poPage += 1; this.loadPagedData(); }

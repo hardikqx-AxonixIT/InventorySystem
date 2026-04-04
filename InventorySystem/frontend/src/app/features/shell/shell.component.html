@@ -1,60 +1,62 @@
-<div class="shell-layout">
-  <!-- Mobile Overlay -->
+<div class="shell-layout" [class.sidebar-collapsed]="sidebarCollapsed">
   <div class="sidebar-overlay" *ngIf="menuOpen" (click)="toggleMenu()"></div>
 
-  <aside class="sidebar-panel" [class.mobile-open]="menuOpen">
+  <aside class="sidebar-panel" [class.mobile-open]="menuOpen" [class.collapsed]="sidebarCollapsed">
     <div class="brand-block" routerLink="/dashboard" (click)="closeMenuOnNavigate()" style="cursor: pointer;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
           <p class="eyebrow">Axonix ERP</p>
-          <h1>Inventory Suite</h1>
+          <h1 *ngIf="!sidebarCollapsed">Inventory Suite</h1>
         </div>
-        <button class="menu-close-btn" (click)="$event.stopPropagation(); toggleMenu()">✕</button>
+        <button class="menu-close-btn" (click)="$event.stopPropagation(); toggleMenu()">&#10006;</button>
       </div>
     </div>
 
     <nav class="nav-group">
-      <div class="nav-label">General</div>
+      <div class="nav-label" *ngIf="!sidebarCollapsed">General</div>
       <a
         *ngFor="let link of quickLinks"
         [routerLink]="link.route"
         routerLinkActive="active-link"
         class="nav-link"
-        (click)="closeMenuOnNavigate()">
-        <span class="icon-chip">{{ link.icon }}</span>
-        <span>{{ navLabel(link.label) }}</span>
+        (click)="closeMenuOnNavigate()"
+        [title]="navLabel(link.label)">
+        <span class="icon-chip" [innerHTML]="link.icon"></span>
+        <span *ngIf="!sidebarCollapsed">{{ navLabel(link.label) }}</span>
       </a>
 
-      <!-- Renamed 'Modules' to 'Workspace' and removed duplicates like Sales/Purchase -->
-      <div class="nav-label">ERP Suite</div>
+      <div class="nav-label" *ngIf="!sidebarCollapsed">ERP Suite</div>
       <ng-container *ngFor="let module of moduleLinks">
         <a
           *ngIf="module.key !== 'audit-logs' && module.key !== 'sales' && module.key !== 'purchase' && module.key !== 'dashboard' && module.key !== 'masters' && module.key !== 'mobile'"
           [routerLink]="'/' + module.key"
           routerLinkActive="active-link"
           class="nav-link"
-          (click)="closeMenuOnNavigate()">
-          <span class="icon-chip">{{ moduleIcon(module.key) }}</span>
-          <span>{{ moduleLabel(module.key, module.title) }}</span>
+          (click)="closeMenuOnNavigate()"
+          [title]="moduleLabel(module.key, module.title)">
+          <span class="icon-chip" [innerHTML]="moduleIcon(module.key)"></span>
+          <span *ngIf="!sidebarCollapsed">{{ moduleLabel(module.key, module.title) }}</span>
         </a>
       </ng-container>
 
-      <div class="nav-label">Master & Logs</div>
+      <div class="nav-label" *ngIf="!sidebarCollapsed">Master & Logs</div>
       <a
         routerLink="/masters"
         routerLinkActive="active-link"
         class="nav-link"
-        (click)="closeMenuOnNavigate()">
-        <span class="icon-chip">{{ moduleIcon('masters') }}</span>
-        <span>Master Setup</span>
+        (click)="closeMenuOnNavigate()"
+        title="Master Setup">
+        <span class="icon-chip" [innerHTML]="moduleIcon('masters')"></span>
+        <span *ngIf="!sidebarCollapsed">Master Setup</span>
       </a>
       <a
         routerLink="/audit-logs"
         routerLinkActive="active-link"
         class="nav-link"
-        (click)="closeMenuOnNavigate()">
-        <span class="icon-chip">{{ moduleIcon('audit-logs') }}</span>
-        <span>History Log</span>
+        (click)="closeMenuOnNavigate()"
+        title="History Log">
+        <span class="icon-chip" [innerHTML]="moduleIcon('audit-logs')"></span>
+        <span *ngIf="!sidebarCollapsed">History Log</span>
       </a>
     </nav>
   </aside>
@@ -63,8 +65,15 @@
     <header class="top-header">
       <div class="mobile-toggle-zone">
         <button class="menu-toggle-pill" type="button" (click)="toggleMenu()">
-          <span class="burger-icon">☰</span>
+          <span class="burger-icon">&#9776;</span>
           <span class="menu-text">Menu</span>
+        </button>
+      </div>
+
+      <div class="desktop-toggle-zone">
+        <button class="menu-toggle-pill" type="button" (click)="toggleSidebarCollapse()" title="Hide/Show menu">
+          <span class="burger-icon" *ngIf="sidebarCollapsed">&#9654;</span>
+          <span class="burger-icon" *ngIf="!sidebarCollapsed">&#9664;</span>
         </button>
       </div>
 
@@ -75,9 +84,8 @@
           <span class="u-name">Admin User</span>
           <span class="u-role">Super Admin</span>
         </div>
-        <button class="btn logout-pill" (click)="logout()">
-          <span>Logout</span>
-          <span class="logout-icon">🚪</span>
+        <button class="btn logout-pill" (click)="logout()" title="Logout">
+          <span>&#128682;</span>
         </button>
       </div>
     </header>
