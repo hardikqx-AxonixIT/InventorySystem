@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { TransactionDataService } from '../../core/services/transaction-data.service';
+import { TransactionBootstrap, TransactionDataService } from '../../core/services/transaction-data.service';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
@@ -17,6 +17,9 @@ export class ReportsComponent implements OnInit {
   report: any = null;
   ai: any = null;
   reorder: any = null;
+  profitByItem: Array<{ name: string; amount: number }> = [];
+  profitByCustomer: Array<{ name: string; amount: number }> = [];
+  deadStock: Array<{ name: string; available: number }> = [];
 
   // Chart configuration
   public lineChartData?: ChartData<'line'>;
@@ -66,6 +69,11 @@ export class ReportsComponent implements OnInit {
         this.loading = false;
       }
     });
+
+    this.transactions.getBootstrap().subscribe({
+      next: (data) => this.buildDecisionReports(data),
+      error: () => {}
+    });
   }
 
   setupCharts(data: any): void {
@@ -114,5 +122,73 @@ export class ReportsComponent implements OnInit {
   exportTallyXml(): void {
     // defaults to last month as per service
     this.transactions.downloadTallySalesXml();
+  }
+
+  private buildDecisionReports(data: TransactionBootstrap): void {
+    const products = data?.products ?? [];
+    const salesOrders = data?.salesOrders ?? [];
+    const salesInvoices = data?.salesInvoices ?? [];
+    const stockLevels = data?.stockLevels ?? [];
+    const customers = data?.customers ?? [];
+
+    const itemTotals = new Map<number, number>();
+    salesOrders.forEach((order: any) => {
+      (order.items ?? []).forEach((line: any) => {
+        const productId = +(line.productId ?? 0);
+        if (!productId) return;
+        const qty = +(line.quantity ?? 0);
+        const rate = +(line.unitPrice ?? line.rate ?? 0);
+        const estCost = rate * 0.75;
+        const profit = Math.max(0, (rate - estCost) * qty);
+        itemTotals.set(productId, (itemTotals.get(productId) ?? 0) + profit);
+      });
+    });
+
+    this.profitByItem = Array.from(itemTotals.entries())
+      .map(([productId, amount]) => ({
+        name: products.find((p: any) => p.id === productId)?.name ?? `Product #${productId}`,
+        amount
+      }))
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 8);
+
+    const customerTotals = new Map<number, number>();
+    salesInvoices.forEach((invoice: any) => {
+      const customerId = +(invoice.customerId ?? invoice.partyId ?? 0);
+      const net = +(invoice.grandTotal ?? 0);
+      const estProfit = net * 0.2;
+      if (!customerId || estProfit <= 0) return;
+      customerTotals.set(customerId, (customerTotals.get(customerId) ?? 0) + estProfit);
+    });
+
+    this.profitByCustomer = Array.from(customerTotals.entries())
+      .map(([customerId, amount]) => ({
+        name: customers.find((c: any) => c.id === customerId)?.name ?? `Customer #${customerId}`,
+        amount
+      }))
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 8);
+
+    const soldProductIds = new Set<number>();
+    salesOrders.forEach((order: any) => {
+      (order.items ?? []).forEach((line: any) => soldProductIds.add(+(line.productId ?? 0)));
+    });
+
+    const availableByProduct = new Map<number, number>();
+    stockLevels.forEach((level: any) => {
+      const productId = +(level.productId ?? 0);
+      if (!productId) return;
+      const available = +(level.availableQuantity ?? 0);
+      availableByProduct.set(productId, (availableByProduct.get(productId) ?? 0) + available);
+    });
+
+    this.deadStock = products
+      .filter((p: any) => !soldProductIds.has(+p.id) && (availableByProduct.get(+p.id) ?? 0) > 0)
+      .map((p: any) => ({
+        name: p.name,
+        available: availableByProduct.get(+p.id) ?? 0
+      }))
+      .sort((a, b) => b.available - a.available)
+      .slice(0, 10);
   }
 }

@@ -27,11 +27,27 @@ namespace InventorySystem.Domain.Entities
         public DocumentStatus Status { get; set; } = DocumentStatus.Completed;
 
         public decimal Subtotal { get; set; }
+        public decimal DiscountPercentage { get; set; }
+        public decimal DiscountAmount { get; set; }
         public decimal CgstAmount { get; set; }
         public decimal SgstAmount { get; set; }
         public decimal IgstAmount { get; set; }
         public decimal TaxTotal { get; set; }
         public decimal GrandTotal { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal BalanceAmount { get; set; }
+
+        // Indian Market specific Transport Details
+        [MaxLength(100)]
+        public string? TransporterName { get; set; }
+        
+        [MaxLength(50)]
+        public string? LRNumber { get; set; }
+        
+        [MaxLength(50)]
+        public string? VehicleNumber { get; set; }
+        
+        public DateTime? DispatchDate { get; set; }
 
         public ICollection<SalesInvoiceItem> Items { get; set; } = new List<SalesInvoiceItem>();
     }

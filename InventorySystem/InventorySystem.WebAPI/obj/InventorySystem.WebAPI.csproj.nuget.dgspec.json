@@ -194,6 +194,10 @@
               "target": "Package",
               "version": "[6.0.25, )"
             },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[6.0.25, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[6.0.25, )"
@@ -262,6 +266,9 @@
               "F:\\Axonix\\.net project\\InventorySystem\\InventorySystem.Application\\InventorySystem.Application.csproj": {
                 "projectPath": "F:\\Axonix\\.net project\\InventorySystem\\InventorySystem.Application\\InventorySystem.Application.csproj"
               },
+              "F:\\Axonix\\.net project\\InventorySystem\\InventorySystem.Domain\\InventorySystem.Domain.csproj": {
+                "projectPath": "F:\\Axonix\\.net project\\InventorySystem\\InventorySystem.Domain\\InventorySystem.Domain.csproj"
+              },
               "F:\\Axonix\\.net project\\InventorySystem\\InventorySystem.Infrastructure\\InventorySystem.Infrastructure.csproj": {
                 "projectPath": "F:\\Axonix\\.net project\\InventorySystem\\InventorySystem.Infrastructure\\InventorySystem.Infrastructure.csproj"
               }
@@ -293,6 +300,14 @@
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.25, )"
+            },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[6.0.25, )"
+            },
+            "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.25, )"
             },

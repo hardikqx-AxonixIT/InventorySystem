@@ -65,6 +65,8 @@ namespace InventorySystem.Infrastructure.Data
         public DbSet<GstEInvoiceRecord> GstEInvoiceRecords { get; set; } = null!;
         public DbSet<GstEWayBillRecord> GstEWayBillRecords { get; set; } = null!;
         public DbSet<PaymentGatewayCallbackLog> PaymentGatewayCallbackLogs { get; set; } = null!;
+        public DbSet<TenantSubscriptionRecord> TenantSubscriptions { get; set; } = null!;
+        public DbSet<CommercialLicenseRecord> CommercialLicenses { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -500,6 +502,20 @@ namespace InventorySystem.Infrastructure.Data
             builder.Entity<GstEWayBillRecord>().Property(p => p.DistanceKm).HasPrecision(18, 2);
             builder.Entity<JournalVoucherLine>().Property(p => p.Debit).HasPrecision(18, 2);
             builder.Entity<JournalVoucherLine>().Property(p => p.Credit).HasPrecision(18, 2);
+
+            builder.Entity<TenantSubscriptionRecord>()
+                .ToTable("TenantSubscriptions")
+                .HasIndex(x => x.TenantId)
+                .IsUnique();
+
+            builder.Entity<CommercialLicenseRecord>()
+                .ToTable("CommercialLicenses")
+                .HasIndex(x => x.LicenseKey)
+                .IsUnique();
+
+            builder.Entity<StockBatchDetail>().Property(x => x.UnitCost).HasPrecision(18, 4);
+            builder.Entity<StockBatchDetail>().Property(x => x.Quantity).HasPrecision(18, 4);
+            builder.Entity<SalesInvoiceItem>().Property(x => x.CogsAmount).HasPrecision(18, 2);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

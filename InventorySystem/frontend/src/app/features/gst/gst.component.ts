@@ -20,6 +20,7 @@ export class GstComponent implements OnInit {
   eWayForm = { salesInvoiceId: 0, vehicleNumber: '', distanceKm: 120 };
   eInvoiceResult: any = null;
   eWayResult: any = null;
+  automationMessage = '';
 
   constructor(private transactions: TransactionDataService) {}
 
@@ -60,6 +61,13 @@ export class GstComponent implements OnInit {
     this.transactions.generateEWayBill(this.eWayForm).subscribe({
       next: (data) => this.eWayResult = data,
       error: (err) => this.error = err?.error ?? 'E-way bill generation failed.'
+    });
+  }
+
+  fileGstViaGsp(): void {
+    this.transactions.fileGstViaGsp(this.filter).subscribe({
+      next: (res) => this.automationMessage = res?.note ?? 'GST filing request sent.',
+      error: (err) => this.error = err?.error ?? 'GST filing via GSP failed.'
     });
   }
 }

@@ -1,0 +1,45 @@
+
+> frontend@0.0.0 start
+> ng serve "--host" "0.0.0.0" "--port" "4200"
+
+
+Initial Chunk Files                                                          | Names                                                          |  Raw Size
+vendor.js                                                                    | vendor                                                         |   2.42 MB |
+polyfills.js                                                                 | polyfills                                                      | 238.51 kB |
+styles.css, styles.js                                                        | styles                                                         | 135.73 kB |
+main.js                                                                      | main                                                           |  96.03 kB |
+runtime.js                                                                   | runtime                                                        |  12.59 kB |
+
+| Initial Total                                                  |   2.89 MB
+
+Lazy Chunk Files                                                             | Names                                                          |  Raw Size
+src_app_features_reports_reports_component_ts.js                             | features-reports-reports-component                             | 643.89 kB |
+src_app_features_sales_sales_component_ts.js                                 | features-sales-sales-component                                 | 136.82 kB |
+src_app_features_masters_master-data_component_ts.js                         | features-masters-master-data-component                         | 118.87 kB |
+src_app_features_purchase_purchase_component_ts.js                           | features-purchase-purchase-component                           |  93.03 kB |
+src_app_features_warehouse_warehouse_component_ts.js                         | features-warehouse-warehouse-component                         |  75.06 kB |
+src_app_features_inventory_inventory-list_inventory-list_component_ts.js     | features-inventory-inventory-list-inventory-list-component     |  67.03 kB |
+src_app_features_manufacturing_manufacturing_component_ts.js                 | features-manufacturing-manufacturing-component                 |  59.80 kB |
+src_app_features_accounting_accounting_component_ts.js                       | features-accounting-accounting-component                       |  58.01 kB |
+src_app_features_users_users_component_ts.js                                 | features-users-users-component                                 |  55.96 kB |
+src_app_features_dashboard_dashboard_component_ts.js                         | features-dashboard-dashboard-component                         |  40.55 kB |
+src_app_features_gst_gst_component_ts.js                                     | features-gst-gst-component                                     |  39.68 kB |
+src_app_features_pos_pos_component_ts.js                                     | features-pos-pos-component                                     |  38.66 kB |
+src_app_features_inventory_adjustments_inventory-adjustments_component_ts.js | features-inventory-adjustments-inventory-adjustments-component |  36.61 kB |
+src_app_features_integrations_integrations_component_ts.js                   | features-integrations-integrations-component                   |  36.02 kB |
+src_app_features_inventory_stock-history_stock-history_component_ts.js       | features-inventory-stock-history-stock-history-component       |  20.79 kB |
+src_app_features_audit-logs_audit-logs_component_ts.js                       | features-audit-logs-audit-logs-component                       |  19.42 kB |
+src_app_features_mobile_mobile_component_ts.js                               | features-mobile-mobile-component                               |  13.68 kB |
+default-src_app_core_services_transaction-data_service_ts.js                 | features-dashboard-dashboard-component                         |  11.99 kB |
+common.js                                                                    | common                                                         |   9.18 kB |
+src_app_features_onboarding_onboarding_component_ts.js                       | features-onboarding-onboarding-component                       |   5.65 kB |
+src_app_features_legal_gst-disclaimer_component_ts.js                        | features-legal-gst-disclaimer-component                        |   3.18 kB |
+src_app_features_legal_terms_component_ts.js                                 | features-legal-terms-component                                 |   2.97 kB |
+src_app_features_legal_privacy_component_ts.js                               | features-legal-privacy-component                               |   2.97 kB |
+
+Build at: 2026-04-04T19:46:24.192Z - Hash: 1ae0c09df92f2981 - Time: 58462ms
+
+** Angular Live Development Server is listening on 0.0.0.0:4200, open your browser on http://localhost:4200/ **
+
+
+√ Compiled successfully.

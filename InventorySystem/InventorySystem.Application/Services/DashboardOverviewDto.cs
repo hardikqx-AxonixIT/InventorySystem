@@ -19,6 +19,10 @@ namespace InventorySystem.Application.Services
         public int PendingAdjustments { get; set; }
         public int LowStockItems { get; set; }
         public decimal InventoryValueEstimate { get; set; }
+        public decimal TotalReceivables { get; set; }
+        public decimal TotalPayables { get; set; }
+        public decimal CashBalance { get; set; }
+        public decimal TodaySales { get; set; }
     }
 
     public class DashboardModuleDto

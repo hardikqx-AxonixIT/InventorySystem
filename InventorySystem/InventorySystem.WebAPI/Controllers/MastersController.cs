@@ -11,6 +11,7 @@ namespace InventorySystem.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MastersController : ControllerBase
     {
         private readonly IApplicationDbContext _context;
@@ -20,7 +21,6 @@ namespace InventorySystem.WebAPI.Controllers
             _context = context;
         }
 
-        [AllowAnonymous]
         [HttpGet("bootstrap")]
         public async Task<IActionResult> GetBootstrap(CancellationToken cancellationToken)
         {
@@ -453,3 +453,5 @@ namespace InventorySystem.WebAPI.Controllers
         public bool IsActive { get; set; }
     }
 }
+
+

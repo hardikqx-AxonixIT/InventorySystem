@@ -34,6 +34,22 @@ namespace InventorySystem.Application.Services
                     (stock, product) => stock.QuantityOnHand * product.PurchasePrice)
                 .SumAsync(cancellationToken);
 
+            var today = System.DateTime.UtcNow.Date;
+            
+            var totalReceivables = await _context.SalesInvoices
+                .Where(x => x.Status != DocumentStatus.Cancelled && x.BalanceAmount > 0)
+                .SumAsync(x => x.BalanceAmount, cancellationToken);
+                
+            var totalPayables = await _context.PurchaseInvoices
+                .Where(x => x.Status != DocumentStatus.Cancelled && x.BalanceAmount > 0)
+                .SumAsync(x => x.BalanceAmount, cancellationToken);
+                
+            var todaySales = await _context.SalesInvoices
+                .Where(x => x.Status != DocumentStatus.Cancelled && x.InvoiceDate.Date == today)
+                .SumAsync(x => x.GrandTotal, cancellationToken);
+
+            var cashBalance = 150000m; // Mocked Cash Balance for MVP Dashboard
+
             return new DashboardOverviewDto
             {
                 Kpis = new DashboardKpiDto
@@ -42,7 +58,11 @@ namespace InventorySystem.Application.Services
                     ActiveWarehouses = activeWarehouses,
                     PendingAdjustments = pendingAdjustments,
                     LowStockItems = lowStockItems,
-                    InventoryValueEstimate = inventoryValueEstimate
+                    InventoryValueEstimate = inventoryValueEstimate,
+                    TotalReceivables = totalReceivables,
+                    TotalPayables = totalPayables,
+                    TodaySales = todaySales,
+                    CashBalance = cashBalance
                 },
                 Modules = BuildModules(),
                 Integrations = new List<string>

@@ -24,5 +24,8 @@ namespace InventorySystem.Domain.Entities
         public decimal SgstAmount { get; set; }
         public decimal IgstAmount { get; set; }
         public decimal LineTotal { get; set; }
+
+        /// <summary>COGS for this line (FIFO, pre-tax) captured at invoice time.</summary>
+        public decimal CogsAmount { get; set; }
     }
 }

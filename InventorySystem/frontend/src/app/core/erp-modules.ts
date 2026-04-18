@@ -68,12 +68,13 @@ export const ERP_MODULES: ErpModuleDefinition[] = [
     metrics: [
       { label: 'Flow', value: 'Quotation -> Order -> Delivery -> Invoice' },
       { label: 'Dispatch mode', value: 'Pick, pack, dispatch ready' },
-      { label: 'Collections', value: 'Outstanding visibility planned' }
+      { label: 'Retail mode', value: 'Quick invoice and POS ready' }
     ],
     workflows: [
       'Prepare quotation with tax and pricing.',
       'Convert approved quote into a sales order.',
-      'Generate delivery challan and invoice.'
+      'Generate delivery challan and invoice.',
+      'Use quick invoice mode to reduce sales flow steps for counter billing.'
     ],
     sampleRecords: [
       { label: 'Quotation', value: 'QT-2026-0044' },
@@ -86,7 +87,7 @@ export const ERP_MODULES: ErpModuleDefinition[] = [
     title: 'GST & Billing',
     subtitle: 'India-specific tax, invoice, and compliance features.',
     status: 'Active',
-    summary: 'Supports CGST, SGST, IGST, HSN/SAC, e-invoice hooks, e-way bill hooks, and return-oriented reporting.',
+    summary: 'Supports CGST, SGST, IGST, HSN/SAC, direct GSP filing readiness, NIC e-invoice flow, e-way bill generation, and return-oriented reporting.',
     metrics: [
       { label: 'Tax logic', value: 'CGST / SGST / IGST' },
       { label: 'Compliance', value: 'HSN and GST reports' },
@@ -95,7 +96,8 @@ export const ERP_MODULES: ErpModuleDefinition[] = [
     workflows: [
       'Apply intra-state or inter-state GST automatically.',
       'Print GST-compliant sales invoices.',
-      'Prepare data for GSTR-1 and GSTR-3B.'
+      'Prepare data for GSTR-1 and GSTR-3B.',
+      'Use direct GST filing and NIC integration mode when provider credentials are configured.'
     ],
     sampleRecords: [
       { label: 'HSN sample', value: '3004 / 8504' },
@@ -117,7 +119,8 @@ export const ERP_MODULES: ErpModuleDefinition[] = [
     workflows: [
       'Post sales and purchase vouchers automatically.',
       'Track receivable and payable ageing.',
-      'Export ledger summaries to Tally.'
+      'Run customer outstanding aging with overdue interest computation.',
+      'Trigger WhatsApp payment reminders and export ledger summaries to Tally.'
     ],
     sampleRecords: [
       { label: 'Receivable ageing', value: 'INR 2.45L pending' },
@@ -177,13 +180,13 @@ export const ERP_MODULES: ErpModuleDefinition[] = [
     summary: 'Designed for low stock alerts, sales/purchase insights, ageing, valuation, profitability, and forecasting.',
     metrics: [
       { label: 'Reports', value: 'Stock, sales, purchase, valuation' },
-      { label: 'Alerts', value: 'Low stock and fast/slow moving' },
+      { label: 'Alerts', value: 'Low stock, fast/slow, dead stock' },
       { label: 'Future', value: 'Demand forecast and AI reorder' }
     ],
     workflows: [
       'Monitor low stock and reorder candidates.',
       'Review fast-moving vs slow-moving products.',
-      'Track gross margin and inventory value.'
+      'Track profit by item, profit by customer, and inventory value.'
     ],
     sampleRecords: [
       { label: 'Low stock alert', value: '3 items below threshold' },
@@ -240,16 +243,19 @@ export const ERP_MODULES: ErpModuleDefinition[] = [
     title: 'Integrations',
     subtitle: 'Provider APIs for communication and payments.',
     status: 'Active',
-    summary: 'Centralized integration workspace for WhatsApp invoice delivery and Razorpay/UPI payment lifecycle.',
+    summary: 'Centralized integration workspace for Tally sync, WhatsApp invoice delivery, Razorpay/UPI lifecycle, backup safety controls, and SaaS monetization setup.',
     metrics: [
-      { label: 'Channels', value: 'WhatsApp and Razorpay' },
+      { label: 'Channels', value: 'Tally, WhatsApp, Razorpay' },
       { label: 'Security', value: 'Callback signature verification' },
-      { label: 'Use case', value: 'Collections and customer communication' }
+      { label: 'Use case', value: 'Collections, sync, and monetization' }
     ],
     workflows: [
+      'Export sales and ledger data to Tally XML.',
+      'Import masters and sync ledger/vouchers with Tally connector.',
       'Send invoice to customer on WhatsApp.',
       'Create payment orders with Razorpay API.',
-      'Verify payment callback signatures.'
+      'Verify payment callback signatures.',
+      'Configure subscription plans, trial period, and license keys.'
     ],
     sampleRecords: [
       { label: 'WhatsApp flow', value: 'Invoice -> send confirmation' },

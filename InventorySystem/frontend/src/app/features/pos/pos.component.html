@@ -3,6 +3,11 @@
     <p class="eyebrow">POS Billing</p>
     <h2>Barcode Billing Counter</h2>
     <p>Scan barcode, bill instantly, share invoice on WhatsApp, and collect UPI payment.</p>
+    <div class="actions">
+      <button class="btn btn-secondary" type="button" disabled>Keyboard-first billing</button>
+      <button class="btn btn-secondary" type="button" disabled>Thermal printer mode</button>
+      <button class="btn btn-secondary" type="button" (click)="quickCheckout()">Quick invoice screen</button>
+    </div>
   </div>
 
   <div class="message-card error" *ngIf="error">{{ error }}</div>
@@ -27,6 +32,12 @@
       <input type="number" [(ngModel)]="scanQty" placeholder="Qty" />
       <button class="btn btn-primary" type="button" (click)="scanBarcode()">Add</button>
     </div>
+    <div class="actions">
+      <select [(ngModel)]="activeProfile">
+        <option *ngFor="let profile of retailProfiles" [ngValue]="profile">{{ profile }}</option>
+      </select>
+      <span class="muted">Profile: {{ activeProfile }} billing settings</span>
+    </div>
   </section>
 
   <section class="content-card">
@@ -50,6 +61,7 @@
       <strong>Subtotal: {{ subtotal() | number:'1.2-2' }}</strong>
       <button class="btn btn-primary" type="button" (click)="checkout()">Generate Invoice</button>
     </div>
+    <p class="muted">Barcode scan + Enter adds item instantly. Use quick invoice for reduced steps.</p>
   </section>
 
   <section class="content-card" *ngIf="lastInvoice">
@@ -58,9 +70,12 @@
     <div class="actions">
       <a class="btn btn-secondary" [href]="whatsappLink" target="_blank">Send WhatsApp Invoice</a>
       <a class="btn btn-primary" [href]="upiLink">Pay via UPI</a>
+      <button class="btn btn-secondary" type="button" (click)="printGstInvoice()">Print GST invoice</button>
     </div>
     <p class="muted">UPI link can be opened in any installed UPI app.</p>
   </section>
+
+  <div class="message-card" *ngIf="shortcutMessage">{{ shortcutMessage }}</div>
 </section>
 
 <div class="message-card" *ngIf="loading">Loading POS...</div>

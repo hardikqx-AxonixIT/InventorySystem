@@ -11,33 +11,52 @@
     </div>
   </div>
 
+  <div class="quick-actions-row">
+    <button class="action-btn" routerLink="/sales/new">
+      <span class="action-icon">📄</span>
+      <span class="action-label">Add Sale</span>
+    </button>
+    <button class="action-btn" routerLink="/purchase/new">
+      <span class="action-icon">🛒</span>
+      <span class="action-label">Add Purchase</span>
+    </button>
+    <button class="action-btn" routerLink="/payments/in">
+      <span class="action-icon">💵</span>
+      <span class="action-label">Payment In</span>
+    </button>
+    <button class="action-btn" routerLink="/accounting/journal" [queryParams]="{type: 'Expense'}">
+      <span class="action-icon">💸</span>
+      <span class="action-label">Add Expense</span>
+    </button>
+  </div>
+
   <div class="kpi-grid" *ngIf="overview">
+    <div class="glass-card kpi-card" style="border-left: 4px solid var(--success);">
+      <span class="kpi-label">To Collect</span>
+      <strong class="kpi-value" style="color: var(--success);">{{ overview.kpis.totalReceivables | currency:'INR' }}</strong>
+      <div class="kpi-trend">
+        <span>🕒</span> Outstanding Receivables
+      </div>
+    </div>
+    <div class="glass-card kpi-card" style="border-left: 4px solid var(--danger);">
+      <span class="kpi-label">To Pay</span>
+      <strong class="kpi-value" style="color: var(--danger);">{{ overview.kpis.totalPayables | currency:'INR' }}</strong>
+      <div class="kpi-trend">
+        <span>⚠️</span> Outstanding Payables
+      </div>
+    </div>
     <div class="glass-card kpi-card">
-      <span class="kpi-label">Month Revenue</span>
-      <strong class="kpi-value">{{ overview.kpis.totalRevenue | currency:'INR' }}</strong>
+      <span class="kpi-label">Cash & Bank Balance</span>
+      <strong class="kpi-value">{{ overview.kpis.cashBalance | currency:'INR' }}</strong>
       <div class="kpi-trend trend-up">
-        <span>↑</span> 12% vs last month
+        <span>💰</span> Liquid Assets
       </div>
     </div>
     <div class="glass-card kpi-card">
-      <span class="kpi-label">Active Orders</span>
-      <strong class="kpi-value">{{ overview.kpis.pendingSalesOrders }}</strong>
-      <div class="kpi-trend trend-down">
-        <span>↓</span> 3% slower today
-      </div>
-    </div>
-    <div class="glass-card kpi-card">
-      <span class="kpi-label">Products Low</span>
-      <strong class="kpi-value">{{ overview.kpis.lowStockAlerts }}</strong>
-      <div class="kpi-trend" [class.trend-down]="overview.kpis.lowStockAlerts > 5">
-        <span>⚠️</span> Needs Attention
-      </div>
-    </div>
-    <div class="glass-card kpi-card" style="box-shadow: 0 0 40px rgba(16, 185, 129, 0.1)">
-      <span class="kpi-label">Net Profit Margin</span>
-      <strong class="kpi-value">22.4%</strong>
+      <span class="kpi-label">Today's Sales</span>
+      <strong class="kpi-value">{{ overview.kpis.todaySales | currency:'INR' }}</strong>
       <div class="kpi-trend trend-up">
-        <span>↑</span> Peak Performance
+        <span>📈</span> Sales Generated Today
       </div>
     </div>
   </div>
@@ -45,7 +64,7 @@
   <div class="dashboard-sections">
     <div class="glass-card section-card">
       <div class="section-header">
-        <h3 class="section-title">Sales Activity</h3>
+        <h3 class="section-title">Recent Transactions</h3>
         <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem">View All</button>
       </div>
       <div class="data-list">
@@ -81,24 +100,24 @@
       </div>
     </div>
 
+    <!-- AI Business Insights intentionally hidden for MVP to reduce clutter
     <div class="glass-card section-card ai-card">
+      ...
+    </div>
+    -->
+
+    <div class="glass-card section-card readiness-card">
       <div class="section-header">
-         <h3 class="section-title" style="color: var(--accent-secondary)">AI Business Insights</h3>
-         <span class="status-badge" style="background: rgba(139, 92, 246, 0.2); color: #fff;">Beta</span>
+        <h3 class="section-title">Requested Feature Checklist</h3>
+        <span class="status-badge">In Progress</span>
       </div>
-      <div class="ai-grid">
-         <div class="ai-insight">
-            <h4>Predictive Restock</h4>
-            <p><strong>Wireless Earbuds</strong> likely to sell out in <strong>4 days</strong> based on seasonal trend.</p>
-         </div>
-         <div class="ai-insight">
-            <h4>Customer Behavior</h4>
-            <p>70% of new customers from <strong>Bangalore</strong> prefer Cash on Delivery for higher-value orders.</p>
-         </div>
-         <div class="ai-insight">
-            <h4>Profit Optimization</h4>
-            <p>Increasing <strong>Mobile Accessories</strong> bundle price by <strong>5%</strong> won't impact conversion.</p>
-         </div>
+      <div class="readiness-grid">
+        <article class="readiness-group" *ngFor="let group of readinessGroups">
+          <h4>{{ group.title }}</h4>
+          <ul>
+            <li *ngFor="let item of group.items">{{ item }}</li>
+          </ul>
+        </article>
       </div>
     </div>
   </div>

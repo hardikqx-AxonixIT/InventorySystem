@@ -1,17 +1,33 @@
 <section class="inventory-page" *ngIf="data as vm">
   <div class="header-card">
-    <p class="eyebrow">Inventory</p>
-    <h2>Live stock operations</h2>
-    <p>Run stock in, stock out, and bin transfers with immediate updates in stock levels.</p>
+    <div>
+      <p class="eyebrow">Inventory</p>
+      <h2>Stock Control Center</h2>
+      <p>Track stock movement, monitor bin balances, and access product details from one workspace.</p>
+    </div>
+    <div class="header-metrics" *ngIf="!loading && !error">
+      <article class="metric-card">
+        <p>Total Products</p>
+        <strong>{{ vm.products.length }}</strong>
+      </article>
+      <article class="metric-card">
+        <p>Stock Rows</p>
+        <strong>{{ vm.stockLevels.length }}</strong>
+      </article>
+      <article class="metric-card">
+        <p>Bins Covered</p>
+        <strong>{{ vm.bins.length }}</strong>
+      </article>
+    </div>
   </div>
 
   <div class="message-card" *ngIf="loading">Loading inventory records...</div>
   <div class="message-card error" *ngIf="error">{{ error }}</div>
 
   <div class="tab-bar">
-    <button class="btn btn-secondary" (click)="activeTab='operations'">Operations</button>
-    <button class="btn btn-secondary" (click)="activeTab='stock'">Stock Levels</button>
-    <button class="btn btn-secondary" (click)="activeTab='products'">Product Master</button>
+    <button class="btn btn-secondary tab-btn" [class.active]="activeTab==='operations'" (click)="activeTab='operations'">Operations</button>
+    <button class="btn btn-secondary tab-btn" [class.active]="activeTab==='stock'" (click)="activeTab='stock'">Stock Levels</button>
+    <button class="btn btn-secondary tab-btn" [class.active]="activeTab==='products'" (click)="activeTab='products'">Product Master</button>
   </div>
 
   <div class="ops-grid" *ngIf="activeTab==='operations'">
@@ -72,31 +88,36 @@
   </div>
 
   <div class="inventory-table-card" *ngIf="!loading && !error && activeTab==='stock'">
-    <h3>Stock Levels</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Bin</th>
-          <th>On Hand</th>
-          <th>Reserved</th>
-          <th>Available</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let level of pagedRows(vm.stockLevels, stockPage)">
-          <td>{{ level.productName || level.productId }}</td>
-          <td>{{ level.binCode || level.binId }}</td>
-          <td>{{ level.quantityOnHand | number:'1.0-2' }}</td>
-          <td>{{ level.reservedQuantity | number:'1.0-2' }}</td>
-          <td>{{ level.availableQuantity | number:'1.0-2' }}</td>
-          <td>
-            <a class="link-action" [routerLink]="['/inventory/history', level.productId]">View History</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-title">
+      <h3>Stock Levels</h3>
+      <small>Page {{ stockPage }}</small>
+    </div>
+    <div class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Bin</th>
+            <th>On Hand</th>
+            <th>Reserved</th>
+            <th>Available</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let level of pagedRows(vm.stockLevels, stockPage)">
+            <td data-label="Product">{{ level.productName || level.productId }}</td>
+            <td data-label="Bin">{{ level.binCode || level.binId }}</td>
+            <td data-label="On Hand">{{ level.quantityOnHand | number:'1.0-2' }}</td>
+            <td data-label="Reserved">{{ level.reservedQuantity | number:'1.0-2' }}</td>
+            <td data-label="Available">{{ level.availableQuantity | number:'1.0-2' }}</td>
+            <td data-label="Actions">
+              <a class="link-action" [routerLink]="['/inventory/history', level.productId]">View History</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="pager">
       <span>Total {{ vm.stockLevels.length }} | Page {{ stockPage }}</span>
       <button class="btn btn-secondary" [disabled]="stockPage <= 1" (click)="prevStockPage()">Prev</button>
@@ -105,41 +126,46 @@
   </div>
 
   <div class="inventory-table-card" *ngIf="!loading && !error && activeTab==='products'">
-    <h3>Product Master</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>SKU</th>
-          <th>Name</th>
-          <th>GST %</th>
-          <th>Price (₹)</th>
-          <th>Reorder</th>
-          <th>Stock Detail</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of pagedRows(vm.products, productsPage)">
-          <td data-label="SKU">{{ item.sku }}</td>
-          <td data-label="Product">{{ item.name }}<br/><small>{{ item.brand || '' }} | HSN: {{ item.hsnCode }}</small></td>
-          <td data-label="GST %">{{ item.gstRate }}%</td>
-          <td data-label="Price"><strong>₹ {{ item.salesPrice | number:'1.2-2' }}</strong></td>
-          <td data-label="Reorder">{{ item.reorderLevel }}</td>
-          <td data-label="Detail">
-            <small>
-              <span *ngIf="item.trackBatch" class="pill">Batch</span>
-              <span *ngIf="item.trackSerial" class="pill">Serial</span>
-              <span class="pill">{{ item.trackExpiry ? 'Expiry' : 'Std' }}</span>
-            </small>
-          </td>
-          <td data-label="Actions">
-            <div class="action-items">
-              <a class="link-action" [routerLink]="['/inventory/history', item.id]">History</a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-title">
+      <h3>Product Master</h3>
+      <small>Page {{ productsPage }}</small>
+    </div>
+    <div class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Name</th>
+            <th>GST %</th>
+            <th>Price (&#8377;)</th>
+            <th>Reorder</th>
+            <th>Stock Detail</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of pagedRows(vm.products, productsPage)">
+            <td data-label="SKU">{{ item.sku }}</td>
+            <td data-label="Product">{{ item.name }}<br /><small>{{ item.brand || '' }} | HSN: {{ item.hsnCode }}</small></td>
+            <td data-label="GST %">{{ item.gstRate }}%</td>
+            <td data-label="Price"><strong>&#8377; {{ item.salesPrice | number:'1.2-2' }}</strong></td>
+            <td data-label="Reorder">{{ item.reorderLevel }}</td>
+            <td data-label="Detail">
+              <small>
+                <span *ngIf="item.trackBatch" class="pill">Batch</span>
+                <span *ngIf="item.trackSerial" class="pill">Serial</span>
+                <span class="pill">{{ item.trackExpiry ? 'Expiry' : 'Std' }}</span>
+              </small>
+            </td>
+            <td data-label="Actions">
+              <div class="action-items">
+                <a class="link-action" [routerLink]="['/inventory/history', item.id]">History</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="pager">
       <span>Total {{ vm.products.length }} | Page {{ productsPage }}</span>
       <button class="btn btn-secondary" [disabled]="productsPage <= 1" (click)="prevProductsPage()">Prev</button>

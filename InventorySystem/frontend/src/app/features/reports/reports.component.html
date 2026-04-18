@@ -15,6 +15,8 @@
     <article class="kpi-card"><span>Sales Total</span><strong>{{ report.salesTotal | number:'1.2-2' }}</strong></article>
     <article class="kpi-card"><span>Purchase Total</span><strong>{{ report.purchaseTotal | number:'1.2-2' }}</strong></article>
     <article class="kpi-card"><span>Margin Estimate</span><strong>{{ report.grossMarginEstimate | number:'1.2-2' }}</strong></article>
+    <article class="kpi-card" *ngIf="report.totalCogs != null"><span>COGS (FIFO)</span><strong>{{ report.totalCogs | number:'1.2-2' }}</strong></article>
+    <article class="kpi-card" *ngIf="report.grossProfitCogsAccurate != null"><span>Gross profit (COGS)</span><strong>{{ report.grossProfitCogsAccurate | number:'1.2-2' }}</strong></article>
     <article class="kpi-card"><span>Low Stock SKUs</span><strong>{{ report.lowStock.length }}</strong></article>
   </div>
 
@@ -35,6 +37,26 @@
   </div>
 
   <div class="grid" *ngIf="report && !error">
+    <section class="content-card">
+      <p class="eyebrow">Profit by item</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let item of profitByItem">
+          <strong>{{ item.name }}</strong>
+          <span>Estimated profit {{ item.amount | number:'1.2-2' }}</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-card">
+      <p class="eyebrow">Profit by customer</p>
+      <div class="record-list">
+        <article class="record-card" *ngFor="let customer of profitByCustomer">
+          <strong>{{ customer.name }}</strong>
+          <span>Estimated profit {{ customer.amount | number:'1.2-2' }}</span>
+        </article>
+      </div>
+    </section>
+
     <section class="content-card">
       <p class="eyebrow">Fast moving</p>
       <div class="record-list">
@@ -66,6 +88,21 @@
               <td>{{ item.name }}</td>
               <td>{{ item.available }}</td>
               <td>{{ item.reorderLevel }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-card full-width">
+      <p class="eyebrow">Dead stock</p>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Product</th><th>Available Qty</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let item of deadStock">
+              <td>{{ item.name }}</td>
+              <td>{{ item.available | number:'1.0-2' }}</td>
             </tr>
           </tbody>
         </table>

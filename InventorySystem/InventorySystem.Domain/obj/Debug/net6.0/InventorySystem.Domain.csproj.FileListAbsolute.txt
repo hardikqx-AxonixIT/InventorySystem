@@ -13,3 +13,6 @@ F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\I
 F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\refint\InventorySystem.Domain.dll
 F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\InventorySystem.Domain.pdb
 F:\Axonix\.net project\InventorySystem\InventorySystem.Domain\obj\Debug\net6.0\ref\InventorySystem.Domain.dll
+F:\Axonix\.net project\InventorySystem\artifacts\webapi-out\InventorySystem.Domain.deps.json
+F:\Axonix\.net project\InventorySystem\artifacts\webapi-out\InventorySystem.Domain.dll
+F:\Axonix\.net project\InventorySystem\artifacts\webapi-out\InventorySystem.Domain.pdb

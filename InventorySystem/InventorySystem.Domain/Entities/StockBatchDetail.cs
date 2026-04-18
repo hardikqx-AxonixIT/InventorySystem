@@ -18,6 +18,9 @@ namespace InventorySystem.Domain.Entities
 
         public decimal Quantity { get; set; }
 
+        /// <summary>Pre-tax unit cost for FIFO/COGS (typically matches PO unit price).</summary>
+        public decimal UnitCost { get; set; }
+
         public bool IsActive { get; set; } = true;
     }
 }

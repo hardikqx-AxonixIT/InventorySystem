@@ -6,11 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace InventorySystem.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "SuperAdmin")]
     public class UserManagementController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,7 +24,6 @@ namespace InventorySystem.WebAPI.Controllers
             _roleManager = roleManager;
         }
 
-        [AllowAnonymous]
         [HttpGet("roles")]
         public async Task<IActionResult> GetRoles()
         {
@@ -30,7 +31,6 @@ namespace InventorySystem.WebAPI.Controllers
             return Ok(roles);
         }
 
-        [AllowAnonymous]
         [HttpGet("users")]
         public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 25, [FromQuery] string? search = null)
         {
@@ -61,7 +61,8 @@ namespace InventorySystem.WebAPI.Controllers
                     user.Id,
                     user.Email,
                     user.FullName,
-                    Roles = roles
+                    Roles = roles,
+                    IsActive = !user.LockoutEnabled || user.LockoutEnd == null || user.LockoutEnd <= DateTimeOffset.UtcNow
                 });
             }
 
@@ -74,7 +75,6 @@ namespace InventorySystem.WebAPI.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpPost("users")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
@@ -102,6 +102,91 @@ namespace InventorySystem.WebAPI.Controllers
 
             return Ok(new { user.Id, user.Email, user.FullName, request.Role });
         }
+
+        [HttpPut("users/{id}")]
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UpdateUserRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound("User not found.");
+
+            if (!string.IsNullOrWhiteSpace(request.Email))
+            {
+                var normalizedEmail = request.Email.Trim();
+                var existing = await _userManager.FindByEmailAsync(normalizedEmail);
+                if (existing != null && existing.Id != user.Id)
+                {
+                    return BadRequest("Email already in use by another user.");
+                }
+
+                user.Email = normalizedEmail;
+                user.UserName = normalizedEmail;
+            }
+
+            user.FullName = request.FullName?.Trim();
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return BadRequest(string.Join("; ", updateResult.Errors.Select(x => x.Description)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Role))
+            {
+                if (!await _roleManager.RoleExistsAsync(request.Role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(request.Role));
+                }
+
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                if (currentRoles.Any())
+                {
+                    await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                }
+                await _userManager.AddToRoleAsync(user, request.Role);
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return Ok(new
+            {
+                user.Id,
+                user.Email,
+                user.FullName,
+                Roles = roles
+            });
+        }
+
+        [HttpPost("users/{id}/deactivate")]
+        public async Task<IActionResult> DeactivateUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound("User not found.");
+
+            user.LockoutEnabled = true;
+            user.LockoutEnd = DateTimeOffset.UtcNow.AddYears(100);
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(string.Join("; ", result.Errors.Select(x => x.Description)));
+            }
+
+            return Ok(new { success = true, user.Id, IsActive = false });
+        }
+
+        [HttpPost("users/{id}/activate")]
+        public async Task<IActionResult> ActivateUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound("User not found.");
+
+            user.LockoutEnd = null;
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(string.Join("; ", result.Errors.Select(x => x.Description)));
+            }
+
+            return Ok(new { success = true, user.Id, IsActive = true });
+        }
     }
 
     public class CreateUserRequest
@@ -111,4 +196,13 @@ namespace InventorySystem.WebAPI.Controllers
         public string? FullName { get; set; }
         public string? Role { get; set; }
     }
+
+    public class UpdateUserRequest
+    {
+        public string Email { get; set; } = string.Empty;
+        public string? FullName { get; set; }
+        public string? Role { get; set; }
+    }
 }
+
+

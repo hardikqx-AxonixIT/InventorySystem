@@ -14,8 +14,20 @@ namespace InventorySystem.Infrastructure.DependencyInjection
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var useInMemory = configuration.GetValue<bool>("Testing:UseInMemoryDatabase");
+            var inMemoryName = configuration["Testing:InMemoryDatabaseName"] ?? "InventoryTests";
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            {
+                if (useInMemory)
+                {
+                    options.UseInMemoryDatabase(inMemoryName);
+                }
+                else
+                {
+                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                }
+            });
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 

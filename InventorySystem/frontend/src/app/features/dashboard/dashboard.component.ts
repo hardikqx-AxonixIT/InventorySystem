@@ -13,6 +13,49 @@ import { MasterBootstrap, MasterDataService } from '../../core/services/master-d
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  readonly readinessGroups = [
+    {
+      title: 'Tally + GST Automation',
+      items: [
+        'Export to Tally XML',
+        'Import masters from Tally',
+        'Sync ledger and vouchers',
+        'Direct GST filing via GSP',
+        'NIC real e-invoice',
+        'Real e-way bill generation'
+      ]
+    },
+    {
+      title: 'Retail POS + Sales UX',
+      items: [
+        'Keyboard-based billing flow',
+        'Barcode scan to instant add',
+        'Thermal printer + GST invoice print',
+        'Retail, Pharma, FMCG profile presets',
+        'Quick invoice screen with fewer steps'
+      ]
+    },
+    {
+      title: 'Safety + Monetization',
+      items: [
+        'Auto backup (local) + one-click restore',
+        'Export full database',
+        'Customer aging and reminder automation',
+        'Interest on overdue invoices',
+        'Subscription plans + trial period + license keys'
+      ]
+    },
+    {
+      title: 'Decision Reports',
+      items: [
+        'Profit by item',
+        'Profit by customer',
+        'Fast and slow moving stock',
+        'Dead stock detection'
+      ]
+    }
+  ];
+
   overview: DashboardOverview = {
     kpis: {
       totalProducts: 0,
@@ -22,7 +65,11 @@ export class DashboardComponent implements OnInit {
       inventoryValueEstimate: 0,
       totalRevenue: 540200,
       pendingSalesOrders: 14,
-      lowStockAlerts: 8
+      lowStockAlerts: 8,
+      totalReceivables: 0,
+      totalPayables: 0,
+      cashBalance: 0,
+      todaySales: 0
     },
     modules: [],
     integrations: [],
