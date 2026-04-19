@@ -10,6 +10,15 @@
 
   <div class="grid">
     <section class="content-card">
+      <p class="eyebrow">Tally Integration</p>
+      <div class="action-list">
+        <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="exportTallyXml()">Export to Tally XML</button>
+        <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="importTallyMasters()">Import masters from Tally</button>
+        <button class="btn btn-primary" type="button" [disabled]="loading" (click)="syncLedgersAndVouchers()">Sync ledger + vouchers</button>
+      </div>
+    </section>
+
+    <section class="content-card">
       <p class="eyebrow">WhatsApp Invoice Send</p>
       <div class="form-grid">
         <input type="number" [(ngModel)]="whatsappForm.salesInvoiceId" placeholder="Sales invoice ID" />
@@ -37,6 +46,38 @@
         <input [(ngModel)]="razorpayVerifyForm.rawPayload" placeholder="Raw payload (optional)" />
         <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="verifyRazorpayCallback()">Verify Callback</button>
       </div>
+    </section>
+
+    <section class="content-card full-width">
+      <p class="eyebrow">Backup & Data Safety</p>
+      <div class="form-grid">
+        <input [(ngModel)]="backupLabel" placeholder="Backup label (e.g. pre-release)" />
+      </div>
+      <div class="action-list">
+        <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="exportDatabase()">Auto backup (local)</button>
+        <button class="btn btn-secondary" type="button" disabled>One-click restore (API ready)</button>
+        <button class="btn btn-primary" type="button" [disabled]="loading" (click)="exportDatabase()">Export full database</button>
+      </div>
+    </section>
+
+    <section class="content-card full-width">
+      <p class="eyebrow">Pricing Strategy Features</p>
+      <div class="form-grid">
+        <input [(ngModel)]="tenantForm.tenantId" placeholder="Tenant ID" />
+        <input [(ngModel)]="tenantForm.email" placeholder="Tenant owner email" />
+        <select [(ngModel)]="tenantForm.planCode">
+          <option [ngValue]="'STARTER'">STARTER</option>
+          <option [ngValue]="'GROWTH'">GROWTH</option>
+          <option [ngValue]="'ENTERPRISE'">ENTERPRISE</option>
+        </select>
+        <input type="number" [(ngModel)]="tenantForm.months" placeholder="Months" />
+      </div>
+      <div class="action-list">
+        <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="setupSubscriptionPlans()">Subscription plans</button>
+        <button class="btn btn-secondary" type="button" [disabled]="loading" (click)="configureTrialPeriod()">Trial period</button>
+        <button class="btn btn-primary" type="button" [disabled]="loading" (click)="generateLicenseKeys()">License key system</button>
+      </div>
+      <p class="eyebrow" *ngIf="tenantForm.licenseKey">License Key: {{ tenantForm.licenseKey }}</p>
     </section>
   </div>
 </section>

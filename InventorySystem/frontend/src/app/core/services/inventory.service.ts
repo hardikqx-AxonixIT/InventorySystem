@@ -18,6 +18,10 @@ export interface DashboardKpis {
   pendingAdjustments: number;
   lowStockItems: number;
   inventoryValueEstimate: number;
+  totalReceivables: number;
+  totalPayables: number;
+  cashBalance: number;
+  todaySales: number;
   totalRevenue: number;
   pendingSalesOrders: number;
   lowStockAlerts: number;

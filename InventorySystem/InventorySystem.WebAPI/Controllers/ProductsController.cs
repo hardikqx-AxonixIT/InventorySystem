@@ -21,7 +21,6 @@ namespace InventorySystem.WebAPI.Controllers
             _context = context;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts(CancellationToken cancellationToken)
         {
@@ -38,3 +37,5 @@ namespace InventorySystem.WebAPI.Controllers
         }
     }
 }
+
+

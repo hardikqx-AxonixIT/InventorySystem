@@ -277,6 +277,50 @@ export class TransactionDataService {
     return this.http.post(`${this.advancedUrl}/integrations/razorpay/callback`, payload);
   }
 
+  importTallyMasters(): Observable<any> {
+    return this.http.post(`${this.advancedUrl}/integrations/tally/import-masters`, {});
+  }
+
+  syncTallyLedgersVouchers(): Observable<any> {
+    return this.http.post(`${this.advancedUrl}/integrations/tally/sync-ledgers-vouchers`, {});
+  }
+
+  fileGstViaGsp(payload: any): Observable<any> {
+    return this.http.post(`${this.advancedUrl}/gst/gsp/file`, payload);
+  }
+
+  createSystemBackup(label: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/system/backup/create`, { label });
+  }
+
+  listSystemBackups(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/system/backup/list`);
+  }
+
+  restoreSystemBackup(fileName: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/system/backup/restore`, { fileName });
+  }
+
+  getCommercialPlans(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/commercial/plans`);
+  }
+
+  startTrial(payload: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/commercial/trial/start`, payload);
+  }
+
+  activateSubscription(payload: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/commercial/subscription/activate`, payload);
+  }
+
+  generateLicense(payload: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/commercial/license/generate`, payload);
+  }
+
+  validateLicense(payload: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/commercial/license/validate`, payload);
+  }
+
   getStockHistory(productId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/stock-history/${productId}`);
   }

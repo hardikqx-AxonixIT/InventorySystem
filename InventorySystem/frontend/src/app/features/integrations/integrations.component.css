@@ -64,6 +64,13 @@
   color: #b9f4d9;
 }
 
+.action-list {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 960px) {
   .int-page {
     padding: 14px;

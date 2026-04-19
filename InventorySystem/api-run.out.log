@@ -1,0 +1,596 @@
+Building...
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'AdjustmentRequest'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'BomTemplate'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'BomTemplateItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'DeliveryChallanItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'GoodsReceiptNoteItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'PickListItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'PurchaseInvoiceItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'PurchaseOrderItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'SalesInvoiceItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'SalesOrderItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'SalesQuotationItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'SalesReturnItem'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'StockBatchDetail'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'StockLedger'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'StockLevel'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10622]
+      Entity 'Product' has a global query filter defined and is the required end of a relationship with the entity 'WarehouseTransferRequest'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (32ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (294ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (46ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (58ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (233ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [MigrationId], [ProductVersion]
+      FROM [__EFMigrationsHistory]
+      ORDER BY [MigrationId];
+info: Microsoft.EntityFrameworkCore.Migrations[20405]
+      No migrations were applied. The database is already up to date.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (100ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (31ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (55ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (14ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (15ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (20ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[FullName], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [AspNetUsers] AS [a]
+      WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedRoleName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (49ms) [Parameters=[@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[UserId], [a].[RoleId]
+      FROM [AspNetUserRoles] AS [a]
+      WHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedRoleName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (14ms) [Parameters=[@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[UserId], [a].[RoleId]
+      FROM [AspNetUserRoles] AS [a]
+      WHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__normalizedRoleName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedRoleName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[UserId], [a].[RoleId]
+      FROM [AspNetUserRoles] AS [a]
+      WHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [ItemCategories] AS [i]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [UnitsOfMeasure] AS [u]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [Warehouses] AS [w]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (10ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [Customers] AS [c]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [Vendors] AS [v]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [WarehouseBins] AS [w]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (11ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [Products] AS [p]
+              WHERE [p].[IsDeleted] = CAST(0 AS bit)) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (18ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [StockLevels] AS [s]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (15ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [StockBatchDetails] AS [s]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [s].[ProductId], [s].[BinId], [s].[QuantityOnHand], [s].[ReservedQuantity], [s].[RowVersion]
+      FROM [StockLevels] AS [s]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@__sl_ProductId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [p].[Id], [p].[Barcode], [p].[Brand], [p].[CategoryId], [p].[CreatedAt], [p].[CreatedBy], [p].[GstRate], [p].[HsnCode], [p].[IsActive], [p].[IsDeleted], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[Name], [p].[PurchasePrice], [p].[ReorderLevel], [p].[RowVersion], [p].[SKU], [p].[SalesPrice], [p].[TrackBatch], [p].[TrackExpiry], [p].[TrackSerial], [p].[UOMId]
+      FROM [Products] AS [p]
+      WHERE ([p].[IsDeleted] = CAST(0 AS bit)) AND ([p].[Id] = @__sl_ProductId_0)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__sl_ProductId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [p].[Id], [p].[Barcode], [p].[Brand], [p].[CategoryId], [p].[CreatedAt], [p].[CreatedBy], [p].[GstRate], [p].[HsnCode], [p].[IsActive], [p].[IsDeleted], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[Name], [p].[PurchasePrice], [p].[ReorderLevel], [p].[RowVersion], [p].[SKU], [p].[SalesPrice], [p].[TrackBatch], [p].[TrackExpiry], [p].[TrackSerial], [p].[UOMId]
+      FROM [Products] AS [p]
+      WHERE ([p].[IsDeleted] = CAST(0 AS bit)) AND ([p].[Id] = @__sl_ProductId_0)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__sl_ProductId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [p].[Id], [p].[Barcode], [p].[Brand], [p].[CategoryId], [p].[CreatedAt], [p].[CreatedBy], [p].[GstRate], [p].[HsnCode], [p].[IsActive], [p].[IsDeleted], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[Name], [p].[PurchasePrice], [p].[ReorderLevel], [p].[RowVersion], [p].[SKU], [p].[SalesPrice], [p].[TrackBatch], [p].[TrackExpiry], [p].[TrackSerial], [p].[UOMId]
+      FROM [Products] AS [p]
+      WHERE ([p].[IsDeleted] = CAST(0 AS bit)) AND ([p].[Id] = @__sl_ProductId_0)
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (102ms) [Parameters=[@p0='?' (Size = 50), @p1='?' (Size = 50), @p2='?' (Size = 200), @p3='?' (Size = 4000), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 100), @p7='?' (Size = 50), @p8='?' (Size = 50), @p9='?' (Size = 200), @p10='?' (Size = 4000), @p11='?' (Size = 4000), @p12='?' (DbType = DateTime2), @p13='?' (Size = 100), @p14='?' (Size = 50), @p15='?' (Size = 50), @p16='?' (Size = 200), @p17='?' (Size = 4000), @p18='?' (Size = 4000), @p19='?' (DbType = DateTime2), @p20='?' (Size = 100), @p21='?' (Size = 50), @p22='?' (DbType = Int32), @p23='?' (DbType = DateTime2), @p24='?' (Size = 4000), @p25='?' (DbType = DateTime2), @p26='?' (DbType = Boolean), @p27='?' (DbType = DateTime2), @p28='?' (Size = 4000), @p29='?' (DbType = Int32), @p30='?' (Precision = 18) (Scale = 4) (DbType = Decimal), @p31='?' (Precision = 18) (Scale = 4) (DbType = Decimal), @p32='?' (Size = 50), @p33='?' (DbType = Int32), @p34='?' (DbType = DateTime2), @p35='?' (Size = 4000), @p36='?' (DbType = DateTime2), @p37='?' (DbType = Boolean), @p38='?' (DbType = DateTime2), @p39='?' (Size = 4000), @p40='?' (DbType = Int32), @p41='?' (Precision = 18) (Scale = 4) (DbType = Decimal), @p42='?' (Precision = 18) (Scale = 4) (DbType = Decimal), @p43='?' (Size = 50), @p44='?' (DbType = Int32), @p45='?' (DbType = DateTime2), @p46='?' (Size = 4000), @p47='?' (DbType = DateTime2), @p48='?' (DbType = Boolean), @p49='?' (DbType = DateTime2), @p50='?' (Size = 4000), @p51='?' (DbType = Int32), @p52='?' (Precision = 18) (Scale = 4) (DbType = Decimal), @p53='?' (Precision = 18) (Scale = 4) (DbType = Decimal)], CommandType='Text', CommandTimeout='30']
+      SET NOCOUNT ON;
+      DECLARE @inserted0 TABLE ([Id] int, [_Position] [int]);
+      MERGE [AuditLogs] USING (
+      VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, 0),
+      (@p7, @p8, @p9, @p10, @p11, @p12, @p13, 1),
+      (@p14, @p15, @p16, @p17, @p18, @p19, @p20, 2)) AS i ([Action], [EntityId], [EntityName], [NewValues], [OldValues], [Timestamp], [UserId], _Position) ON 1=0
+      WHEN NOT MATCHED THEN
+      INSERT ([Action], [EntityId], [EntityName], [NewValues], [OldValues], [Timestamp], [UserId])
+      VALUES (i.[Action], i.[EntityId], i.[EntityName], i.[NewValues], i.[OldValues], i.[Timestamp], i.[UserId])
+      OUTPUT INSERTED.[Id], i._Position
+      INTO @inserted0;
+      
+      SELECT [i].[Id] FROM @inserted0 i
+      ORDER BY [i].[_Position];
+      
+      DECLARE @inserted3 TABLE ([Id] int, [_Position] [int]);
+      MERGE [StockBatchDetails] USING (
+      VALUES (@p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30, @p31, 0),
+      (@p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39, @p40, @p41, @p42, 1),
+      (@p43, @p44, @p45, @p46, @p47, @p48, @p49, @p50, @p51, @p52, @p53, 2)) AS i ([BatchNumber], [BinId], [CreatedAt], [CreatedBy], [ExpiryDate], [IsActive], [LastModifiedAt], [LastModifiedBy], [ProductId], [Quantity], [UnitCost], _Position) ON 1=0
+      WHEN NOT MATCHED THEN
+      INSERT ([BatchNumber], [BinId], [CreatedAt], [CreatedBy], [ExpiryDate], [IsActive], [LastModifiedAt], [LastModifiedBy], [ProductId], [Quantity], [UnitCost])
+      VALUES (i.[BatchNumber], i.[BinId], i.[CreatedAt], i.[CreatedBy], i.[ExpiryDate], i.[IsActive], i.[LastModifiedAt], i.[LastModifiedBy], i.[ProductId], i.[Quantity], i.[UnitCost])
+      OUTPUT INSERTED.[Id], i._Position
+      INTO @inserted3;
+      
+      SELECT [i].[Id] FROM @inserted3 i
+      ORDER BY [i].[_Position];
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [PurchaseOrders] AS [p]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [SalesOrders] AS [s]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [AccountLedgers] AS [a]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [RolePermissions] AS [r]) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5157
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[Barcode], [p].[Brand], [p].[CategoryId], [p].[CreatedAt], [p].[CreatedBy], [p].[GstRate], [p].[HsnCode], [p].[IsActive], [p].[IsDeleted], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[Name], [p].[PurchasePrice], [p].[ReorderLevel], [p].[RowVersion], [p].[SKU], [p].[SalesPrice], [p].[TrackBatch], [p].[TrackExpiry], [p].[TrackSerial], [p].[UOMId]
+      FROM [Products] AS [p]
+      WHERE [p].[IsDeleted] = CAST(0 AS bit)
+      ORDER BY [p].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [c].[Id], [c].[BillingAddress], [c].[BillingCity], [c].[BillingPostalCode], [c].[BillingState], [c].[ContactPerson], [c].[CreatedAt], [c].[CreatedBy], [c].[CreditLimit], [c].[Email], [c].[Gstin], [c].[IsActive], [c].[LastModifiedAt], [c].[LastModifiedBy], [c].[Name], [c].[Pan], [c].[PaymentTermsDays], [c].[Phone], [c].[ShippingAddress]
+      FROM [Customers] AS [c]
+      ORDER BY [c].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [v].[Id], [v].[Address], [v].[City], [v].[ContactPerson], [v].[CreatedAt], [v].[CreatedBy], [v].[Email], [v].[Gstin], [v].[IsActive], [v].[LastModifiedAt], [v].[LastModifiedBy], [v].[Name], [v].[Pan], [v].[PaymentTermsDays], [v].[Phone], [v].[PostalCode], [v].[State]
+      FROM [Vendors] AS [v]
+      ORDER BY [v].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [w].[Id], [w].[AddressLine1], [w].[AddressLine2], [w].[BankAccountNo], [w].[BankName], [w].[City], [w].[Code], [w].[CreatedAt], [w].[CreatedBy], [w].[Email], [w].[Gstin], [w].[IfscCode], [w].[IsActive], [w].[LastModifiedAt], [w].[LastModifiedBy], [w].[Name], [w].[Pan], [w].[Phone], [w].[PostalCode], [w].[State]
+      FROM [Warehouses] AS [w]
+      ORDER BY [w].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [w].[Id], [w].[Aisle], [w].[BinCode], [w].[CreatedAt], [w].[CreatedBy], [w].[IsActive], [w].[LastModifiedAt], [w].[LastModifiedBy], [w].[Shelf], [w].[WarehouseId], [w].[WarehouseName], [w].[Zone]
+      FROM [WarehouseBins] AS [w]
+      ORDER BY [w].[BinCode]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [s].[ProductId], [s].[BinId], [s].[QuantityOnHand], [s].[ReservedQuantity], [s].[RowVersion]
+      FROM [StockLevels] AS [s]
+      ORDER BY [s].[ProductId], [s].[BinId]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[GrandTotal], [t].[IgstAmount], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[OrderDate], [t].[OrderNumber], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[SupplyState], [t].[TaxTotal], [t].[VendorId], [t].[WarehouseId], [p0].[Id], [p0].[CgstAmount], [p0].[GstRate], [p0].[IgstAmount], [p0].[LineTotal], [p0].[ProductId], [p0].[PurchaseOrderId], [p0].[Quantity], [p0].[ReceivedQuantity], [p0].[SgstAmount], [p0].[TaxableAmount], [p0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [p].[Id], [p].[CgstAmount], [p].[CreatedAt], [p].[CreatedBy], [p].[GrandTotal], [p].[IgstAmount], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[OrderDate], [p].[OrderNumber], [p].[SgstAmount], [p].[Status], [p].[Subtotal], [p].[SupplyState], [p].[TaxTotal], [p].[VendorId], [p].[WarehouseId]
+          FROM [PurchaseOrders] AS [p]
+          ORDER BY [p].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [PurchaseOrderItems] AS [p0] ON [t].[Id] = [p0].[PurchaseOrderId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[GrandTotal], [t].[GrnNumber], [t].[IgstAmount], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[PurchaseOrderId], [t].[ReceivedDate], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [g0].[Id], [g0].[BinId], [g0].[CgstAmount], [g0].[GoodsReceiptNoteId], [g0].[GstRate], [g0].[IgstAmount], [g0].[LineTotal], [g0].[ProductId], [g0].[PurchaseOrderItemId], [g0].[QuantityReceived], [g0].[SgstAmount], [g0].[TaxableAmount], [g0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [g].[Id], [g].[CgstAmount], [g].[CreatedAt], [g].[CreatedBy], [g].[GrandTotal], [g].[GrnNumber], [g].[IgstAmount], [g].[LastModifiedAt], [g].[LastModifiedBy], [g].[PurchaseOrderId], [g].[ReceivedDate], [g].[SgstAmount], [g].[Status], [g].[Subtotal], [g].[TaxTotal]
+          FROM [GoodsReceiptNotes] AS [g]
+          ORDER BY [g].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [GoodsReceiptNoteItems] AS [g0] ON [t].[Id] = [g0].[GoodsReceiptNoteId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[BalanceAmount], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[DueDate], [t].[GoodsReceiptNoteId], [t].[GrandTotal], [t].[IgstAmount], [t].[InvoiceDate], [t].[InvoiceNumber], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[PaidAmount], [t].[PurchaseOrderId], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [t].[VendorId], [p0].[Id], [p0].[CgstAmount], [p0].[GoodsReceiptNoteItemId], [p0].[GstRate], [p0].[IgstAmount], [p0].[LineTotal], [p0].[ProductId], [p0].[PurchaseInvoiceId], [p0].[Quantity], [p0].[SgstAmount], [p0].[TaxableAmount], [p0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [p].[Id], [p].[BalanceAmount], [p].[CgstAmount], [p].[CreatedAt], [p].[CreatedBy], [p].[DueDate], [p].[GoodsReceiptNoteId], [p].[GrandTotal], [p].[IgstAmount], [p].[InvoiceDate], [p].[InvoiceNumber], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[PaidAmount], [p].[PurchaseOrderId], [p].[SgstAmount], [p].[Status], [p].[Subtotal], [p].[TaxTotal], [p].[VendorId]
+          FROM [PurchaseInvoices] AS [p]
+          ORDER BY [p].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [PurchaseInvoiceItems] AS [p0] ON [t].[Id] = [p0].[PurchaseInvoiceId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [s].[Id], [s].[Amount], [s].[CreatedAt], [s].[CreatedBy], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[Notes], [s].[PaymentDate], [s].[PaymentMode], [s].[PaymentNumber], [s].[PurchaseInvoiceId], [s].[ReferenceNo], [s].[VendorId]
+      FROM [SupplierPayments] AS [s]
+      ORDER BY [s].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[CustomerId], [t].[GrandTotal], [t].[IgstAmount], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[OrderDate], [t].[OrderNumber], [t].[PlaceOfSupplyState], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [t].[WarehouseId], [s0].[Id], [s0].[BinId], [s0].[CgstAmount], [s0].[GstRate], [s0].[IgstAmount], [s0].[InvoicedQuantity], [s0].[LineTotal], [s0].[ProductId], [s0].[Quantity], [s0].[SalesOrderId], [s0].[SgstAmount], [s0].[TaxableAmount], [s0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [s].[Id], [s].[CgstAmount], [s].[CreatedAt], [s].[CreatedBy], [s].[CustomerId], [s].[GrandTotal], [s].[IgstAmount], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[OrderDate], [s].[OrderNumber], [s].[PlaceOfSupplyState], [s].[SgstAmount], [s].[Status], [s].[Subtotal], [s].[TaxTotal], [s].[WarehouseId]
+          FROM [SalesOrders] AS [s]
+          ORDER BY [s].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [SalesOrderItems] AS [s0] ON [t].[Id] = [s0].[SalesOrderId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[CustomerId], [t].[GrandTotal], [t].[IgstAmount], [t].[InvoiceDate], [t].[InvoiceNumber], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[PlaceOfSupplyState], [t].[SalesOrderId], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [t].[WarehouseId], [s0].[Id], [s0].[BinId], [s0].[CgstAmount], [s0].[CogsAmount], [s0].[GstRate], [s0].[IgstAmount], [s0].[LineTotal], [s0].[ProductId], [s0].[Quantity], [s0].[SalesInvoiceId], [s0].[SalesOrderItemId], [s0].[SgstAmount], [s0].[TaxableAmount], [s0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [s].[Id], [s].[CgstAmount], [s].[CreatedAt], [s].[CreatedBy], [s].[CustomerId], [s].[GrandTotal], [s].[IgstAmount], [s].[InvoiceDate], [s].[InvoiceNumber], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[PlaceOfSupplyState], [s].[SalesOrderId], [s].[SgstAmount], [s].[Status], [s].[Subtotal], [s].[TaxTotal], [s].[WarehouseId]
+          FROM [SalesInvoices] AS [s]
+          ORDER BY [s].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [SalesInvoiceItems] AS [s0] ON [t].[Id] = [s0].[SalesInvoiceId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [s].[Id], [s].[CgstAmount], [s].[CreatedAt], [s].[CreatedBy], [s].[CustomerId], [s].[GrandTotal], [s].[IgstAmount], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[QuotationDate], [s].[QuotationNumber], [s].[SgstAmount], [s].[Status], [s].[Subtotal], [s].[TaxTotal], [s].[ValidUntil], [s].[WarehouseId]
+      FROM [SalesQuotations] AS [s]
+      ORDER BY [s].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM [SalesInvoices] AS [s]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM [SalesOrders] AS [s]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [d].[Id], [d].[ChallanDate], [d].[ChallanNumber], [d].[CreatedAt], [d].[CreatedBy], [d].[LastModifiedAt], [d].[LastModifiedBy], [d].[Notes], [d].[SalesOrderId], [d].[Status]
+      FROM [DeliveryChallans] AS [d]
+      ORDER BY [d].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[InvoiceNumber], [t].[SalesOrderId], [t].[CustomerId], [t].[WarehouseId], [t].[PlaceOfSupplyState], [t].[InvoiceDate], [t].[Status], [t].[Subtotal], [t].[CgstAmount], [t].[SgstAmount], [t].[IgstAmount], [t].[TaxTotal], [t].[GrandTotal], [s0].[Id], [s0].[ProductId], [s0].[BinId], [s0].[Quantity], [s0].[LineTotal]
+      FROM (
+          SELECT [s].[Id], [s].[InvoiceNumber], [s].[SalesOrderId], [s].[CustomerId], [s].[WarehouseId], [s].[PlaceOfSupplyState], [s].[InvoiceDate], [s].[Status], [s].[Subtotal], [s].[CgstAmount], [s].[SgstAmount], [s].[IgstAmount], [s].[TaxTotal], [s].[GrandTotal]
+          FROM [SalesInvoices] AS [s]
+          ORDER BY [s].[Id] DESC
+          OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+      ) AS [t]
+      LEFT JOIN [SalesInvoiceItems] AS [s0] ON [t].[Id] = [s0].[SalesInvoiceId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[OrderNumber], [t].[CustomerId], [t].[WarehouseId], [t].[PlaceOfSupplyState], [t].[Status], [t].[Subtotal], [t].[CgstAmount], [t].[SgstAmount], [t].[IgstAmount], [t].[TaxTotal], [t].[GrandTotal], [s0].[Id], [s0].[ProductId], [s0].[BinId], [s0].[Quantity], [s0].[InvoicedQuantity], [s0].[UnitPrice], [s0].[GstRate], [s0].[LineTotal]
+      FROM (
+          SELECT [s].[Id], [s].[OrderNumber], [s].[CustomerId], [s].[WarehouseId], [s].[PlaceOfSupplyState], [s].[Status], [s].[Subtotal], [s].[CgstAmount], [s].[SgstAmount], [s].[IgstAmount], [s].[TaxTotal], [s].[GrandTotal]
+          FROM [SalesOrders] AS [s]
+          ORDER BY [s].[Id] DESC
+          OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+      ) AS [t]
+      LEFT JOIN [SalesOrderItems] AS [s0] ON [t].[Id] = [s0].[SalesOrderId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [s].[Id], [s].[CgstAmount], [s].[CreatedAt], [s].[CreatedBy], [s].[GrandTotal], [s].[IgstAmount], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[Reason], [s].[ReturnDate], [s].[ReturnNumber], [s].[SalesInvoiceId], [s].[SgstAmount], [s].[Status], [s].[Subtotal], [s].[TaxTotal]
+      FROM [SalesReturns] AS [s]
+      ORDER BY [s].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [w].[Id], [w].[ApprovalNote], [w].[ApprovedBy], [w].[CreatedAt], [w].[CreatedBy], [w].[FromBinId], [w].[LastModifiedAt], [w].[LastModifiedBy], [w].[ProductId], [w].[Quantity], [w].[RequestNumber], [w].[RequestedBy], [w].[Status], [w].[ToBinId]
+      FROM [WarehouseTransferRequests] AS [w]
+      ORDER BY [w].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [p].[Id], [p].[CreatedAt], [p].[CreatedBy], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[PickNumber], [p].[SalesOrderId], [p].[Status]
+      FROM [PickLists] AS [p]
+      ORDER BY [p].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [b].[Id], [b].[BomCode], [b].[CreatedAt], [b].[CreatedBy], [b].[FinishedProductId], [b].[IsActive], [b].[LastModifiedAt], [b].[LastModifiedBy], [b].[Name], [b].[StandardOutputQty]
+      FROM [BomTemplates] AS [b]
+      ORDER BY [b].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [p].[Id], [p].[BomTemplateId], [p].[CreatedAt], [p].[CreatedBy], [p].[InputBinId], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[OutputBinId], [p].[PlannedDate], [p].[PlannedOutputQty], [p].[Status], [p].[WorkOrderNumber]
+      FROM [ProductionWorkOrders] AS [p]
+      ORDER BY [p].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [r].[Id], [r].[CanApprove], [r].[CanCreate], [r].[CanDelete], [r].[CanExport], [r].[CanUpdate], [r].[CanView], [r].[CreatedAt], [r].[CreatedBy], [r].[LastModifiedAt], [r].[LastModifiedBy], [r].[ModuleKey], [r].[RoleName]
+      FROM [RolePermissions] AS [r]
+      ORDER BY [r].[RoleName], [r].[ModuleKey]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [g].[Id], [g].[AckDate], [g].[AckNo], [g].[CreatedAt], [g].[CreatedBy], [g].[Irn], [g].[LastModifiedAt], [g].[LastModifiedBy], [g].[SalesInvoiceId], [g].[SignedInvoice]
+      FROM [GstEInvoiceRecords] AS [g]
+      ORDER BY [g].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [g].[Id], [g].[CreatedAt], [g].[CreatedBy], [g].[DistanceKm], [g].[EWayBillNumber], [g].[LastModifiedAt], [g].[LastModifiedBy], [g].[SalesInvoiceId], [g].[ValidUntil], [g].[VehicleNumber]
+      FROM [GstEWayBillRecords] AS [g]
+      ORDER BY [g].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__request_SalesInvoiceId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [s].[Id], [s].[CgstAmount], [s].[CreatedAt], [s].[CreatedBy], [s].[CustomerId], [s].[GrandTotal], [s].[IgstAmount], [s].[InvoiceDate], [s].[InvoiceNumber], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[PlaceOfSupplyState], [s].[SalesOrderId], [s].[SgstAmount], [s].[Status], [s].[Subtotal], [s].[TaxTotal], [s].[WarehouseId]
+      FROM [SalesInvoices] AS [s]
+      WHERE [s].[Id] = @__request_SalesInvoiceId_0
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [p].[Id], [p].[Barcode], [p].[Brand], [p].[CategoryId], [p].[CreatedAt], [p].[CreatedBy], [p].[GstRate], [p].[HsnCode], [p].[IsActive], [p].[IsDeleted], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[Name], [p].[PurchasePrice], [p].[ReorderLevel], [p].[RowVersion], [p].[SKU], [p].[SalesPrice], [p].[TrackBatch], [p].[TrackExpiry], [p].[TrackSerial], [p].[UOMId]
+      FROM [Products] AS [p]
+      WHERE [p].[IsDeleted] = CAST(0 AS bit)
+      ORDER BY [p].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [c].[Id], [c].[BillingAddress], [c].[BillingCity], [c].[BillingPostalCode], [c].[BillingState], [c].[ContactPerson], [c].[CreatedAt], [c].[CreatedBy], [c].[CreditLimit], [c].[Email], [c].[Gstin], [c].[IsActive], [c].[LastModifiedAt], [c].[LastModifiedBy], [c].[Name], [c].[Pan], [c].[PaymentTermsDays], [c].[Phone], [c].[ShippingAddress]
+      FROM [Customers] AS [c]
+      ORDER BY [c].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [v].[Id], [v].[Address], [v].[City], [v].[ContactPerson], [v].[CreatedAt], [v].[CreatedBy], [v].[Email], [v].[Gstin], [v].[IsActive], [v].[LastModifiedAt], [v].[LastModifiedBy], [v].[Name], [v].[Pan], [v].[PaymentTermsDays], [v].[Phone], [v].[PostalCode], [v].[State]
+      FROM [Vendors] AS [v]
+      ORDER BY [v].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [w].[Id], [w].[AddressLine1], [w].[AddressLine2], [w].[BankAccountNo], [w].[BankName], [w].[City], [w].[Code], [w].[CreatedAt], [w].[CreatedBy], [w].[Email], [w].[Gstin], [w].[IfscCode], [w].[IsActive], [w].[LastModifiedAt], [w].[LastModifiedBy], [w].[Name], [w].[Pan], [w].[Phone], [w].[PostalCode], [w].[State]
+      FROM [Warehouses] AS [w]
+      ORDER BY [w].[Name]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [w].[Id], [w].[Aisle], [w].[BinCode], [w].[CreatedAt], [w].[CreatedBy], [w].[IsActive], [w].[LastModifiedAt], [w].[LastModifiedBy], [w].[Shelf], [w].[WarehouseId], [w].[WarehouseName], [w].[Zone]
+      FROM [WarehouseBins] AS [w]
+      ORDER BY [w].[BinCode]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [s].[ProductId], [s].[BinId], [s].[QuantityOnHand], [s].[ReservedQuantity], [s].[RowVersion]
+      FROM [StockLevels] AS [s]
+      ORDER BY [s].[ProductId], [s].[BinId]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[GrandTotal], [t].[IgstAmount], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[OrderDate], [t].[OrderNumber], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[SupplyState], [t].[TaxTotal], [t].[VendorId], [t].[WarehouseId], [p0].[Id], [p0].[CgstAmount], [p0].[GstRate], [p0].[IgstAmount], [p0].[LineTotal], [p0].[ProductId], [p0].[PurchaseOrderId], [p0].[Quantity], [p0].[ReceivedQuantity], [p0].[SgstAmount], [p0].[TaxableAmount], [p0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [p].[Id], [p].[CgstAmount], [p].[CreatedAt], [p].[CreatedBy], [p].[GrandTotal], [p].[IgstAmount], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[OrderDate], [p].[OrderNumber], [p].[SgstAmount], [p].[Status], [p].[Subtotal], [p].[SupplyState], [p].[TaxTotal], [p].[VendorId], [p].[WarehouseId]
+          FROM [PurchaseOrders] AS [p]
+          ORDER BY [p].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [PurchaseOrderItems] AS [p0] ON [t].[Id] = [p0].[PurchaseOrderId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[GrandTotal], [t].[GrnNumber], [t].[IgstAmount], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[PurchaseOrderId], [t].[ReceivedDate], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [g0].[Id], [g0].[BinId], [g0].[CgstAmount], [g0].[GoodsReceiptNoteId], [g0].[GstRate], [g0].[IgstAmount], [g0].[LineTotal], [g0].[ProductId], [g0].[PurchaseOrderItemId], [g0].[QuantityReceived], [g0].[SgstAmount], [g0].[TaxableAmount], [g0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [g].[Id], [g].[CgstAmount], [g].[CreatedAt], [g].[CreatedBy], [g].[GrandTotal], [g].[GrnNumber], [g].[IgstAmount], [g].[LastModifiedAt], [g].[LastModifiedBy], [g].[PurchaseOrderId], [g].[ReceivedDate], [g].[SgstAmount], [g].[Status], [g].[Subtotal], [g].[TaxTotal]
+          FROM [GoodsReceiptNotes] AS [g]
+          ORDER BY [g].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [GoodsReceiptNoteItems] AS [g0] ON [t].[Id] = [g0].[GoodsReceiptNoteId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[BalanceAmount], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[DueDate], [t].[GoodsReceiptNoteId], [t].[GrandTotal], [t].[IgstAmount], [t].[InvoiceDate], [t].[InvoiceNumber], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[PaidAmount], [t].[PurchaseOrderId], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [t].[VendorId], [p0].[Id], [p0].[CgstAmount], [p0].[GoodsReceiptNoteItemId], [p0].[GstRate], [p0].[IgstAmount], [p0].[LineTotal], [p0].[ProductId], [p0].[PurchaseInvoiceId], [p0].[Quantity], [p0].[SgstAmount], [p0].[TaxableAmount], [p0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [p].[Id], [p].[BalanceAmount], [p].[CgstAmount], [p].[CreatedAt], [p].[CreatedBy], [p].[DueDate], [p].[GoodsReceiptNoteId], [p].[GrandTotal], [p].[IgstAmount], [p].[InvoiceDate], [p].[InvoiceNumber], [p].[LastModifiedAt], [p].[LastModifiedBy], [p].[PaidAmount], [p].[PurchaseOrderId], [p].[SgstAmount], [p].[Status], [p].[Subtotal], [p].[TaxTotal], [p].[VendorId]
+          FROM [PurchaseInvoices] AS [p]
+          ORDER BY [p].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [PurchaseInvoiceItems] AS [p0] ON [t].[Id] = [p0].[PurchaseInvoiceId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(@__p_0) [s].[Id], [s].[Amount], [s].[CreatedAt], [s].[CreatedBy], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[Notes], [s].[PaymentDate], [s].[PaymentMode], [s].[PaymentNumber], [s].[PurchaseInvoiceId], [s].[ReferenceNo], [s].[VendorId]
+      FROM [SupplierPayments] AS [s]
+      ORDER BY [s].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[CustomerId], [t].[GrandTotal], [t].[IgstAmount], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[OrderDate], [t].[OrderNumber], [t].[PlaceOfSupplyState], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [t].[WarehouseId], [s0].[Id], [s0].[BinId], [s0].[CgstAmount], [s0].[GstRate], [s0].[IgstAmount], [s0].[InvoicedQuantity], [s0].[LineTotal], [s0].[ProductId], [s0].[Quantity], [s0].[SalesOrderId], [s0].[SgstAmount], [s0].[TaxableAmount], [s0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [s].[Id], [s].[CgstAmount], [s].[CreatedAt], [s].[CreatedBy], [s].[CustomerId], [s].[GrandTotal], [s].[IgstAmount], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[OrderDate], [s].[OrderNumber], [s].[PlaceOfSupplyState], [s].[SgstAmount], [s].[Status], [s].[Subtotal], [s].[TaxTotal], [s].[WarehouseId]
+          FROM [SalesOrders] AS [s]
+          ORDER BY [s].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [SalesOrderItems] AS [s0] ON [t].[Id] = [s0].[SalesOrderId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[CgstAmount], [t].[CreatedAt], [t].[CreatedBy], [t].[CustomerId], [t].[GrandTotal], [t].[IgstAmount], [t].[InvoiceDate], [t].[InvoiceNumber], [t].[LastModifiedAt], [t].[LastModifiedBy], [t].[PlaceOfSupplyState], [t].[SalesOrderId], [t].[SgstAmount], [t].[Status], [t].[Subtotal], [t].[TaxTotal], [t].[WarehouseId], [s0].[Id], [s0].[BinId], [s0].[CgstAmount], [s0].[CogsAmount], [s0].[GstRate], [s0].[IgstAmount], [s0].[LineTotal], [s0].[ProductId], [s0].[Quantity], [s0].[SalesInvoiceId], [s0].[SalesOrderItemId], [s0].[SgstAmount], [s0].[TaxableAmount], [s0].[UnitPrice]
+      FROM (
+          SELECT TOP(@__p_0) [s].[Id], [s].[CgstAmount], [s].[CreatedAt], [s].[CreatedBy], [s].[CustomerId], [s].[GrandTotal], [s].[IgstAmount], [s].[InvoiceDate], [s].[InvoiceNumber], [s].[LastModifiedAt], [s].[LastModifiedBy], [s].[PlaceOfSupplyState], [s].[SalesOrderId], [s].[SgstAmount], [s].[Status], [s].[Subtotal], [s].[TaxTotal], [s].[WarehouseId]
+          FROM [SalesInvoices] AS [s]
+          ORDER BY [s].[Id] DESC
+      ) AS [t]
+      LEFT JOIN [SalesInvoiceItems] AS [s0] ON [t].[Id] = [s0].[SalesInvoiceId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Infrastructure[10403]
+      Entity Framework Core 6.0.25 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:6.0.25' with options: None
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM [GoodsReceiptNotes] AS [g]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM [PurchaseInvoices] AS [p]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM [PurchaseOrders] AS [p]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[GrnNumber], [t].[PurchaseOrderId], [t].[Subtotal], [t].[CgstAmount], [t].[SgstAmount], [t].[IgstAmount], [t].[GrandTotal], [g0].[Id], [g0].[PurchaseOrderItemId], [g0].[ProductId], [g0].[BinId], [g0].[QuantityReceived], [g0].[LineTotal]
+      FROM (
+          SELECT [g].[Id], [g].[GrnNumber], [g].[PurchaseOrderId], [g].[Subtotal], [g].[CgstAmount], [g].[SgstAmount], [g].[IgstAmount], [g].[GrandTotal]
+          FROM [GoodsReceiptNotes] AS [g]
+          ORDER BY [g].[Id] DESC
+          OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+      ) AS [t]
+      LEFT JOIN [GoodsReceiptNoteItems] AS [g0] ON [t].[Id] = [g0].[GoodsReceiptNoteId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (11ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[InvoiceNumber], [t].[GoodsReceiptNoteId], [t].[PurchaseOrderId], [t].[VendorId], [t].[InvoiceDate], [t].[DueDate], [t].[Status], [t].[Subtotal], [t].[CgstAmount], [t].[SgstAmount], [t].[IgstAmount], [t].[TaxTotal], [t].[GrandTotal], [t].[PaidAmount], [t].[BalanceAmount], [p0].[Id], [p0].[ProductId], [p0].[Quantity], [p0].[UnitPrice], [p0].[GstRate], [p0].[LineTotal]
+      FROM (
+          SELECT [p].[Id], [p].[InvoiceNumber], [p].[GoodsReceiptNoteId], [p].[PurchaseOrderId], [p].[VendorId], [p].[InvoiceDate], [p].[DueDate], [p].[Status], [p].[Subtotal], [p].[CgstAmount], [p].[SgstAmount], [p].[IgstAmount], [p].[TaxTotal], [p].[GrandTotal], [p].[PaidAmount], [p].[BalanceAmount]
+          FROM [PurchaseInvoices] AS [p]
+          ORDER BY [p].[Id] DESC
+          OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+      ) AS [t]
+      LEFT JOIN [PurchaseInvoiceItems] AS [p0] ON [t].[Id] = [p0].[PurchaseInvoiceId]
+      ORDER BY [t].[Id] DESC
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (13ms) [Parameters=[@__p_0='?' (DbType = Int32), @__p_1='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT [t].[Id], [t].[OrderNumber], [t].[VendorId], [t].[WarehouseId], [t].[SupplyState], [t].[Status], [t].[Subtotal], [t].[CgstAmount], [t].[SgstAmount], [t].[IgstAmount], [t].[TaxTotal], [t].[GrandTotal], [p0].[Id], [p0].[ProductId], [p0].[Quantity], [p0].[ReceivedQuantity], [p0].[UnitPrice], [p0].[GstRate], [p0].[LineTotal]
+      FROM (
+          SELECT [p].[Id], [p].[OrderNumber], [p].[VendorId], [p].[WarehouseId], [p].[SupplyState], [p].[Status], [p].[Subtotal], [p].[CgstAmount], [p].[SgstAmount], [p].[IgstAmount], [p].[TaxTotal], [p].[GrandTotal]
+          FROM [PurchaseOrders] AS [p]
+          ORDER BY [p].[Id] DESC
+          OFFSET @__p_0 ROWS FETCH NEXT @__p_1 ROWS ONLY
+      ) AS [t]
+      LEFT JOIN [PurchaseOrderItems] AS [p0] ON [t].[Id] = [p0].[PurchaseOrderId]
+      ORDER BY [t].[Id] DESC

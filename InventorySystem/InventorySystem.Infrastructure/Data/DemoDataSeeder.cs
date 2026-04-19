@@ -263,6 +263,27 @@ namespace InventorySystem.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
 
+            if (!await context.StockBatchDetails.AnyAsync())
+            {
+                var levels = await context.StockLevels.ToListAsync();
+                foreach (var sl in levels)
+                {
+                    var product = await context.Products.FirstAsync(p => p.Id == sl.ProductId);
+                    context.StockBatchDetails.Add(new StockBatchDetail
+                    {
+                        ProductId = sl.ProductId,
+                        BinId = sl.BinId,
+                        BatchNumber = $"OPEN-{sl.ProductId}-{sl.BinId}",
+                        Quantity = sl.QuantityOnHand,
+                        UnitCost = product.PurchasePrice,
+                        ExpiryDate = product.TrackExpiry ? DateTime.UtcNow.AddMonths(12) : null,
+                        IsActive = true
+                    });
+                }
+
+                await context.SaveChangesAsync();
+            }
+
             if (!await context.PurchaseOrders.AnyAsync())
             {
                 var vendor = await context.Vendors.OrderBy(v => v.Id).FirstAsync();

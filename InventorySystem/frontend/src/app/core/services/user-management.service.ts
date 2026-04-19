@@ -24,6 +24,18 @@ export class UserManagementService {
     return this.http.post(`${this.apiUrl}/users`, payload);
   }
 
+  updateUser(id: string, payload: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/${id}`, payload);
+  }
+
+  deactivateUser(id: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users/${id}/deactivate`, {});
+  }
+
+  activateUser(id: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users/${id}/activate`, {});
+  }
+
   getPermissions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.advancedUrl}/users/permissions`);
   }

@@ -24,6 +24,9 @@ export class PosComponent implements OnInit {
   lastInvoice: any = null;
   upiLink = '';
   whatsappLink = '';
+  readonly retailProfiles = ['Retail Shop', 'Pharma', 'FMCG'];
+  activeProfile = 'Retail Shop';
+  shortcutMessage = '';
 
   constructor(private transactions: TransactionDataService) {}
 
@@ -118,5 +121,16 @@ export class PosComponent implements OnInit {
       },
       error: (err) => this.error = err?.error ?? 'POS checkout failed.'
     });
+  }
+
+  quickCheckout(): void {
+    this.checkout();
+    this.shortcutMessage = 'Quick invoice triggered from keyboard-first flow.';
+  }
+
+  printGstInvoice(): void {
+    if (!this.lastInvoice?.id) return;
+    this.transactions.downloadSalesInvoicePdf(this.lastInvoice.id);
+    this.shortcutMessage = 'GST invoice print opened. Use thermal printer from browser print settings.';
   }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "N869NvwY/SVNQndwnyz0Fop9XyRBoxXY3VYCPAQtJcsD/sjEXsFICkRb6mcKcmInqUTkBlcgel3SbqrMCF7+sw==",
+  "dgSpecHash": "soDREH18i+02mYmv4i6nRHSi6YT/KunTk1//4F+n7+sgUQHxGkjh3cW5Nq9HeCw5doTQyJ1p3lwzYD4f5cvN4Q==",
   "success": true,
   "projectFilePath": "F:\\Axonix\\.net project\\InventorySystem\\InventorySystem.Infrastructure\\InventorySystem.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -24,6 +24,7 @@
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.25\\microsoft.entityframeworkcore.abstractions.6.0.25.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\6.0.25\\microsoft.entityframeworkcore.analyzers.6.0.25.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.entityframeworkcore.design\\6.0.25\\microsoft.entityframeworkcore.design.6.0.25.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\6.0.25\\microsoft.entityframeworkcore.inmemory.6.0.25.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\6.0.25\\microsoft.entityframeworkcore.relational.6.0.25.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\6.0.25\\microsoft.entityframeworkcore.sqlserver.6.0.25.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\6.0.25\\microsoft.entityframeworkcore.tools.6.0.25.nupkg.sha512",

@@ -32,8 +32,126 @@ export class IntegrationsComponent {
     razorpaySignature: '',
     rawPayload: ''
   };
+  backupLabel = 'manual';
+  tenantForm = {
+    tenantId: 'demo-tenant',
+    email: 'owner@demo.local',
+    planCode: 'STARTER',
+    months: 1,
+    licenseKey: ''
+  };
 
   constructor(private transactions: TransactionDataService) {}
+
+  exportTallyXml(): void {
+    this.transactions.downloadTallySalesXml();
+    this.message = 'Tally XML export started in a new tab.';
+    this.error = '';
+  }
+
+  importTallyMasters(): void {
+    this.loading = true;
+    this.error = '';
+    this.message = '';
+    this.transactions.importTallyMasters().subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.message = res?.note ?? 'Tally import completed.';
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = err?.error ?? 'Tally import failed.';
+      }
+    });
+  }
+
+  syncLedgersAndVouchers(): void {
+    this.loading = true;
+    this.error = '';
+    this.message = '';
+    this.transactions.syncTallyLedgersVouchers().subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.message = res?.note ?? 'Tally ledger sync completed.';
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = err?.error ?? 'Tally sync failed.';
+      }
+    });
+  }
+
+  exportDatabase(): void {
+    this.loading = true;
+    this.error = '';
+    this.message = '';
+    this.transactions.createSystemBackup(this.backupLabel).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.message = `Backup created: ${res?.fileName ?? 'success'}`;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = err?.error ?? 'Backup creation failed.';
+      }
+    });
+  }
+
+  setupSubscriptionPlans(): void {
+    this.loading = true;
+    this.error = '';
+    this.message = '';
+    this.transactions.getCommercialPlans().subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.message = `Plans loaded: ${(res ?? []).map((x: any) => x.code).join(', ')}`;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = err?.error ?? 'Unable to load plans.';
+      }
+    });
+  }
+
+  configureTrialPeriod(): void {
+    this.loading = true;
+    this.error = '';
+    this.message = '';
+    this.transactions.startTrial({
+      tenantId: this.tenantForm.tenantId,
+      email: this.tenantForm.email,
+      days: 14
+    }).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.message = `Trial started till ${res?.expiresAtUtc ?? ''}`;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = err?.error ?? 'Trial setup failed.';
+      }
+    });
+  }
+
+  generateLicenseKeys(): void {
+    this.loading = true;
+    this.error = '';
+    this.message = '';
+    this.transactions.generateLicense({
+      tenantId: this.tenantForm.tenantId,
+      months: this.tenantForm.months
+    }).subscribe({
+      next: (res) => {
+        this.loading = false;
+        this.tenantForm.licenseKey = res?.key ?? '';
+        this.message = `License generated: ${res?.key ?? ''}`;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = err?.error ?? 'License generation failed.';
+      }
+    });
+  }
 
   sendWhatsAppInvoice(): void {
     if (!this.whatsappForm.salesInvoiceId || !this.whatsappForm.phoneNumber) return;

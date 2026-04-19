@@ -253,6 +253,40 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.ToTable("BomTemplateItems");
                 });
 
+            modelBuilder.Entity("InventorySystem.Domain.Entities.CommercialLicenseRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssuedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LicenseKey")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LicenseKey")
+                        .IsUnique();
+
+                    b.ToTable("CommercialLicenses", (string)null);
+                });
+
             modelBuilder.Entity("InventorySystem.Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -260,6 +294,10 @@ namespace InventorySystem.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AadharNumber")
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<string>("BillingAddress")
                         .HasMaxLength(250)
@@ -327,6 +365,10 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.Property<string>("ShippingAddress")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UpiId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -787,6 +829,68 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.HasIndex("LedgerId");
 
                     b.ToTable("JournalVoucherLines");
+                });
+
+            modelBuilder.Entity("InventorySystem.Domain.Entities.NotificationLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageContent")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("RecipientNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("SalesInvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("SalesInvoiceId");
+
+                    b.ToTable("NotificationLogs");
                 });
 
             modelBuilder.Entity("InventorySystem.Domain.Entities.PaymentGatewayCallbackLog", b =>
@@ -1427,6 +1531,10 @@ namespace InventorySystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<decimal>("BalanceAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("CgstAmount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -1439,6 +1547,17 @@ namespace InventorySystem.Infrastructure.Migrations
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<DateTime?>("DispatchDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("GrandTotal")
                         .HasPrecision(18, 2)
@@ -1456,11 +1575,19 @@ namespace InventorySystem.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("LRNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PaidAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PlaceOfSupplyState")
                         .HasMaxLength(100)
@@ -1483,6 +1610,14 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.Property<decimal>("TaxTotal")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TransporterName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("VehicleNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
@@ -1513,6 +1648,10 @@ namespace InventorySystem.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("CgstAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CogsAmount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -2004,6 +2143,60 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.ToTable("SalesReturnItems");
                 });
 
+            modelBuilder.Entity("InventorySystem.Domain.Entities.StockBatchDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("BatchNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("BinId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("UnitCost")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BinId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("StockBatchDetails");
+                });
+
             modelBuilder.Entity("InventorySystem.Domain.Entities.StockLedger", b =>
                 {
                     b.Property<long>("LedgerId")
@@ -2130,6 +2323,84 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("SupplierPayments");
+                });
+
+            modelBuilder.Entity("InventorySystem.Domain.Entities.TenantSubscriptionRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PlanCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId")
+                        .IsUnique();
+
+                    b.ToTable("TenantSubscriptions", (string)null);
+                });
+
+            modelBuilder.Entity("InventorySystem.Domain.Entities.TenantUpiConfiguration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MerchantName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpiId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TenantUpiConfigurations");
                 });
 
             modelBuilder.Entity("InventorySystem.Domain.Entities.UnitOfMeasure", b =>
@@ -2832,6 +3103,23 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.Navigation("Ledger");
                 });
 
+            modelBuilder.Entity("InventorySystem.Domain.Entities.NotificationLog", b =>
+                {
+                    b.HasOne("InventorySystem.Domain.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventorySystem.Domain.Entities.SalesInvoice", "SalesInvoice")
+                        .WithMany()
+                        .HasForeignKey("SalesInvoiceId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("SalesInvoice");
+                });
+
             modelBuilder.Entity("InventorySystem.Domain.Entities.PickList", b =>
                 {
                     b.HasOne("InventorySystem.Domain.Entities.SalesOrder", "SalesOrder")
@@ -3214,6 +3502,25 @@ namespace InventorySystem.Infrastructure.Migrations
                     b.Navigation("SalesInvoiceItem");
 
                     b.Navigation("SalesReturn");
+                });
+
+            modelBuilder.Entity("InventorySystem.Domain.Entities.StockBatchDetail", b =>
+                {
+                    b.HasOne("InventorySystem.Domain.Entities.WarehouseBin", "Bin")
+                        .WithMany()
+                        .HasForeignKey("BinId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventorySystem.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bin");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("InventorySystem.Domain.Entities.StockLedger", b =>

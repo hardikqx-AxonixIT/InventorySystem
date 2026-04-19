@@ -1,4 +1,5 @@
 using InventorySystem.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace InventorySystem.WebAPI.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             var user = new ApplicationUser { UserName = request.Email, Email = request.Email, FullName = request.FullName };
@@ -42,6 +44,7 @@ namespace InventorySystem.WebAPI.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
@@ -74,8 +77,12 @@ namespace InventorySystem.WebAPI.Controllers
         {
             var jwtSettings = _configuration.GetSection("Jwt");
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "super_secret_key_that_is_long_enough_for_hmac_sha256"));
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
 
             var token = new JwtSecurityToken(
+                issuer: string.IsNullOrWhiteSpace(issuer) ? null : issuer,
+                audience: string.IsNullOrWhiteSpace(audience) ? null : audience,
                 expires: DateTime.Now.AddHours(3),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

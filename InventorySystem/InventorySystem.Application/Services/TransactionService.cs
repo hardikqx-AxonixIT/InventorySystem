@@ -588,6 +588,18 @@ namespace InventorySystem.Application.Services
 
                 orderItem.ReceivedQuantity += receiveLine.QuantityReceived;
                 await _stockService.PerformStockMovementAsync(orderItem.ProductId, receiveLine.BinId, receiveLine.QuantityReceived, "PURCHASE_GRN", grn.GrnNumber, cancellationToken);
+
+                var p = await _context.Products.FirstAsync(x => x.Id == orderItem.ProductId, cancellationToken);
+                _context.StockBatchDetails.Add(new StockBatchDetail
+                {
+                    ProductId = orderItem.ProductId,
+                    BinId = receiveLine.BinId,
+                    BatchNumber = $"{grn.GrnNumber}-P{orderItem.ProductId}",
+                    ExpiryDate = p.TrackExpiry ? DateTime.UtcNow.AddYears(2) : null,
+                    Quantity = receiveLine.QuantityReceived,
+                    UnitCost = orderItem.UnitPrice,
+                    IsActive = true
+                });
             }
 
             grn.Subtotal = grn.Items.Sum(i => i.TaxableAmount);
@@ -772,6 +784,19 @@ namespace InventorySystem.Application.Services
                 throw new InvalidOperationException("Unable to post stock-in.");
             }
 
+            var product = await _context.Products.FirstAsync(p => p.Id == request.ProductId, cancellationToken);
+            _context.StockBatchDetails.Add(new StockBatchDetail
+            {
+                ProductId = request.ProductId,
+                BinId = request.BinId,
+                BatchNumber = $"{reference}-P{request.ProductId}",
+                Quantity = request.Quantity,
+                UnitCost = product.PurchasePrice,
+                ExpiryDate = product.TrackExpiry ? DateTime.UtcNow.AddYears(1) : null,
+                IsActive = true
+            });
+            await _context.SaveChangesAsync(cancellationToken);
+
             var stock = await _context.StockLevels.FirstAsync(s => s.ProductId == request.ProductId && s.BinId == request.BinId, cancellationToken);
             return new
             {
@@ -795,6 +820,7 @@ namespace InventorySystem.Application.Services
                 ? $"OUT-{DateTime.UtcNow:yyyyMMddHHmmss}"
                 : request.ReferenceNo.Trim();
 
+            await ConsumeFifoLayersAsync(request.ProductId, request.BinId, request.Quantity, cancellationToken);
             var success = await _stockService.PerformStockMovementAsync(request.ProductId, request.BinId, -request.Quantity, "STOCK_OUT", reference, cancellationToken);
             if (!success)
             {
@@ -829,6 +855,7 @@ namespace InventorySystem.Application.Services
                 ? $"TRF-{DateTime.UtcNow:yyyyMMddHHmmss}"
                 : request.ReferenceNo.Trim();
 
+            var transferCogs = await ConsumeFifoLayersAsync(request.ProductId, request.FromBinId, request.Quantity, cancellationToken);
             var deductSuccess = await _stockService.PerformStockMovementAsync(request.ProductId, request.FromBinId, -request.Quantity, "STOCK_TRANSFER_OUT", reference, cancellationToken);
             if (!deductSuccess)
             {
@@ -840,6 +867,20 @@ namespace InventorySystem.Application.Services
             {
                 throw new InvalidOperationException("Unable to post stock to destination bin.");
             }
+
+            var p = await _context.Products.FirstAsync(x => x.Id == request.ProductId, cancellationToken);
+            var uc = request.Quantity > 0 ? Math.Round(transferCogs / request.Quantity, 4) : 0;
+            _context.StockBatchDetails.Add(new StockBatchDetail
+            {
+                ProductId = request.ProductId,
+                BinId = request.ToBinId,
+                BatchNumber = $"{reference}-BIN{request.ToBinId}",
+                Quantity = request.Quantity,
+                UnitCost = uc > 0 ? uc : p.PurchasePrice,
+                ExpiryDate = p.TrackExpiry ? DateTime.UtcNow.AddYears(1) : null,
+                IsActive = true
+            });
+            await _context.SaveChangesAsync(cancellationToken);
 
             return new
             {
@@ -966,11 +1007,17 @@ namespace InventorySystem.Application.Services
                 Total = purchaseInvoices.Where(x => x.InvoiceDate.Date == date).Sum(x => x.GrandTotal)
             });
 
+            var netRevenueExTax = salesInvoices.Sum(x => x.Subtotal);
+            var totalCogs = salesInvoiceItems.Sum(x => x.CogsAmount);
+
             return new
             {
                 salesTotal,
                 purchaseTotal,
                 grossMarginEstimate = salesTotal - purchaseTotal,
+                netRevenueExTax,
+                totalCogs,
+                grossProfitCogsAccurate = netRevenueExTax - totalCogs,
                 lowStock,
                 fastMoving,
                 slowMoving,
@@ -1319,6 +1366,7 @@ namespace InventorySystem.Application.Services
             foreach (var line in order.Items.Where(i => i.InvoicedQuantity < i.Quantity))
             {
                 var qtyToInvoice = line.Quantity - line.InvoicedQuantity;
+                var lineCogs = await ConsumeFifoLayersAsync(line.ProductId, line.BinId, qtyToInvoice, cancellationToken);
                 invoice.Items.Add(new SalesInvoiceItem
                 {
                     SalesOrderItemId = line.Id,
@@ -1331,7 +1379,8 @@ namespace InventorySystem.Application.Services
                     CgstAmount = line.CgstAmount * (qtyToInvoice / line.Quantity),
                     SgstAmount = line.SgstAmount * (qtyToInvoice / line.Quantity),
                     IgstAmount = line.IgstAmount * (qtyToInvoice / line.Quantity),
-                    LineTotal = line.LineTotal * (qtyToInvoice / line.Quantity)
+                    LineTotal = line.LineTotal * (qtyToInvoice / line.Quantity),
+                    CogsAmount = lineCogs
                 });
 
                 await DeductReservedStockAsync(line.ProductId, line.BinId, qtyToInvoice, invoice.InvoiceNumber, cancellationToken);
@@ -1382,6 +1431,37 @@ namespace InventorySystem.Application.Services
             var stock = await _context.StockLevels.FirstAsync(s => s.ProductId == productId && s.BinId == binId, cancellationToken);
             stock.ReservedQuantity -= quantity;
             await _stockService.PerformStockMovementAsync(productId, binId, -quantity, "SALES_INVOICE", reference, cancellationToken);
+        }
+
+        /// <summary>FIFO layer consumption for COGS; reduces <see cref="StockBatchDetail"/> quantities.</summary>
+        private async Task<decimal> ConsumeFifoLayersAsync(int productId, int binId, decimal quantity, CancellationToken cancellationToken)
+        {
+            if (quantity <= 0) return 0;
+
+            var product = await _context.Products.AsNoTracking().FirstAsync(p => p.Id == productId, cancellationToken);
+            var batches = await _context.StockBatchDetails
+                .Where(b => b.ProductId == productId && b.BinId == binId && b.IsActive && b.Quantity > 0)
+                .OrderBy(b => b.Id)
+                .ToListAsync(cancellationToken);
+
+            var remaining = quantity;
+            decimal cogs = 0;
+            foreach (var batch in batches)
+            {
+                if (remaining <= 0) break;
+                var take = Math.Min(remaining, batch.Quantity);
+                var unitCost = batch.UnitCost > 0 ? batch.UnitCost : product.PurchasePrice;
+                cogs += take * unitCost;
+                batch.Quantity -= take;
+                remaining -= take;
+            }
+
+            if (remaining > 0)
+            {
+                cogs += remaining * product.PurchasePrice;
+            }
+
+            return Math.Round(cogs, 2);
         }
 
         private static TaxBreakdownDto CalculateTax(decimal quantity, decimal unitPrice, decimal gstRate, string? originState, string? destinationState)

@@ -20,6 +20,12 @@ export class UsersComponent implements OnInit {
   search = '';
   roles: string[] = [];
   permissions: any[] = [];
+  editingUserId = '';
+  editForm = {
+    email: '',
+    fullName: '',
+    role: ''
+  };
 
   form = {
     email: '',
@@ -93,6 +99,40 @@ export class UsersComponent implements OnInit {
     this.usersApi.savePermission(this.permissionForm).subscribe({
       next: () => this.loadAdvanced(),
       error: (err) => this.error = err?.error ?? 'Permission update failed.'
+    });
+  }
+
+  beginEdit(user: any): void {
+    this.editingUserId = user.id;
+    this.editForm = {
+      email: user.email ?? '',
+      fullName: user.fullName ?? '',
+      role: (user.roles ?? [])[0] ?? (this.roles[0] ?? '')
+    };
+  }
+
+  cancelEdit(): void {
+    this.editingUserId = '';
+    this.editForm = { email: '', fullName: '', role: '' };
+  }
+
+  saveEdit(user: any): void {
+    if (!user?.id || !this.editForm.email) return;
+    this.usersApi.updateUser(user.id, this.editForm).subscribe({
+      next: () => {
+        this.cancelEdit();
+        this.load();
+      },
+      error: (err) => this.error = err?.error ?? 'User update failed.'
+    });
+  }
+
+  toggleActive(user: any): void {
+    if (!user?.id) return;
+    const action$ = user.isActive ? this.usersApi.deactivateUser(user.id) : this.usersApi.activateUser(user.id);
+    action$.subscribe({
+      next: () => this.load(),
+      error: (err) => this.error = err?.error ?? 'Status update failed.'
     });
   }
 

@@ -41,13 +41,31 @@
 
       <div class="nav-label" *ngIf="!sidebarCollapsed">Master & Logs</div>
       <a
+        routerLink="/masters/products"
+        routerLinkActive="active-link"
+        class="nav-link"
+        (click)="closeMenuOnNavigate()"
+        title="Products">
+        <span class="icon-chip">&#128230;</span>
+        <span *ngIf="!sidebarCollapsed">Products</span>
+      </a>
+      <a
+        routerLink="/masters/customers"
+        routerLinkActive="active-link"
+        class="nav-link"
+        (click)="closeMenuOnNavigate()"
+        title="Customers">
+        <span class="icon-chip">&#128101;</span>
+        <span *ngIf="!sidebarCollapsed">Customers</span>
+      </a>
+      <a
         routerLink="/masters"
         routerLinkActive="active-link"
         class="nav-link"
         (click)="closeMenuOnNavigate()"
-        title="Master Setup">
+        title="Other Masters">
         <span class="icon-chip" [innerHTML]="moduleIcon('masters')"></span>
-        <span *ngIf="!sidebarCollapsed">Master Setup</span>
+        <span *ngIf="!sidebarCollapsed">Other Masters</span>
       </a>
       <a
         routerLink="/audit-logs"
@@ -92,6 +110,15 @@
 
     <div class="scroll-content">
       <router-outlet></router-outlet>
+      <footer class="shell-footer">
+        <a routerLink="/privacy">Privacy</a>
+        <span class="sep">·</span>
+        <a routerLink="/terms">Terms</a>
+        <span class="sep">·</span>
+        <a routerLink="/gst-disclaimer">GST disclaimer</a>
+        <span class="sep">·</span>
+        <a routerLink="/onboarding">Setup guide</a>
+      </footer>
     </div>
   </main>
 </div>

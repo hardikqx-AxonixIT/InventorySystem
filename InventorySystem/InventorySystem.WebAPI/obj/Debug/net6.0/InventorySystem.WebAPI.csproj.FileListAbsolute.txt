@@ -103,3 +103,13 @@ F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\r
 F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\runtimes\win-arm64\native\libSkiaSharp.dll
 F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\runtimes\win-x64\native\libSkiaSharp.dll
 F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\runtimes\win-x86\native\libSkiaSharp.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\Pipelines.Sockets.Unofficial.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\StackExchange.Redis.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\System.Diagnostics.PerformanceCounter.dll
+F:\Axonix\.net project\InventorySystem\InventorySystem.WebAPI\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll

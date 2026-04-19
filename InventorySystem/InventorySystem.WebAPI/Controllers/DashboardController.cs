@@ -8,6 +8,7 @@ namespace InventorySystem.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class DashboardController : ControllerBase
     {
         private readonly IDashboardService _dashboardService;
@@ -17,7 +18,6 @@ namespace InventorySystem.WebAPI.Controllers
             _dashboardService = dashboardService;
         }
 
-        [AllowAnonymous]
         [HttpGet("overview")]
         public async Task<IActionResult> GetOverview(CancellationToken cancellationToken)
         {
@@ -26,3 +26,5 @@ namespace InventorySystem.WebAPI.Controllers
         }
     }
 }
+
+

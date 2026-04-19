@@ -23,6 +23,12 @@ namespace InventorySystem.Domain.Entities
         [MaxLength(10)]
         public string? Pan { get; set; }
 
+        [MaxLength(12)]
+        public string? AadharNumber { get; set; }
+
+        [MaxLength(100)]
+        public string? UpiId { get; set; }
+
         [MaxLength(250)]
         public string? BillingAddress { get; set; }
 

@@ -33,12 +33,53 @@
     </div>
     <div class="table-wrap">
       <table class="table">
-        <thead><tr><th>Email</th><th>Name</th><th>Roles</th></tr></thead>
+        <thead><tr><th>Email</th><th>Name</th><th>Roles</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <tr *ngFor="let user of users">
-            <td>{{ user.email }}</td>
-            <td>{{ user.fullName || '-' }}</td>
-            <td>{{ (user.roles || []).join(', ') }}</td>
+            <td>
+              <ng-container *ngIf="editingUserId !== user.id; else editEmail">
+                {{ user.email }}
+              </ng-container>
+              <ng-template #editEmail>
+                <input [(ngModel)]="editForm.email" placeholder="Email" />
+              </ng-template>
+            </td>
+            <td>
+              <ng-container *ngIf="editingUserId !== user.id; else editName">
+                {{ user.fullName || '-' }}
+              </ng-container>
+              <ng-template #editName>
+                <input [(ngModel)]="editForm.fullName" placeholder="Full name" />
+              </ng-template>
+            </td>
+            <td>
+              <ng-container *ngIf="editingUserId !== user.id; else editRole">
+                {{ (user.roles || []).join(', ') }}
+              </ng-container>
+              <ng-template #editRole>
+                <select [(ngModel)]="editForm.role">
+                  <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+                </select>
+              </ng-template>
+            </td>
+            <td>
+              <span class="status-pill" [class.inactive]="!user.isActive">{{ user.isActive ? 'Active' : 'Inactive' }}</span>
+            </td>
+            <td>
+              <div class="action-icons" *ngIf="editingUserId !== user.id; else editActions">
+                <button class="icon-btn" type="button" title="Edit" (click)="beginEdit(user)">&#9998;</button>
+                <button class="icon-btn warn" type="button" [title]="user.isActive ? 'Deactivate' : 'Activate'" (click)="toggleActive(user)">
+                  <span *ngIf="user.isActive">&#128683;</span>
+                  <span *ngIf="!user.isActive">&#9989;</span>
+                </button>
+              </div>
+              <ng-template #editActions>
+                <div class="action-icons">
+                  <button class="icon-btn ok" type="button" title="Save" (click)="saveEdit(user)">&#9989;</button>
+                  <button class="icon-btn" type="button" title="Cancel" (click)="cancelEdit()">&#10006;</button>
+                </div>
+              </ng-template>
+            </td>
           </tr>
         </tbody>
       </table>
