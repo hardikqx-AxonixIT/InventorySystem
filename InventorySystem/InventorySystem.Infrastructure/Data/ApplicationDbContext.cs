@@ -67,6 +67,8 @@ namespace InventorySystem.Infrastructure.Data
         public DbSet<PaymentGatewayCallbackLog> PaymentGatewayCallbackLogs { get; set; } = null!;
         public DbSet<TenantSubscriptionRecord> TenantSubscriptions { get; set; } = null!;
         public DbSet<CommercialLicenseRecord> CommercialLicenses { get; set; } = null!;
+        public DbSet<NotificationLog> NotificationLogs { get; set; } = null!;
+        public DbSet<TenantUpiConfiguration> TenantUpiConfigurations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -464,6 +466,11 @@ namespace InventorySystem.Infrastructure.Data
             builder.Entity<SalesInvoiceItem>().Property(p => p.SgstAmount).HasPrecision(18, 2);
             builder.Entity<SalesInvoiceItem>().Property(p => p.IgstAmount).HasPrecision(18, 2);
             builder.Entity<SalesInvoiceItem>().Property(p => p.LineTotal).HasPrecision(18, 2);
+            builder.Entity<SalesInvoiceItem>().Property(x => x.CogsAmount).HasPrecision(18, 2);
+            builder.Entity<SalesInvoice>().Property(p => p.DiscountPercentage).HasPrecision(5, 2);
+            builder.Entity<SalesInvoice>().Property(p => p.DiscountAmount).HasPrecision(18, 2);
+            builder.Entity<SalesInvoice>().Property(p => p.PaidAmount).HasPrecision(18, 2);
+            builder.Entity<SalesInvoice>().Property(p => p.BalanceAmount).HasPrecision(18, 2);
             builder.Entity<SalesQuotation>().Property(p => p.Subtotal).HasPrecision(18, 2);
             builder.Entity<SalesQuotation>().Property(p => p.CgstAmount).HasPrecision(18, 2);
             builder.Entity<SalesQuotation>().Property(p => p.SgstAmount).HasPrecision(18, 2);

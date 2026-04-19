@@ -1,5 +1,6 @@
 using InventorySystem.Application.Interfaces;
 using InventorySystem.Domain.Entities;
+using InventorySystem.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
